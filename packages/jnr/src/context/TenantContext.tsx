@@ -1,18 +1,24 @@
 /**
  * @fileoverview Tenant Context Provider
  *
- * Provides tenant information throughout the app. Key design principle:
- * **Parent and child share the SAME subdomain/tenant.**
- * Parent authenticates with admin PIN to access settings and controls.
+ * Provides tenant information throughout the app. Key design principles:
  *
- * Example: nick.8gentjr.app
- * - Nick (child) uses it normally
- * - James (parent) logs in to same subdomain with admin PIN
+ * 1. **Parent and child share the SAME subdomain/tenant.**
+ *    Parent authenticates with admin PIN to access settings and controls.
+ *
+ * 2. **Mode is a settings toggle, not a domain.**
+ *    nick.8gent.app serves both kid mode and adult mode.
+ *    Graduation from kid→adult is a preference change, not a URL change.
+ *
+ * Example: nick.8gent.app
+ * - Nick (child) uses it in kid mode (AAC-focused UI)
+ * - Nick (adult) uses same URL in adult mode (full 8gent features)
+ * - James (parent) logs in with admin PIN for settings
  *
  * This enables:
- * - Single URL per child (simple sharing)
+ * - Single URL per user (simple, permanent identity)
  * - Parent oversight without separate dashboard
- * - Seamless child→parent handoff for help
+ * - Seamless graduation without URL migration
  *
  * @module context/TenantContext
  */

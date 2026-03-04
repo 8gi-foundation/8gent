@@ -2,17 +2,18 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // Enable wildcard subdomains for multi-tenant routing
-  // e.g., nick.8gentjr.app, emma.8gentjr.app
+  // e.g., nick.8gent.app, emma.8gent.app
+  // Mode (kid/adult) is a setting toggle, not a domain change
   async rewrites() {
     return {
       beforeFiles: [
-        // Handle subdomain routing
+        // Handle subdomain routing for *.8gent.app
         {
           source: '/:path*',
           has: [
             {
               type: 'host',
-              value: '(?<subdomain>[^.]+)\\.8gentjr\\.app',
+              value: '(?<subdomain>[^.]+)\\.8gent\\.app',
             },
           ],
           destination: '/tenant/:subdomain/:path*',

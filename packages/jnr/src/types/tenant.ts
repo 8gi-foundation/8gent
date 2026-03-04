@@ -1,15 +1,24 @@
 /**
- * @fileoverview Tenant Types for 8gent Jr Multi-tenancy
+ * @fileoverview Tenant Types for 8gent Multi-tenancy
  *
  * Defines the type system for subdomain-based multi-tenancy.
- * Each child user gets their own subdomain (e.g., nick.8gentjr.app)
- * with a migration path to 8gent senior at age 16.
+ * Each user gets their own subdomain (e.g., nick.8gent.app)
+ * with mode (kid/adult) as a settings toggle, not a domain change.
+ *
+ * Key principle: URL is permanent identity, mode is preference.
  *
  * @module types/tenant
  */
 
 /**
- * Product tier determining which 8gent version the user is on
+ * User mode - determines UI experience (not a product tier)
+ * Mode is a setting that can be changed, not a domain migration.
+ */
+export type UserMode = 'kid' | 'adult';
+
+/**
+ * Product tier for feature access (legacy, keeping for compatibility)
+ * @deprecated Use UserMode instead - mode is the primary concept
  */
 export type ProductTier = 'junior' | 'senior';
 
@@ -44,17 +53,27 @@ export interface TenantConfig {
   /** Unique tenant identifier */
   id: string;
 
-  /** Subdomain slug (e.g., 'nick' for nick.8gentjr.app) */
+  /** Subdomain slug (e.g., 'nick' for nick.8gent.app) */
   subdomain: string;
 
   /** User ID who owns this tenant */
   userId: string;
 
-  /** Product tier (junior or senior) */
+  /**
+   * Current user mode - determines UI experience
+   * 'kid' = AAC-focused, parental controls, simplified UI
+   * 'adult' = Full 8gent features, no parental oversight
+   */
+  mode: UserMode;
+
+  /**
+   * Product tier (junior or senior)
+   * @deprecated Use `mode` instead - keeping for migration compatibility
+   */
   productTier: ProductTier;
 
-  /** Parent user ID (for parental controls) */
-  parentUserId: string;
+  /** Parent user ID (for parental controls, only applies in kid mode) */
+  parentUserId?: string;
 
   /** Tenant display name (child's name) */
   displayName: string;
@@ -107,6 +126,10 @@ export interface TenantPreferences {
 
 /**
  * Configuration for the graduation process
+ *
+ * Graduation is a MODE CHANGE, not a domain migration.
+ * nick.8gent.app stays the same - mode flips from 'kid' to 'adult'.
+ * This preserves URL identity while unlocking full features.
  */
 export interface GraduationConfig {
   /** User ID */
@@ -115,13 +138,17 @@ export interface GraduationConfig {
   /** Tenant ID */
   tenantId: string;
 
-  /** When the user becomes eligible */
+  /** When the user becomes eligible (typically 16th birthday) */
   eligibleAt: Date;
 
   /** Current graduation status */
   status: GraduationStatus;
 
-  /** Target senior subdomain (if chosen) */
+  /**
+   * Target senior subdomain (if choosing to migrate to new URL)
+   * @deprecated Graduation is now a mode change, not domain migration
+   * Keeping for users who want a fresh start at a new subdomain
+   */
   seniorSubdomain?: string;
 
   /** Data categories that have been migrated */
@@ -132,6 +159,9 @@ export interface GraduationConfig {
 
   /** When graduation was completed */
   completedAt?: Date;
+
+  /** Whether to remove parental access upon graduation */
+  removeParentalAccess?: boolean;
 }
 
 /**
