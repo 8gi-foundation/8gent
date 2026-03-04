@@ -1,0 +1,71 @@
+{
+  "name": "@8gent/toolshed",
+  "version": "1.0.0",
+  "description": "8gent Enterprise Toolshed - Claude Code for everyone with enterprise features",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "PORT=3000 bun run --hot src/index.ts",
+    "dev:3100": "PORT=3100 bun run --hot src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target node",
+    "start": "PORT=3000 bun run dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "test": "bun test",
+    "convex:dev": "npx convex dev",
+    "convex:deploy": "npx convex deploy"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "@hono/node-server": "^1.11.0",
+    "convex": "^1.17.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "convex": "^1.12.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schemas": {
+      "import": "./src/schemas/index.ts",
+      "types": "./src/schemas/index.ts"
+    },
+    "./client": {
+      "import": "./src/lib/client.ts",
+      "types": "./src/lib/client.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src/schemas",
+    "src/lib/client.ts"
+  ],
+  "keywords": [
+    "8gent",
+    "toolshed",
+    "enterprise",
+    "multi-tenant",
+    "mcp",
+    "ai-tools",
+    "claude-code"
+  ],
+  "author": "8gent Team",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/8gent/8gent.git",
+    "directory": "packages/toolshed"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "bun": ">=1.1.0"
+  }
+}

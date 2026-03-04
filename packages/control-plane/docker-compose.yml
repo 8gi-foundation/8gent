@@ -1,0 +1,32 @@
+# 8gent Control Plane
+#
+# Multi-tenant control plane for consumer AI agents
+# Run with: docker compose up -d
+
+services:
+  control-plane:
+    build: .
+    container_name: 8gent-control-plane
+    restart: unless-stopped
+    environment:
+      # Real API keys - ONLY accessible here
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+      # Internal API key for 8gent backend
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+
+      # Port
+      CONTROL_PLANE_PORT: 18787
+    ports:
+      - "18787:18787"
+    networks:
+      - 8gent-internal
+    volumes:
+      - ./logs:/app/logs
+
+networks:
+  8gent-internal:
+    name: 8gent-internal

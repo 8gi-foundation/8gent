@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 8gent Jr Design System Variables */
+:root {
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+
+  /* Light mode */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --border: 214.3 31.8% 91.4%;
+  --radius: 1rem;
+
+  /* Fitzgerald Key Colors */
+  --fitzgerald-yellow: #FFF59D;
+  --fitzgerald-green: #A5D6A7;
+  --fitzgerald-blue: #90CAF9;
+  --fitzgerald-purple: #CE93D8;
+  --fitzgerald-orange: #FFCC80;
+  --fitzgerald-brown: #BCAAA4;
+  --fitzgerald-red: #EF9A9A;
+  --fitzgerald-pink: #F8BBD9;
+  --fitzgerald-white: #F5F5F5;
+  --fitzgerald-gray: #CFD8DC;
+
+  /* Safety colors */
+  --safety-stop: #D50000;
+  --safety-help: #FF8A80;
+}
+
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+}
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden; /* AAC boards manage their own scrolling */
+  touch-action: manipulation; /* Better touch handling */
+}
+
+body {
+  font-family: var(--font-sans);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Safe area support for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* AAC Card specific styles */
+.aac-card {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent text selection during AAC interaction */
+.aac-board {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Large touch targets (44x44 minimum per iOS HIG) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Hide focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
