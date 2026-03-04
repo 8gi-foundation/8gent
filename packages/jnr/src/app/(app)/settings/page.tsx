@@ -35,10 +35,18 @@ export default function SettingsPage() {
         className="sticky top-0 z-40 backdrop-blur-xl safe-top"
         style={{ backgroundColor: `${primaryColor}F2` }}
       >
-        <div className="flex items-center justify-center px-4 py-3">
-          <h1 className="text-[18px] font-semibold text-white">
-            {settings.childName ? `${settings.childName}'s Settings` : 'Settings'}
-          </h1>
+        <div className="flex items-center justify-between px-4 py-3">
+          <Link
+            href="/app"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2 text-white/90 active:text-white"
+          >
+            <span className="text-[17px] flex items-center">
+              <span className="text-2xl">‹</span>
+              <span className="ml-1">Back</span>
+            </span>
+          </Link>
+          <h1 className="text-[18px] font-semibold text-white">Settings</h1>
+          <div className="w-[44px]" /> {/* Spacer for centering */}
         </div>
       </header>
 

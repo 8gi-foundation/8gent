@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 import {
   AAC_CATEGORIES,
@@ -158,6 +159,13 @@ export default function AACAppPage() {
               <span className="text-[17px] font-semibold text-white">{activeCategory.name}</span>
             )}
           </div>
+          {/* Settings Icon */}
+          <Link
+            href="/settings"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/80 active:text-white"
+          >
+            <span className="text-2xl">⚙️</span>
+          </Link>
         </div>
       </header>
 
