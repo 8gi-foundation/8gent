@@ -1,16 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useApp } from '@/context/AppContext';
+import { useUser } from '@clerk/nextjs';
+import { useMutation, useQuery } from 'convex/react';
+import { api } from '../../../../convex/_generated/api';
 
 /**
- * Onboarding Page - iOS Style
+ * Onboarding Page - Create child's tenant
  *
- * Simple onboarding flow:
- * 1. Enter name
- * 2. Pick a color
- * 3. Select or create voice
+ * Flow:
+ * 1. Enter child's name → generates subdomain suggestions
+ * 2. Pick subdomain (e.g., emma.8gent.app)
+ * 3. Pick a color theme
+ * 4. Select voice
+ * 5. Create tenant → redirect to subdomain
  */
 
 const COLORS = [
@@ -29,43 +33,100 @@ const VOICES = [
   { id: 'browser', name: 'System', emoji: '🔊', description: 'Device default' },
 ];
 
-type Step = 'name' | 'color' | 'voice' | 'done';
+type Step = 'name' | 'subdomain' | 'color' | 'voice' | 'creating' | 'done';
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { settings, updateSettings } = useApp();
+  const { user, isLoaded } = useUser();
   const [step, setStep] = useState<Step>('name');
-  const [name, setName] = useState(settings.childName || '');
-  const [color, setColor] = useState(settings.primaryColor || '#4CAF50');
-  const [voice, setVoice] = useState(settings.selectedVoiceId || 'browser');
+  const [childName, setChildName] = useState('');
+  const [subdomain, setSubdomain] = useState('');
+  const [color, setColor] = useState('#4CAF50');
+  const [voiceId, setVoiceId] = useState('browser');
+  const [error, setError] = useState('');
 
-  const handleNext = () => {
-    if (step === 'name' && name.trim()) {
-      updateSettings({ childName: name.trim() });
-      setStep('color');
-    } else if (step === 'color') {
-      updateSettings({ primaryColor: color });
-      setStep('voice');
-    } else if (step === 'voice') {
-      updateSettings({
-        selectedVoiceId: voice === 'browser' ? null : voice,
-        hasCompletedOnboarding: true,
-      });
-      setStep('done');
-      // Navigate to app after short delay
-      setTimeout(() => router.push('/app'), 1000);
+  // Convex mutations and queries
+  const createTenant = useMutation(api.tenants.create);
+  const suggestSubdomains = useQuery(
+    api.tenants.suggestSubdomains,
+    childName.length >= 2 ? { name: childName } : 'skip'
+  );
+  const checkSubdomain = useQuery(
+    api.tenants.checkSubdomain,
+    subdomain.length >= 2 ? { subdomain } : 'skip'
+  );
+
+  // Check if user already has tenants
+  const existingTenants = useQuery(api.tenants.listForUser);
+
+  useEffect(() => {
+    // If user already has tenants, redirect to their first one
+    if (existingTenants && existingTenants.length > 0) {
+      const firstTenant = existingTenants[0];
+      window.location.href = `https://${firstTenant.subdomain}.8gent.app/app`;
+    }
+  }, [existingTenants]);
+
+  const handleNameSubmit = () => {
+    if (childName.trim().length >= 2) {
+      // Generate initial subdomain suggestion
+      const suggested = childName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      setSubdomain(suggested);
+      setStep('subdomain');
     }
   };
 
-  const testVoice = async (voiceId: string) => {
-    const text = `Hello ${name || 'there'}! Nice to meet you.`;
+  const handleSubdomainSubmit = () => {
+    if (checkSubdomain?.available) {
+      setStep('color');
+    } else {
+      setError(checkSubdomain?.reason === 'taken' ? 'This name is already taken' : 'This name is reserved');
+    }
+  };
 
-    if (voiceId !== 'browser') {
+  const handleColorSubmit = () => {
+    setStep('voice');
+  };
+
+  const handleVoiceSubmit = async () => {
+    setStep('creating');
+    setError('');
+
+    try {
+      const result = await createTenant({
+        subdomain,
+        displayName: `${childName}'s Board`,
+        mode: 'kid',
+        preferences: {
+          themeColor: color,
+          voiceId: voiceId === 'browser' ? undefined : voiceId,
+        },
+      });
+
+      setStep('done');
+
+      // Redirect to the new subdomain
+      setTimeout(() => {
+        const baseUrl = process.env.NODE_ENV === 'production'
+          ? `https://${result.subdomain}.8gent.app`
+          : `http://${result.subdomain}.localhost:3001`;
+        window.location.href = `${baseUrl}/app`;
+      }, 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setStep('voice');
+    }
+  };
+
+  const testVoice = async (vid: string) => {
+    const text = `Hello ${childName || 'there'}! Nice to meet you.`;
+
+    if (vid !== 'browser') {
       try {
         const response = await fetch('/api/voice/speak', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text, voiceId }),
+          body: JSON.stringify({ text, voiceId: vid }),
         });
         if (response.ok) {
           const blob = await response.blob();
@@ -85,6 +146,14 @@ export default function OnboardingPage() {
     }
   };
 
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f2f2f7]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-h-screen flex flex-col bg-[#f2f2f7] safe-area-inset"
@@ -96,7 +165,12 @@ export default function OnboardingPage() {
           className="h-full transition-all duration-500"
           style={{
             backgroundColor: color,
-            width: step === 'name' ? '25%' : step === 'color' ? '50%' : step === 'voice' ? '75%' : '100%',
+            width:
+              step === 'name' ? '20%' :
+              step === 'subdomain' ? '40%' :
+              step === 'color' ? '60%' :
+              step === 'voice' ? '80%' :
+              '100%',
           }}
         />
       </div>
@@ -106,23 +180,87 @@ export default function OnboardingPage() {
         {step === 'name' && (
           <div className="w-full max-w-sm text-center animate-fadeIn">
             <div className="text-6xl mb-6">👋</div>
-            <h1 className="text-[28px] font-bold text-black mb-2">What&apos;s your name?</h1>
+            <h1 className="text-[28px] font-bold text-black mb-2">
+              Who will use 8gent?
+            </h1>
             <p className="text-[17px] text-gray-500 mb-8">
-              We&apos;ll personalize everything just for you
+              Enter your child&apos;s first name
             </p>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
+              value={childName}
+              onChange={(e) => setChildName(e.target.value)}
+              placeholder="Emma"
               autoFocus
               className="w-full px-4 py-4 text-[20px] text-center bg-white rounded-2xl border-2 border-gray-200
                        focus:outline-none focus:border-[var(--accent)] transition-colors"
             />
             <button
-              onClick={handleNext}
-              disabled={!name.trim()}
+              onClick={handleNameSubmit}
+              disabled={childName.trim().length < 2}
               className="w-full mt-6 py-4 text-white text-[17px] font-semibold rounded-2xl
+                       disabled:opacity-40 active:opacity-80 transition-opacity"
+              style={{ backgroundColor: color }}
+            >
+              Continue
+            </button>
+          </div>
+        )}
+
+        {/* Step: Subdomain */}
+        {step === 'subdomain' && (
+          <div className="w-full max-w-sm text-center animate-fadeIn">
+            <div className="text-6xl mb-6">🌐</div>
+            <h1 className="text-[28px] font-bold text-black mb-2">
+              Choose {childName}&apos;s address
+            </h1>
+            <p className="text-[17px] text-gray-500 mb-6">
+              This will be their personal AAC board URL
+            </p>
+
+            <div className="flex items-center gap-2 bg-white rounded-2xl border-2 border-gray-200 p-2 mb-4">
+              <input
+                type="text"
+                value={subdomain}
+                onChange={(e) => {
+                  setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''));
+                  setError('');
+                }}
+                className="flex-1 px-3 py-2 text-[18px] text-right bg-transparent outline-none"
+                placeholder="emma"
+              />
+              <span className="text-[18px] text-gray-400">.8gent.app</span>
+            </div>
+
+            {checkSubdomain && (
+              <p className={`text-[14px] mb-4 ${checkSubdomain.available ? 'text-green-600' : 'text-red-500'}`}>
+                {checkSubdomain.available ? '✓ Available!' : `✗ ${checkSubdomain.reason === 'taken' ? 'Already taken' : 'Reserved'}`}
+              </p>
+            )}
+
+            {error && <p className="text-red-500 text-[14px] mb-4">{error}</p>}
+
+            {suggestSubdomains && (
+              <div className="mb-6">
+                <p className="text-[13px] text-gray-400 mb-2">Suggestions:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {suggestSubdomains.filter(s => s.available).slice(0, 4).map((s) => (
+                    <button
+                      key={s.subdomain}
+                      onClick={() => setSubdomain(s.subdomain)}
+                      className="px-3 py-1 text-[13px] bg-gray-100 rounded-full hover:bg-gray-200 transition"
+                    >
+                      {s.subdomain}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={handleSubdomainSubmit}
+              disabled={!checkSubdomain?.available}
+              className="w-full py-4 text-white text-[17px] font-semibold rounded-2xl
                        disabled:opacity-40 active:opacity-80 transition-opacity"
               style={{ backgroundColor: color }}
             >
@@ -135,9 +273,9 @@ export default function OnboardingPage() {
         {step === 'color' && (
           <div className="w-full max-w-sm text-center animate-fadeIn">
             <div className="text-6xl mb-6">🎨</div>
-            <h1 className="text-[28px] font-bold text-black mb-2">Pick your color</h1>
+            <h1 className="text-[28px] font-bold text-black mb-2">Pick a color</h1>
             <p className="text-[17px] text-gray-500 mb-8">
-              Choose your favorite color, {name}
+              Choose {childName}&apos;s favorite color
             </p>
             <div className="grid grid-cols-3 gap-4 mb-8">
               {COLORS.map((c) => (
@@ -156,7 +294,7 @@ export default function OnboardingPage() {
               ))}
             </div>
             <button
-              onClick={handleNext}
+              onClick={handleColorSubmit}
               className="w-full py-4 text-white text-[17px] font-semibold rounded-2xl active:opacity-80"
               style={{ backgroundColor: color }}
             >
@@ -169,19 +307,19 @@ export default function OnboardingPage() {
         {step === 'voice' && (
           <div className="w-full max-w-sm text-center animate-fadeIn">
             <div className="text-6xl mb-6">🎤</div>
-            <h1 className="text-[28px] font-bold text-black mb-2">Choose your voice</h1>
+            <h1 className="text-[28px] font-bold text-black mb-2">Choose a voice</h1>
             <p className="text-[17px] text-gray-500 mb-6">
-              This is how you&apos;ll sound, {name}
+              This is how {childName} will sound
             </p>
             <div className="space-y-3 mb-6">
               {VOICES.map((v) => (
                 <button
                   key={v.id}
-                  onClick={() => setVoice(v.id)}
+                  onClick={() => setVoiceId(v.id)}
                   className={`w-full flex items-center gap-4 p-4 bg-white rounded-2xl border-2 transition-all ${
-                    voice === v.id ? 'border-[var(--accent)]' : 'border-gray-200'
+                    voiceId === v.id ? 'border-[var(--accent)]' : 'border-gray-200'
                   }`}
-                  style={{ borderColor: voice === v.id ? color : undefined }}
+                  style={{ borderColor: voiceId === v.id ? color : undefined }}
                 >
                   <span className="text-3xl">{v.emoji}</span>
                   <div className="flex-1 text-left">
@@ -201,13 +339,33 @@ export default function OnboardingPage() {
                 </button>
               ))}
             </div>
+
+            {error && <p className="text-red-500 text-[14px] mb-4">{error}</p>}
+
             <button
-              onClick={handleNext}
+              onClick={handleVoiceSubmit}
               className="w-full py-4 text-white text-[17px] font-semibold rounded-2xl active:opacity-80"
               style={{ backgroundColor: color }}
             >
-              Let&apos;s Go!
+              Create {childName}&apos;s Board
             </button>
+          </div>
+        )}
+
+        {/* Step: Creating */}
+        {step === 'creating' && (
+          <div className="w-full max-w-sm text-center animate-fadeIn">
+            <div className="text-6xl mb-6">⚙️</div>
+            <h1 className="text-[28px] font-bold text-black mb-2">
+              Creating {childName}&apos;s Board
+            </h1>
+            <p className="text-[17px] text-gray-500 mb-8">
+              Setting up {subdomain}.8gent.app...
+            </p>
+            <div
+              className="w-12 h-12 mx-auto border-4 border-t-transparent rounded-full animate-spin"
+              style={{ borderColor: color, borderTopColor: 'transparent' }}
+            />
           </div>
         )}
 
@@ -215,28 +373,27 @@ export default function OnboardingPage() {
         {step === 'done' && (
           <div className="w-full max-w-sm text-center animate-fadeIn">
             <div className="text-6xl mb-6">🎉</div>
-            <h1 className="text-[28px] font-bold text-black mb-2">All set, {name}!</h1>
-            <p className="text-[17px] text-gray-500">
-              Let&apos;s start communicating
+            <h1 className="text-[28px] font-bold text-black mb-2">
+              All set!
+            </h1>
+            <p className="text-[17px] text-gray-500 mb-4">
+              {childName}&apos;s board is ready at
             </p>
-            <div className="mt-8">
-              <div
-                className="w-12 h-12 mx-auto border-4 border-t-transparent rounded-full animate-spin"
-                style={{ borderColor: color, borderTopColor: 'transparent' }}
-              />
-            </div>
+            <p className="text-[20px] font-bold" style={{ color }}>
+              {subdomain}.8gent.app
+            </p>
+            <p className="text-[14px] text-gray-400 mt-6">
+              Redirecting...
+            </p>
           </div>
         )}
       </div>
 
       {/* Skip button */}
-      {step !== 'done' && (
+      {step !== 'done' && step !== 'creating' && (
         <div className="p-6 text-center safe-bottom">
           <button
-            onClick={() => {
-              updateSettings({ hasCompletedOnboarding: true });
-              router.push('/app');
-            }}
+            onClick={() => router.push('/app')}
             className="text-[15px] text-gray-400"
           >
             Skip for now

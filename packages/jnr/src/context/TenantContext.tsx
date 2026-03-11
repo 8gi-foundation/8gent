@@ -1,27 +1,18 @@
 /**
- * @fileoverview Tenant Context Provider
+ * @fileoverview Tenant Context Provider with Convex Integration
  *
- * Provides tenant information throughout the app. Key design principles:
+ * Provides tenant information throughout the app. Integrates with Convex
+ * for real-time tenant data and card management.
  *
- * 1. **Parent and child share the SAME subdomain/tenant.**
- *    Parent authenticates with admin PIN to access settings and controls.
- *
- * 2. **Mode is a settings toggle, not a domain.**
- *    nick.8gent.app serves both kid mode and adult mode.
- *    Graduation from kid→adult is a preference change, not a URL change.
- *
- * Example: nick.8gent.app
- * - Nick (child) uses it in kid mode (AAC-focused UI)
- * - Nick (adult) uses same URL in adult mode (full 8gent features)
- * - James (parent) logs in with admin PIN for settings
- *
- * This enables:
- * - Single URL per user (simple, permanent identity)
- * - Parent oversight without separate dashboard
- * - Seamless graduation without URL migration
+ * Key design principles:
+ * 1. Parent and child share the SAME subdomain/tenant
+ * 2. Mode is a settings toggle, not a domain
+ * 3. Real-time updates via Convex subscriptions
  *
  * @module context/TenantContext
  */
+
+'use client';
 
 import React, {
   createContext,
@@ -31,386 +22,308 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import type {
-  TenantConfig,
-  TenantContextValue,
-  ParentPermissions,
-} from '@/types/tenant';
+import { useQuery, useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import type { Id } from '../../convex/_generated/dataModel';
 
 /**
- * Storage key for admin session
+ * Card type from Convex
  */
-const ADMIN_SESSION_KEY = '8gent-jr-admin-session';
-
-/**
- * Admin session timeout (30 minutes)
- */
-const ADMIN_SESSION_TIMEOUT = 30 * 60 * 1000;
-
-/**
- * Extended context value with admin controls
- */
-interface TenantContextExtended extends TenantContextValue {
-  /** Whether admin mode is active (parent logged in with PIN) */
-  isAdminMode: boolean;
-
-  /** Verify admin PIN and activate admin mode */
-  verifyAdminPin: (pin: string) => Promise<boolean>;
-
-  /** Exit admin mode */
-  exitAdminMode: () => void;
-
-  /** Time remaining in admin session (ms) */
-  adminSessionRemaining: number | null;
-
-  /** Switch between child tenants (for parents with multiple children) */
-  switchTenant: (subdomain: string) => Promise<void>;
-
-  /** List of child tenants for current parent */
-  childTenants: TenantConfig[];
+interface Card {
+  id: string;
+  label: string;
+  speechText: string;
+  imageUrl: string;
+  categoryId: string;
+  arasaacId?: number;
+  glpStage?: number;
+  tags?: string[];
+  isCustom?: boolean;
 }
 
 /**
- * Default parent permissions
+ * Tenant configuration from Convex
  */
-const DEFAULT_PARENT_PERMISSIONS: ParentPermissions = {
-  canViewActivity: true,
-  canModifyPreferences: true,
-  canManageCards: true,
-  canViewConversations: true,
-  canExportData: true,
-  canInitiateGraduation: true,
-  canManageTenant: true,
-};
+interface TenantConfig {
+  _id: Id<'tenants'>;
+  subdomain: string;
+  ownerId: Id<'users'>;
+  parentId?: Id<'users'>;
+  displayName: string;
+  mode: 'kid' | 'adult';
+  status: 'active' | 'suspended' | 'reserved';
+  preferences?: {
+    themeColor?: string;
+    voiceId?: string;
+    ttsRate?: number;
+    cardSize?: 'small' | 'medium' | 'large';
+    showLabels?: boolean;
+    enableAnimations?: boolean;
+  };
+  cardPackVersion: string;
+}
+
+/**
+ * Tenant context value
+ */
+interface TenantContextValue {
+  /** Current tenant config */
+  tenant: TenantConfig | null;
+
+  /** Whether tenant is loading */
+  isLoading: boolean;
+
+  /** Error if any */
+  error: string | null;
+
+  /** Current subdomain */
+  subdomain: string;
+
+  /** Default cards from card pack */
+  defaultCards: Card[];
+
+  /** Custom cards for this tenant */
+  customCards: Card[];
+
+  /** All cards merged (default + custom) */
+  allCards: Card[];
+
+  /** Favorite card IDs */
+  favorites: string[];
+
+  /** Recently used card IDs */
+  recentlyUsed: string[];
+
+  /** Card pack version */
+  packVersion: string;
+
+  /** Tenant ID for mutations */
+  tenantId: Id<'tenants'> | null;
+
+  /** Toggle favorite status */
+  toggleFavorite: (cardId: string) => Promise<void>;
+
+  /** Record card usage */
+  recordUsage: (cardId: string) => Promise<void>;
+
+  /** Save a spoken sentence */
+  saveSentence: (sentence: string, cardIds: string[]) => Promise<void>;
+
+  /** Update tenant preferences */
+  updatePreferences: (prefs: Partial<NonNullable<TenantConfig['preferences']>>) => Promise<void>;
+
+  /** Refresh tenant data */
+  refresh: () => void;
+}
 
 /**
  * Context with default values
  */
-const TenantContext = createContext<TenantContextExtended>({
+const TenantContext = createContext<TenantContextValue>({
   tenant: null,
   isLoading: true,
   error: null,
   subdomain: '',
-  isOwner: false,
-  isParent: false,
-  parentPermissions: undefined,
-  refresh: async () => {},
-  isAdminMode: false,
-  verifyAdminPin: async () => false,
-  exitAdminMode: () => {},
-  adminSessionRemaining: null,
-  switchTenant: async () => {},
-  childTenants: [],
+  defaultCards: [],
+  customCards: [],
+  allCards: [],
+  favorites: [],
+  recentlyUsed: [],
+  packVersion: '1.0.0',
+  tenantId: null,
+  toggleFavorite: async () => {},
+  recordUsage: async () => {},
+  saveSentence: async () => {},
+  updatePreferences: async () => {},
+  refresh: () => {},
 });
+
+/**
+ * Extract subdomain from hostname
+ */
+function getSubdomainFromHost(): string {
+  if (typeof window === 'undefined') return '';
+
+  const hostname = window.location.hostname;
+
+  // Handle localhost with subdomain (e.g., nick.localhost)
+  if (hostname.includes('localhost')) {
+    const parts = hostname.split('.');
+    if (parts.length > 1 && parts[0] !== 'localhost') {
+      return parts[0];
+    }
+    return '';
+  }
+
+  // Handle production (e.g., nick.8gent.app)
+  if (hostname.endsWith('.8gent.app')) {
+    const parts = hostname.split('.');
+    if (parts.length >= 3) {
+      return parts[0];
+    }
+  }
+
+  // Handle jnr-sigma.vercel.app (demo)
+  if (hostname.includes('vercel.app')) {
+    return '';
+  }
+
+  return '';
+}
 
 /**
  * Props for TenantProvider
  */
 interface TenantProviderProps {
   children: React.ReactNode;
-  /** Current subdomain (extracted from hostname) */
-  subdomain: string;
-  /** Current user ID (from auth) */
-  userId?: string;
-  /** Function to resolve tenant from subdomain */
-  resolveTenant: (subdomain: string) => Promise<TenantConfig | null>;
-  /** Function to get child tenants for a parent */
-  getChildTenants?: (parentUserId: string) => Promise<TenantConfig[]>;
-  /** Function to verify admin PIN */
-  verifyPin?: (tenantId: string, pin: string) => Promise<boolean>;
+  /** Override subdomain (useful for server-side rendering) */
+  initialSubdomain?: string;
 }
 
 /**
  * Tenant Context Provider
  *
- * Wraps the app to provide tenant information. Handles:
- * - Tenant resolution from subdomain
- * - User ownership detection
- * - Parent authentication via PIN
- * - Admin session management
- *
- * @example
- * ```tsx
- * // In _app.tsx or layout.tsx
- * <TenantProvider
- *   subdomain={parsedSubdomain}
- *   userId={session?.userId}
- *   resolveTenant={async (sub) => db.getTenant(sub)}
- *   verifyPin={async (id, pin) => db.verifyTenantPin(id, pin)}
- * >
- *   <App />
- * </TenantProvider>
- * ```
+ * Wraps the app to provide tenant information via Convex.
  */
 export function TenantProvider({
   children,
-  subdomain,
-  userId,
-  resolveTenant,
-  getChildTenants,
-  verifyPin,
+  initialSubdomain,
 }: TenantProviderProps): React.ReactElement {
-  const [tenant, setTenant] = useState<TenantConfig | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [childTenants, setChildTenants] = useState<TenantConfig[]>([]);
+  const [subdomain, setSubdomain] = useState(initialSubdomain || '');
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // Admin session state
-  const [isAdminMode, setIsAdminMode] = useState(false);
-  const [adminSessionEnd, setAdminSessionEnd] = useState<number | null>(null);
-
-  // Check for existing admin session on mount
+  // Get subdomain from URL on client
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    try {
-      const stored = localStorage.getItem(ADMIN_SESSION_KEY);
-      if (stored) {
-        const session = JSON.parse(stored);
-        if (session.tenantId === tenant?.id && session.expiresAt > Date.now()) {
-          setIsAdminMode(true);
-          setAdminSessionEnd(session.expiresAt);
-        } else {
-          localStorage.removeItem(ADMIN_SESSION_KEY);
-        }
-      }
-    } catch {
-      localStorage.removeItem(ADMIN_SESSION_KEY);
+    if (!initialSubdomain) {
+      setSubdomain(getSubdomainFromHost());
     }
-  }, [tenant?.id]);
+  }, [initialSubdomain]);
 
-  // Resolve tenant on subdomain change
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadTenant() {
-      if (!subdomain) {
-        setTenant(null);
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const resolved = await resolveTenant(subdomain);
-
-        if (cancelled) return;
-
-        setTenant(resolved);
-
-        // If user is a parent, load their child tenants
-        if (userId && getChildTenants) {
-          try {
-            const children = await getChildTenants(userId);
-            setChildTenants(children);
-          } catch {
-            setChildTenants([]);
-          }
-        }
-      } catch (err) {
-        if (cancelled) return;
-        setError(err instanceof Error ? err : new Error('Failed to resolve tenant'));
-        setTenant(null);
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadTenant();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [subdomain, userId, resolveTenant, getChildTenants]);
-
-  // Determine ownership
-  const isOwner = useMemo(() => {
-    if (!tenant || !userId) return false;
-    return tenant.userId === userId;
-  }, [tenant, userId]);
-
-  // Determine if current user is parent of this tenant
-  const isParent = useMemo(() => {
-    if (!tenant || !userId) return false;
-    return tenant.parentUserId === userId;
-  }, [tenant, userId]);
-
-  // Parent permissions (only available when parent is verified)
-  const parentPermissions = useMemo(() => {
-    if (isParent && isAdminMode) {
-      return DEFAULT_PARENT_PERMISSIONS;
-    }
-    return undefined;
-  }, [isParent, isAdminMode]);
-
-  // Admin session remaining time
-  const adminSessionRemaining = useMemo(() => {
-    if (!adminSessionEnd) return null;
-    const remaining = adminSessionEnd - Date.now();
-    return remaining > 0 ? remaining : null;
-  }, [adminSessionEnd]);
-
-  // Refresh tenant data
-  const refresh = useCallback(async () => {
-    if (!subdomain) return;
-
-    setIsLoading(true);
-    try {
-      const resolved = await resolveTenant(subdomain);
-      setTenant(resolved);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to refresh tenant'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [subdomain, resolveTenant]);
-
-  // Verify admin PIN
-  const verifyAdminPin = useCallback(
-    async (pin: string): Promise<boolean> => {
-      if (!tenant || !verifyPin) return false;
-
-      try {
-        const isValid = await verifyPin(tenant.id, pin);
-
-        if (isValid) {
-          const expiresAt = Date.now() + ADMIN_SESSION_TIMEOUT;
-
-          setIsAdminMode(true);
-          setAdminSessionEnd(expiresAt);
-
-          // Persist admin session
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(
-              ADMIN_SESSION_KEY,
-              JSON.stringify({
-                tenantId: tenant.id,
-                expiresAt,
-              })
-            );
-          }
-
-          return true;
-        }
-
-        return false;
-      } catch {
-        return false;
-      }
-    },
-    [tenant, verifyPin]
+  // Convex queries
+  const tenant = useQuery(
+    api.tenants.getBySubdomain,
+    subdomain ? { subdomain } : 'skip'
   );
 
-  // Exit admin mode
-  const exitAdminMode = useCallback(() => {
-    setIsAdminMode(false);
-    setAdminSessionEnd(null);
+  const cardsData = useQuery(
+    api.cardPacks.getCardsForTenant,
+    subdomain ? { subdomain } : 'skip'
+  );
 
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(ADMIN_SESSION_KEY);
-    }
+  // Convex mutations
+  const toggleFavoriteMutation = useMutation(api.cardPacks.toggleFavorite);
+  const recordUsageMutation = useMutation(api.cardPacks.recordCardUsage);
+  const saveSentenceMutation = useMutation(api.cardPacks.saveSentence);
+  const updatePreferencesMutation = useMutation(api.tenants.updatePreferences);
+
+  // Determine loading state
+  const isLoading = subdomain
+    ? tenant === undefined || cardsData === undefined
+    : false;
+
+  // Determine error state
+  const error =
+    subdomain && tenant === null ? 'Tenant not found' : null;
+
+  // Merge cards
+  const allCards = useMemo(() => {
+    if (!cardsData) return [];
+    return [...(cardsData.defaultCards || []), ...(cardsData.customCards || [])];
+  }, [cardsData]);
+
+  // Actions
+  const toggleFavorite = useCallback(
+    async (cardId: string) => {
+      if (!cardsData?.tenantId) return;
+      await toggleFavoriteMutation({
+        tenantId: cardsData.tenantId,
+        cardId,
+      });
+    },
+    [cardsData?.tenantId, toggleFavoriteMutation]
+  );
+
+  const recordUsage = useCallback(
+    async (cardId: string) => {
+      if (!cardsData?.tenantId) return;
+      await recordUsageMutation({
+        tenantId: cardsData.tenantId,
+        cardId,
+      });
+    },
+    [cardsData?.tenantId, recordUsageMutation]
+  );
+
+  const saveSentence = useCallback(
+    async (sentence: string, cardIds: string[]) => {
+      if (!cardsData?.tenantId) return;
+      await saveSentenceMutation({
+        tenantId: cardsData.tenantId,
+        sentence,
+        cardIds,
+      });
+    },
+    [cardsData?.tenantId, saveSentenceMutation]
+  );
+
+  const updatePreferences = useCallback(
+    async (prefs: Partial<NonNullable<TenantConfig['preferences']>>) => {
+      if (!tenant?._id || !prefs) return;
+      await updatePreferencesMutation({
+        tenantId: tenant._id,
+        preferences: prefs,
+      });
+    },
+    [tenant?._id, updatePreferencesMutation]
+  );
+
+  const refresh = useCallback(() => {
+    setRefreshKey((k) => k + 1);
   }, []);
 
-  // Switch tenant (for parents with multiple children)
-  const switchTenant = useCallback(
-    async (newSubdomain: string) => {
-      // This would typically navigate to the new subdomain
-      // For SPA, we might update state; for multi-tenant, we'd redirect
-      if (typeof window !== 'undefined') {
-        // Build new URL with same host pattern
-        const currentHost = window.location.hostname;
-        const parts = currentHost.split('.');
-        parts[0] = newSubdomain;
-        const newHost = parts.join('.');
-
-        window.location.href = `${window.location.protocol}//${newHost}${window.location.port ? ':' + window.location.port : ''}`;
-      }
-    },
-    []
-  );
-
-  // Auto-expire admin session
-  useEffect(() => {
-    if (!adminSessionEnd) return;
-
-    const checkExpiry = () => {
-      if (Date.now() >= adminSessionEnd) {
-        exitAdminMode();
-      }
-    };
-
-    const interval = setInterval(checkExpiry, 10000); // Check every 10 seconds
-
-    return () => clearInterval(interval);
-  }, [adminSessionEnd, exitAdminMode]);
-
-  const value = useMemo<TenantContextExtended>(
+  const value = useMemo<TenantContextValue>(
     () => ({
-      tenant,
+      tenant: tenant || null,
       isLoading,
       error,
       subdomain,
-      isOwner,
-      isParent,
-      parentPermissions,
+      defaultCards: cardsData?.defaultCards || [],
+      customCards: cardsData?.customCards || [],
+      allCards,
+      favorites: cardsData?.favorites || [],
+      recentlyUsed: cardsData?.recentlyUsed || [],
+      packVersion: cardsData?.packVersion || '1.0.0',
+      tenantId: cardsData?.tenantId || null,
+      toggleFavorite,
+      recordUsage,
+      saveSentence,
+      updatePreferences,
       refresh,
-      isAdminMode,
-      verifyAdminPin,
-      exitAdminMode,
-      adminSessionRemaining,
-      switchTenant,
-      childTenants,
     }),
     [
       tenant,
       isLoading,
       error,
       subdomain,
-      isOwner,
-      isParent,
-      parentPermissions,
+      cardsData,
+      allCards,
+      toggleFavorite,
+      recordUsage,
+      saveSentence,
+      updatePreferences,
       refresh,
-      isAdminMode,
-      verifyAdminPin,
-      exitAdminMode,
-      adminSessionRemaining,
-      switchTenant,
-      childTenants,
     ]
   );
 
   return (
-    <TenantContext.Provider value={value}>
-      {children}
-    </TenantContext.Provider>
+    <TenantContext.Provider value={value}>{children}</TenantContext.Provider>
   );
 }
 
 /**
  * Hook to access tenant context
- *
- * @returns Tenant context value
- *
- * @example
- * ```tsx
- * function SettingsButton() {
- *   const { isParent, isAdminMode, verifyAdminPin } = useTenant();
- *
- *   if (!isParent) return null;
- *
- *   if (!isAdminMode) {
- *     return <PinDialog onVerify={verifyAdminPin} />;
- *   }
- *
- *   return <SettingsPanel />;
- * }
- * ```
  */
-export function useTenant(): TenantContextExtended {
+export function useTenant(): TenantContextValue {
   const context = useContext(TenantContext);
 
   if (context === undefined) {
@@ -421,73 +334,55 @@ export function useTenant(): TenantContextExtended {
 }
 
 /**
- * Hook to require admin mode for protected actions
- *
- * @returns Object with requireAdmin function and admin state
- *
- * @example
- * ```tsx
- * function DeleteCardButton({ cardId }) {
- *   const { requireAdmin, isAdminMode } = useRequireAdmin();
- *
- *   const handleDelete = () => {
- *     requireAdmin(() => {
- *       // This only runs if admin mode is active
- *       deleteCard(cardId);
- *     });
- *   };
- *
- *   return <button onClick={handleDelete}>Delete</button>;
- * }
- * ```
+ * Hook to get cards by category
  */
-export function useRequireAdmin() {
-  const { isAdminMode, isParent, verifyAdminPin } = useTenant();
-  const [showPinDialog, setShowPinDialog] = useState(false);
-  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
-
-  const requireAdmin = useCallback(
-    (action: () => void) => {
-      if (isAdminMode) {
-        action();
-        return;
-      }
-
-      if (isParent) {
-        setPendingAction(() => action);
-        setShowPinDialog(true);
-      }
-    },
-    [isAdminMode, isParent]
+export function useCardsByCategory(categoryId: string): Card[] {
+  const { allCards } = useTenant();
+  return useMemo(
+    () => allCards.filter((card) => card.categoryId === categoryId),
+    [allCards, categoryId]
   );
+}
 
-  const handlePinVerified = useCallback(
-    async (pin: string): Promise<boolean> => {
-      const success = await verifyAdminPin(pin);
-
-      if (success && pendingAction) {
-        pendingAction();
-        setPendingAction(null);
-      }
-
-      setShowPinDialog(false);
-      return success;
-    },
-    [verifyAdminPin, pendingAction]
+/**
+ * Hook to get favorite cards
+ */
+export function useFavoriteCards(): Card[] {
+  const { allCards, favorites } = useTenant();
+  return useMemo(
+    () => allCards.filter((card) => favorites.includes(card.id)),
+    [allCards, favorites]
   );
+}
 
-  const closePinDialog = useCallback(() => {
-    setShowPinDialog(false);
-    setPendingAction(null);
-  }, []);
+/**
+ * Hook to get recently used cards
+ */
+export function useRecentCards(): Card[] {
+  const { allCards, recentlyUsed } = useTenant();
+  return useMemo(() => {
+    const recentMap = new Map(recentlyUsed.map((id, i) => [id, i]));
+    return allCards
+      .filter((card) => recentMap.has(card.id))
+      .sort((a, b) => (recentMap.get(a.id) || 0) - (recentMap.get(b.id) || 0));
+  }, [allCards, recentlyUsed]);
+}
 
-  return {
-    requireAdmin,
-    isAdminMode,
-    showPinDialog,
-    handlePinVerified,
-    closePinDialog,
-  };
+/**
+ * Hook to search cards
+ */
+export function useSearchCards(query: string): Card[] {
+  const { allCards } = useTenant();
+  return useMemo(() => {
+    if (!query.trim()) return [];
+    const lowerQuery = query.toLowerCase();
+    return allCards.filter(
+      (card) =>
+        card.label.toLowerCase().includes(lowerQuery) ||
+        card.speechText.toLowerCase().includes(lowerQuery) ||
+        card.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery))
+    );
+  }, [allCards, query]);
 }
 
 export default TenantContext;

@@ -103,6 +103,9 @@ export interface AACCard {
 
   /** Tags for search and filtering */
   tags?: string[];
+
+  /** ARASAAC pictogram ID for the card */
+  arasaacId?: number;
 }
 
 /**

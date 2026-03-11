@@ -11,12 +11,192 @@
  * - GLP (Gestalt Language Processing) stage tagging
  * - Consistent visual styling
  *
- * Cards can be extended with AI-generated images for custom needs.
+ * Cards use ARASAAC pictograms from static.arasaac.org (free, open-source AAC symbols)
  *
  * @module lib/aac/cardLibrary
  */
 
 import type { AACCard, AACCategoryId, GLPStage } from '@/types/aac';
+
+/**
+ * ARASAAC pictogram ID mapping
+ * Source: https://arasaac.org/pictograms/search
+ * Format: https://static.arasaac.org/pictograms/{id}/{id}_500.png
+ */
+const ARASAAC_IDS: Record<string, number> = {
+  // People
+  i: 6964,
+  you: 6608,
+  he: 6619,
+  she: 6620,
+  we: 6609,
+  they: 6618,
+  mom: 2445,
+  dad: 2446,
+  teacher: 4807,
+  friend: 7002,
+
+  // Actions
+  want: 6540,
+  go: 2387,
+  stop: 5007,
+  help: 2550,
+  eat: 2397,
+  drink: 2396,
+  play: 2457,
+  read: 2485,
+  sleep: 2398,
+  give: 2400,
+  take: 6525,
+  look: 2449,
+
+  // Feelings
+  happy: 2359,
+  sad: 2501,
+  angry: 2502,
+  scared: 2505,
+  tired: 2504,
+  hungry: 2360,
+  thirsty: 2361,
+  sick: 2503,
+  excited: 7112,
+  confused: 7113,
+
+  // Questions
+  what: 6613,
+  where: 6614,
+  who: 6612,
+  when: 6615,
+  why: 6616,
+  how: 6617,
+  'how-many': 27414,
+
+  // Greetings
+  hello: 2423,
+  goodbye: 2424,
+  please: 2475,
+  'thank-you': 2508,
+  sorry: 2507,
+  yes: 2552,
+  no: 2553,
+  'excuse-me': 7114,
+
+  // Places
+  home: 2425,
+  school: 2514,
+  bathroom: 2362,
+  outside: 2472,
+  inside: 2440,
+  park: 2473,
+  store: 2516,
+  car: 2389,
+
+  // Food
+  apple: 2343,
+  banana: 2363,
+  pizza: 2474,
+  cookie: 2399,
+  bread: 2378,
+  chicken: 2391,
+  rice: 2492,
+  pasta: 2470,
+  snack: 6453,
+
+  // Drinks
+  water: 2542,
+  milk: 2452,
+  juice: 2444,
+
+  // Animals
+  dog: 2407,
+  cat: 2390,
+  bird: 2371,
+  fish: 2408,
+
+  // Colors
+  red: 2487,
+  blue: 2375,
+  green: 2415,
+  yellow: 2345,
+  orange: 2467,
+  purple: 7046,
+  pink: 7045,
+  black: 2372,
+  white: 2374,
+  brown: 2379,
+
+  // Numbers
+  one: 6628,
+  two: 6629,
+  three: 6630,
+  four: 6631,
+  five: 6632,
+  more: 2458,
+  'all-done': 6524,
+
+  // Body
+  head: 2419,
+  hand: 2417,
+  tummy: 2365,
+  foot: 2410,
+  ear: 2468,
+  eye: 2469,
+  mouth: 2377,
+  nose: 2465,
+
+  // Clothes
+  shirt: 2380,
+  pants: 2471,
+  shoes: 2553,
+  socks: 2382,
+  coat: 2394,
+  hat: 2513,
+
+  // Toys
+  ball: 2358,
+  blocks: 2395,
+  doll: 2459,
+  'car-toy': 2389,
+  book: 2376,
+  puzzle: 2484,
+  tablet: 28706,
+
+  // Time
+  now: 6543,
+  later: 6544,
+  wait: 2541,
+  morning: 2454,
+  night: 2466,
+  today: 6545,
+  tomorrow: 6546,
+
+  // Weather
+  sunny: 2520,
+  rainy: 2446,
+  cloudy: 2466,
+  snowy: 2463,
+  hot: 2381,
+  cold: 2383,
+
+  // Safety
+  'stop-safety': 5007,
+  'help-safety': 2550,
+  'no-safety': 2553,
+  hurt: 2434,
+  'bathroom-emergency': 2362,
+};
+
+/**
+ * Get ARASAAC image URL for a card ID
+ */
+function getArasaacUrl(cardId: string): string {
+  const arasaacId = ARASAAC_IDS[cardId];
+  if (arasaacId) {
+    return `https://static.arasaac.org/pictograms/${arasaacId}/${arasaacId}_500.png`;
+  }
+  // Fallback to a generic placeholder
+  return `https://static.arasaac.org/pictograms/2550/2550_500.png`; // "help" icon as fallback
+}
 
 /**
  * Creates a pre-built card with default values
@@ -31,11 +211,12 @@ function createCard(
     id,
     label,
     speechText: options.speechText || label,
-    imageUrl: `/cards/${categoryId}/${id}.png`,
+    imageUrl: getArasaacUrl(id),
     categoryId,
     isGenerated: false,
     symbolSource: 'arasaac',
     glpStage: options.glpStage || 3,
+    arasaacId: ARASAAC_IDS[id],
     ...options,
   };
 }
