@@ -126,8 +126,8 @@ export default function AACAppPage() {
   // Get phrases for active category
   const phrases = activeCategory ? getPhrasesByCategory(activeCategory.id) : [];
 
-  // Grid columns based on settings (mobile: 2-3, tablet: 4, desktop: 6)
-  const gridCols = settings.gridColumns || 3;
+  // Grid columns based on settings (mobile: 4, tablet: 5, desktop: 6)
+  const gridCols = settings.gridColumns || 4;
 
   if (!isLoaded) {
     return (
@@ -267,12 +267,12 @@ export default function AACAppPage() {
               <button
                 key={phrase.id}
                 onClick={() => handleCardTap(phrase)}
-                className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-3 flex flex-col items-center justify-center
+                className="bg-white rounded-lg sm:rounded-xl p-1 sm:p-2 flex flex-col items-center justify-center
                           aspect-square shadow-sm
                           active:scale-[0.95] active:shadow-none transition-all
-                          border-2 border-transparent focus:outline-none"
+                          border border-transparent focus:outline-none"
               >
-                <div className="relative w-full h-[55%] mb-1 sm:mb-2">
+                <div className="relative w-full h-[60%] mb-0.5 sm:mb-1">
                   <Image
                     src={phrase.imageUrl}
                     alt={phrase.text}
@@ -281,7 +281,7 @@ export default function AACAppPage() {
                     unoptimized
                   />
                 </div>
-                <span className="text-[11px] sm:text-[13px] font-semibold text-gray-800 text-center leading-tight line-clamp-2">
+                <span className="text-[9px] sm:text-[11px] font-semibold text-gray-800 text-center leading-tight line-clamp-2">
                   {phrase.text}
                 </span>
               </button>
@@ -299,13 +299,13 @@ export default function AACAppPage() {
               <button
                 key={category.id}
                 onClick={() => handleCategoryTap(category)}
-                className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-3 flex flex-col items-center justify-center
+                className="bg-white rounded-lg sm:rounded-xl p-1 sm:p-2 flex flex-col items-center justify-center
                           aspect-square shadow-sm
                           active:scale-[0.95] active:shadow-none transition-all
-                          border-[2px] sm:border-[3px]"
+                          border-2"
                 style={{ borderColor: category.color }}
               >
-                <div className="relative w-full h-[55%] mb-1 sm:mb-2">
+                <div className="relative w-full h-[60%] mb-0.5 sm:mb-1">
                   <Image
                     src={category.imageUrl}
                     alt={category.name}
@@ -315,7 +315,7 @@ export default function AACAppPage() {
                   />
                 </div>
                 <span
-                  className="text-[11px] sm:text-[13px] font-bold text-center leading-tight"
+                  className="text-[9px] sm:text-[11px] font-bold text-center leading-tight"
                   style={{ color: category.color }}
                 >
                   {category.name}

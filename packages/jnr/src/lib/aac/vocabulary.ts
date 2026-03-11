@@ -54,7 +54,7 @@ export const AAC_CATEGORIES: AACCategory[] = [
   { id: 'general', name: 'General', color: FITZGERALD_COLORS.misc, imageUrl: ARASAAC(6964) },
   { id: 'feelings', name: 'Feelings', color: FITZGERALD_COLORS.feelings, imageUrl: ARASAAC(37190) },
   { id: 'actions', name: 'Actions', color: FITZGERALD_COLORS.verbs, imageUrl: ARASAAC(6503) },
-  { id: 'questions', name: 'Questions', color: FITZGERALD_COLORS.questions, imageUrl: ARASAAC(8262) },
+  { id: 'questions', name: 'Questions', color: FITZGERALD_COLORS.questions, imageUrl: ARASAAC(7217) },
 
   // Daily Life
   { id: 'food', name: 'Food', color: FITZGERALD_COLORS.nouns, imageUrl: ARASAAC(4610) },
@@ -80,22 +80,22 @@ export const AAC_CATEGORIES: AACCategory[] = [
 // =============================================================================
 
 export const GENERAL_PHRASES: AACPhrase[] = [
-  { id: 'gen-i', text: 'I', imageUrl: ARASAAC(6632), categoryId: 'general' },
-  { id: 'gen-you', text: 'you', imageUrl: ARASAAC(7116), categoryId: 'general' },
+  { id: 'gen-i', text: 'I', imageUrl: ARASAAC(6867), categoryId: 'general' },
+  { id: 'gen-you', text: 'you', imageUrl: ARASAAC(6866), categoryId: 'general' },
   { id: 'gen-yes', text: 'yes', imageUrl: ARASAAC(5584), categoryId: 'general' },
   { id: 'gen-no', text: 'no', imageUrl: ARASAAC(5526), categoryId: 'general' },
-  { id: 'gen-help', text: 'help', imageUrl: ARASAAC(32648), categoryId: 'general' },
+  { id: 'gen-help', text: 'help', imageUrl: ARASAAC(7171), categoryId: 'general' },
   { id: 'gen-stop', text: 'stop', imageUrl: ARASAAC(7196), categoryId: 'general' },
-  { id: 'gen-more', text: 'more', imageUrl: ARASAAC(5508), categoryId: 'general' },
-  { id: 'gen-done', text: 'done', imageUrl: ARASAAC(32814), categoryId: 'general' },
+  { id: 'gen-more', text: 'more', imageUrl: ARASAAC(32753), categoryId: 'general' },
+  { id: 'gen-done', text: 'done', imageUrl: ARASAAC(28429), categoryId: 'general' },
   { id: 'gen-want', text: 'I want', imageUrl: ARASAAC(5441), categoryId: 'general' },
-  { id: 'gen-dont-want', text: "I don't want", imageUrl: ARASAAC(5526), categoryId: 'general' },
-  { id: 'gen-please', text: 'please', imageUrl: ARASAAC(38783), categoryId: 'general' },
-  { id: 'gen-thanks', text: 'thank you', imageUrl: ARASAAC(38783), categoryId: 'general' },
+  { id: 'gen-dont-want', text: "I don't want", imageUrl: ARASAAC(5442), categoryId: 'general' },
+  { id: 'gen-please', text: 'please', imageUrl: ARASAAC(8195), categoryId: 'general' },
+  { id: 'gen-thanks', text: 'thank you', imageUrl: ARASAAC(8129), categoryId: 'general' },
   { id: 'gen-ok', text: 'ok', imageUrl: ARASAAC(5584), categoryId: 'general' },
-  { id: 'gen-wait', text: 'wait', imageUrl: ARASAAC(5391), categoryId: 'general' },
-  { id: 'gen-look', text: 'look', imageUrl: ARASAAC(6573), categoryId: 'general' },
-  { id: 'gen-listen', text: 'listen', imageUrl: ARASAAC(5915), categoryId: 'general' },
+  { id: 'gen-wait', text: 'wait', imageUrl: ARASAAC(36914), categoryId: 'general' },
+  { id: 'gen-look', text: 'look', imageUrl: ARASAAC(6564), categoryId: 'general' },
+  { id: 'gen-listen', text: 'listen', imageUrl: ARASAAC(6572), categoryId: 'general' },
 ];
 
 // =============================================================================
@@ -106,18 +106,18 @@ export const FEELINGS_PHRASES: AACPhrase[] = [
   { id: 'feel-happy', text: 'happy', imageUrl: ARASAAC(35533), categoryId: 'feelings' },
   { id: 'feel-sad', text: 'sad', imageUrl: ARASAAC(35545), categoryId: 'feelings' },
   { id: 'feel-angry', text: 'angry', imageUrl: ARASAAC(35539), categoryId: 'feelings' },
-  { id: 'feel-scared', text: 'scared', imageUrl: ARASAAC(6916), categoryId: 'feelings' },
+  { id: 'feel-scared', text: 'scared', imageUrl: ARASAAC(35535), categoryId: 'feelings' },
   { id: 'feel-tired', text: 'tired', imageUrl: ARASAAC(35537), categoryId: 'feelings' },
-  { id: 'feel-sick', text: 'sick', imageUrl: ARASAAC(35537), categoryId: 'feelings' },
-  { id: 'feel-good', text: 'good', imageUrl: ARASAAC(4581), categoryId: 'feelings' },
-  { id: 'feel-bad', text: 'bad', imageUrl: ARASAAC(35545), categoryId: 'feelings' },
-  { id: 'feel-love', text: 'love', imageUrl: ARASAAC(37721), categoryId: 'feelings' },
-  { id: 'feel-excited', text: 'excited', imageUrl: ARASAAC(35533), categoryId: 'feelings' },
-  { id: 'feel-nervous', text: 'nervous', imageUrl: ARASAAC(30391), categoryId: 'feelings' },
-  { id: 'feel-hot', text: 'hot', imageUrl: ARASAAC(2300), categoryId: 'feelings' },
-  { id: 'feel-cold', text: 'cold', imageUrl: ARASAAC(4652), categoryId: 'feelings' },
-  { id: 'feel-hungry', text: 'hungry', imageUrl: ARASAAC(6456), categoryId: 'feelings' },
-  { id: 'feel-thirsty', text: 'thirsty', imageUrl: ARASAAC(6061), categoryId: 'feelings' },
+  { id: 'feel-sick', text: 'sick', imageUrl: ARASAAC(7040), categoryId: 'feelings' },
+  { id: 'feel-good', text: 'good', imageUrl: ARASAAC(35541), categoryId: 'feelings' },
+  { id: 'feel-bad', text: 'bad', imageUrl: ARASAAC(35543), categoryId: 'feelings' },
+  { id: 'feel-love', text: 'love', imageUrl: ARASAAC(8020), categoryId: 'feelings' },
+  { id: 'feel-excited', text: 'excited', imageUrl: ARASAAC(39090), categoryId: 'feelings' },
+  { id: 'feel-nervous', text: 'nervous', imageUrl: ARASAAC(35549), categoryId: 'feelings' },
+  { id: 'feel-hot', text: 'hot', imageUrl: ARASAAC(32179), categoryId: 'feelings' },
+  { id: 'feel-cold', text: 'cold', imageUrl: ARASAAC(32178), categoryId: 'feelings' },
+  { id: 'feel-hungry', text: 'hungry', imageUrl: ARASAAC(35525), categoryId: 'feelings' },
+  { id: 'feel-thirsty', text: 'thirsty', imageUrl: ARASAAC(35523), categoryId: 'feelings' },
 ];
 
 // =============================================================================
@@ -125,22 +125,22 @@ export const FEELINGS_PHRASES: AACPhrase[] = [
 // =============================================================================
 
 export const ACTIONS_PHRASES: AACPhrase[] = [
-  { id: 'act-go', text: 'go', imageUrl: ARASAAC(29951), categoryId: 'actions' },
-  { id: 'act-come', text: 'come', imageUrl: ARASAAC(6503), categoryId: 'actions' },
+  { id: 'act-go', text: 'go', imageUrl: ARASAAC(8142), categoryId: 'actions' },
+  { id: 'act-come', text: 'come', imageUrl: ARASAAC(32669), categoryId: 'actions' },
   { id: 'act-eat', text: 'eat', imageUrl: ARASAAC(6456), categoryId: 'actions' },
   { id: 'act-drink', text: 'drink', imageUrl: ARASAAC(6061), categoryId: 'actions' },
   { id: 'act-play', text: 'play', imageUrl: ARASAAC(23392), categoryId: 'actions' },
-  { id: 'act-sleep', text: 'sleep', imageUrl: ARASAAC(26997), categoryId: 'actions' },
-  { id: 'act-sit', text: 'sit', imageUrl: ARASAAC(6579), categoryId: 'actions' },
-  { id: 'act-stand', text: 'stand', imageUrl: ARASAAC(6574), categoryId: 'actions' },
-  { id: 'act-walk', text: 'walk', imageUrl: ARASAAC(29951), categoryId: 'actions' },
-  { id: 'act-run', text: 'run', imageUrl: ARASAAC(5886), categoryId: 'actions' },
-  { id: 'act-jump', text: 'jump', imageUrl: ARASAAC(39052), categoryId: 'actions' },
-  { id: 'act-read', text: 'read', imageUrl: ARASAAC(25191), categoryId: 'actions' },
-  { id: 'act-write', text: 'write', imageUrl: ARASAAC(6576), categoryId: 'actions' },
-  { id: 'act-watch', text: 'watch', imageUrl: ARASAAC(6573), categoryId: 'actions' },
-  { id: 'act-give', text: 'give', imageUrl: ARASAAC(6575), categoryId: 'actions' },
-  { id: 'act-take', text: 'take', imageUrl: ARASAAC(6575), categoryId: 'actions' },
+  { id: 'act-sleep', text: 'sleep', imageUrl: ARASAAC(6479), categoryId: 'actions' },
+  { id: 'act-sit', text: 'sit', imageUrl: ARASAAC(6611), categoryId: 'actions' },
+  { id: 'act-stand', text: 'stand', imageUrl: ARASAAC(8152), categoryId: 'actions' },
+  { id: 'act-walk', text: 'walk', imageUrl: ARASAAC(6044), categoryId: 'actions' },
+  { id: 'act-run', text: 'run', imageUrl: ARASAAC(6465), categoryId: 'actions' },
+  { id: 'act-jump', text: 'jump', imageUrl: ARASAAC(6607), categoryId: 'actions' },
+  { id: 'act-read', text: 'read', imageUrl: ARASAAC(6463), categoryId: 'actions' },
+  { id: 'act-write', text: 'write', imageUrl: ARASAAC(2380), categoryId: 'actions' },
+  { id: 'act-watch', text: 'watch', imageUrl: ARASAAC(6564), categoryId: 'actions' },
+  { id: 'act-give', text: 'give', imageUrl: ARASAAC(28431), categoryId: 'actions' },
+  { id: 'act-take', text: 'take', imageUrl: ARASAAC(10148), categoryId: 'actions' },
 ];
 
 // =============================================================================
@@ -148,16 +148,16 @@ export const ACTIONS_PHRASES: AACPhrase[] = [
 // =============================================================================
 
 export const QUESTIONS_PHRASES: AACPhrase[] = [
-  { id: 'q-what', text: 'what?', imageUrl: ARASAAC(8262), categoryId: 'questions' },
-  { id: 'q-where', text: 'where?', imageUrl: ARASAAC(8263), categoryId: 'questions' },
-  { id: 'q-when', text: 'when?', imageUrl: ARASAAC(8264), categoryId: 'questions' },
-  { id: 'q-who', text: 'who?', imageUrl: ARASAAC(8265), categoryId: 'questions' },
-  { id: 'q-why', text: 'why?', imageUrl: ARASAAC(8266), categoryId: 'questions' },
-  { id: 'q-how', text: 'how?', imageUrl: ARASAAC(8267), categoryId: 'questions' },
-  { id: 'q-can-i', text: 'can I?', imageUrl: ARASAAC(6632), categoryId: 'questions' },
-  { id: 'q-do-you', text: 'do you?', imageUrl: ARASAAC(7116), categoryId: 'questions' },
-  { id: 'q-is-it', text: 'is it?', imageUrl: ARASAAC(8262), categoryId: 'questions' },
-  { id: 'q-dont-know', text: "I don't know", imageUrl: ARASAAC(6916), categoryId: 'questions' },
+  { id: 'q-what', text: 'what?', imageUrl: ARASAAC(22620), categoryId: 'questions' },
+  { id: 'q-where', text: 'where?', imageUrl: ARASAAC(7764), categoryId: 'questions' },
+  { id: 'q-when', text: 'when?', imageUrl: ARASAAC(32874), categoryId: 'questions' },
+  { id: 'q-who', text: 'who?', imageUrl: ARASAAC(9853), categoryId: 'questions' },
+  { id: 'q-why', text: 'why?', imageUrl: ARASAAC(36719), categoryId: 'questions' },
+  { id: 'q-how', text: 'how?', imageUrl: ARASAAC(22619), categoryId: 'questions' },
+  { id: 'q-can-i', text: 'can I?', imageUrl: ARASAAC(7667), categoryId: 'questions' },
+  { id: 'q-do-you', text: 'do you?', imageUrl: ARASAAC(22620), categoryId: 'questions' },
+  { id: 'q-is-it', text: 'is it?', imageUrl: ARASAAC(22620), categoryId: 'questions' },
+  { id: 'q-dont-know', text: "I don't know", imageUrl: ARASAAC(28248), categoryId: 'questions' },
 ];
 
 // =============================================================================
@@ -170,17 +170,17 @@ export const FOOD_PHRASES: AACPhrase[] = [
   { id: 'food-banana', text: 'banana', imageUrl: ARASAAC(2530), categoryId: 'food' },
   { id: 'food-bread', text: 'bread', imageUrl: ARASAAC(2494), categoryId: 'food' },
   { id: 'food-cheese', text: 'cheese', imageUrl: ARASAAC(2541), categoryId: 'food' },
-  { id: 'food-chicken', text: 'chicken', imageUrl: ARASAAC(4610), categoryId: 'food' },
+  { id: 'food-chicken', text: 'chicken', imageUrl: ARASAAC(2825), categoryId: 'food' },
   { id: 'food-pizza', text: 'pizza', imageUrl: ARASAAC(2527), categoryId: 'food' },
-  { id: 'food-pasta', text: 'pasta', imageUrl: ARASAAC(4610), categoryId: 'food' },
-  { id: 'food-rice', text: 'rice', imageUrl: ARASAAC(4610), categoryId: 'food' },
+  { id: 'food-pasta', text: 'pasta', imageUrl: ARASAAC(8652), categoryId: 'food' },
+  { id: 'food-rice', text: 'rice', imageUrl: ARASAAC(6911), categoryId: 'food' },
   { id: 'food-soup', text: 'soup', imageUrl: ARASAAC(2573), categoryId: 'food' },
-  { id: 'food-sandwich', text: 'sandwich', imageUrl: ARASAAC(2494), categoryId: 'food' },
-  { id: 'food-cookie', text: 'cookie', imageUrl: ARASAAC(25940), categoryId: 'food' },
-  { id: 'food-icecream', text: 'ice cream', imageUrl: ARASAAC(2573), categoryId: 'food' },
-  { id: 'food-breakfast', text: 'breakfast', imageUrl: ARASAAC(4610), categoryId: 'food' },
-  { id: 'food-lunch', text: 'lunch', imageUrl: ARASAAC(4610), categoryId: 'food' },
-  { id: 'food-dinner', text: 'dinner', imageUrl: ARASAAC(4610), categoryId: 'food' },
+  { id: 'food-sandwich', text: 'sandwich', imageUrl: ARASAAC(2281), categoryId: 'food' },
+  { id: 'food-cookie', text: 'cookie', imageUrl: ARASAAC(8312), categoryId: 'food' },
+  { id: 'food-icecream', text: 'ice cream', imageUrl: ARASAAC(3348), categoryId: 'food' },
+  { id: 'food-breakfast', text: 'breakfast', imageUrl: ARASAAC(4626), categoryId: 'food' },
+  { id: 'food-lunch', text: 'lunch', imageUrl: ARASAAC(4611), categoryId: 'food' },
+  { id: 'food-dinner', text: 'dinner', imageUrl: ARASAAC(4611), categoryId: 'food' },
 ];
 
 // =============================================================================
@@ -192,8 +192,8 @@ export const DRINKS_PHRASES: AACPhrase[] = [
   { id: 'drink-water', text: 'water', imageUrl: ARASAAC(32464), categoryId: 'drinks' },
   { id: 'drink-juice', text: 'juice', imageUrl: ARASAAC(11461), categoryId: 'drinks' },
   { id: 'drink-milk', text: 'milk', imageUrl: ARASAAC(2445), categoryId: 'drinks' },
-  { id: 'drink-hot-choc', text: 'hot chocolate', imageUrl: ARASAAC(25940), categoryId: 'drinks' },
-  { id: 'drink-tea', text: 'tea', imageUrl: ARASAAC(25940), categoryId: 'drinks' },
+  { id: 'drink-hot-choc', text: 'hot chocolate', imageUrl: ARASAAC(6448), categoryId: 'drinks' },
+  { id: 'drink-tea', text: 'tea', imageUrl: ARASAAC(29802), categoryId: 'drinks' },
   { id: 'drink-cold', text: 'cold drink', imageUrl: ARASAAC(4652), categoryId: 'drinks' },
   { id: 'drink-hot', text: 'hot drink', imageUrl: ARASAAC(2300), categoryId: 'drinks' },
 ];
@@ -209,8 +209,8 @@ export const CLOTHES_PHRASES: AACPhrase[] = [
   { id: 'clothes-shoes', text: 'shoes', imageUrl: ARASAAC(2775), categoryId: 'clothes' },
   { id: 'clothes-socks', text: 'socks', imageUrl: ARASAAC(2298), categoryId: 'clothes' },
   { id: 'clothes-jacket', text: 'jacket', imageUrl: ARASAAC(4872), categoryId: 'clothes' },
-  { id: 'clothes-hat', text: 'hat', imageUrl: ARASAAC(4872), categoryId: 'clothes' },
-  { id: 'clothes-pjs', text: 'pajamas', imageUrl: ARASAAC(7233), categoryId: 'clothes' },
+  { id: 'clothes-hat', text: 'hat', imageUrl: ARASAAC(2572), categoryId: 'clothes' },
+  { id: 'clothes-pjs', text: 'pajamas', imageUrl: ARASAAC(2522), categoryId: 'clothes' },
 ];
 
 // =============================================================================
@@ -222,11 +222,11 @@ export const BODY_PHRASES: AACPhrase[] = [
   { id: 'body-eyes', text: 'eyes', imageUrl: ARASAAC(6573), categoryId: 'body' },
   { id: 'body-ears', text: 'ears', imageUrl: ARASAAC(5915), categoryId: 'body' },
   { id: 'body-nose', text: 'nose', imageUrl: ARASAAC(2727), categoryId: 'body' },
-  { id: 'body-mouth', text: 'mouth', imageUrl: ARASAAC(2727), categoryId: 'body' },
+  { id: 'body-mouth', text: 'mouth', imageUrl: ARASAAC(2663), categoryId: 'body' },
   { id: 'body-hands', text: 'hands', imageUrl: ARASAAC(6575), categoryId: 'body' },
   { id: 'body-feet', text: 'feet', imageUrl: ARASAAC(2775), categoryId: 'body' },
   { id: 'body-tummy', text: 'tummy', imageUrl: ARASAAC(2786), categoryId: 'body' },
-  { id: 'body-hurt', text: 'it hurts', imageUrl: ARASAAC(35537), categoryId: 'body' },
+  { id: 'body-hurt', text: 'it hurts', imageUrl: ARASAAC(5484), categoryId: 'body' },
   { id: 'body-toilet', text: 'toilet', imageUrl: ARASAAC(6473), categoryId: 'body' },
   { id: 'body-bath', text: 'bath', imageUrl: ARASAAC(2272), categoryId: 'body' },
   { id: 'body-brush', text: 'brush teeth', imageUrl: ARASAAC(10263), categoryId: 'body' },
@@ -305,12 +305,12 @@ export const SHAPES_PHRASES: AACPhrase[] = [
 export const PEOPLE_PHRASES: AACPhrase[] = [
   { id: 'ppl-mom', text: 'mom', imageUrl: ARASAAC(2458), categoryId: 'people' },
   { id: 'ppl-dad', text: 'dad', imageUrl: ARASAAC(31146), categoryId: 'people' },
-  { id: 'ppl-brother', text: 'brother', imageUrl: ARASAAC(7116), categoryId: 'people' },
-  { id: 'ppl-sister', text: 'sister', imageUrl: ARASAAC(7116), categoryId: 'people' },
-  { id: 'ppl-grandma', text: 'grandma', imageUrl: ARASAAC(7116), categoryId: 'people' },
-  { id: 'ppl-grandpa', text: 'grandpa', imageUrl: ARASAAC(7116), categoryId: 'people' },
-  { id: 'ppl-teacher', text: 'teacher', imageUrl: ARASAAC(7116), categoryId: 'people' },
-  { id: 'ppl-friend', text: 'friend', imageUrl: ARASAAC(7116), categoryId: 'people' },
+  { id: 'ppl-brother', text: 'brother', imageUrl: ARASAAC(2423), categoryId: 'people' },
+  { id: 'ppl-sister', text: 'sister', imageUrl: ARASAAC(2422), categoryId: 'people' },
+  { id: 'ppl-grandma', text: 'grandma', imageUrl: ARASAAC(23710), categoryId: 'people' },
+  { id: 'ppl-grandpa', text: 'grandpa', imageUrl: ARASAAC(23718), categoryId: 'people' },
+  { id: 'ppl-teacher', text: 'teacher', imageUrl: ARASAAC(6556), categoryId: 'people' },
+  { id: 'ppl-friend', text: 'friend', imageUrl: ARASAAC(25790), categoryId: 'people' },
   { id: 'ppl-me', text: 'me', imageUrl: ARASAAC(24925), categoryId: 'people' },
 ];
 
@@ -322,10 +322,10 @@ export const PLACES_PHRASES: AACPhrase[] = [
   { id: 'place-home', text: 'home', imageUrl: ARASAAC(6964), categoryId: 'places' },
   { id: 'place-school', text: 'school', imageUrl: ARASAAC(32446), categoryId: 'places' },
   { id: 'place-park', text: 'park', imageUrl: ARASAAC(4608), categoryId: 'places' },
-  { id: 'place-store', text: 'store', imageUrl: ARASAAC(6964), categoryId: 'places' },
+  { id: 'place-store', text: 'store', imageUrl: ARASAAC(35695), categoryId: 'places' },
   { id: 'place-car', text: 'car', imageUrl: ARASAAC(2339), categoryId: 'places' },
   { id: 'place-outside', text: 'outside', imageUrl: ARASAAC(2666), categoryId: 'places' },
-  { id: 'place-inside', text: 'inside', imageUrl: ARASAAC(6964), categoryId: 'places' },
+  { id: 'place-inside', text: 'inside', imageUrl: ARASAAC(5439), categoryId: 'places' },
   { id: 'place-beach', text: 'beach', imageUrl: ARASAAC(2925), categoryId: 'places' },
 ];
 
@@ -335,11 +335,11 @@ export const PLACES_PHRASES: AACPhrase[] = [
 
 export const SCHOOL_PHRASES: AACPhrase[] = [
   { id: 'sch-school', text: 'school', imageUrl: ARASAAC(32446), categoryId: 'school' },
-  { id: 'sch-teacher', text: 'teacher', imageUrl: ARASAAC(7116), categoryId: 'school' },
-  { id: 'sch-class', text: 'class', imageUrl: ARASAAC(32446), categoryId: 'school' },
-  { id: 'sch-break', text: 'break time', imageUrl: ARASAAC(23392), categoryId: 'school' },
-  { id: 'sch-lunch', text: 'lunch time', imageUrl: ARASAAC(4610), categoryId: 'school' },
-  { id: 'sch-work', text: 'do work', imageUrl: ARASAAC(6576), categoryId: 'school' },
+  { id: 'sch-teacher', text: 'teacher', imageUrl: ARASAAC(6556), categoryId: 'school' },
+  { id: 'sch-class', text: 'class', imageUrl: ARASAAC(9815), categoryId: 'school' },
+  { id: 'sch-break', text: 'break time', imageUrl: ARASAAC(27339), categoryId: 'school' },
+  { id: 'sch-lunch', text: 'lunch time', imageUrl: ARASAAC(4611), categoryId: 'school' },
+  { id: 'sch-work', text: 'do work', imageUrl: ARASAAC(6624), categoryId: 'school' },
 ];
 
 // =============================================================================
@@ -348,10 +348,10 @@ export const SCHOOL_PHRASES: AACPhrase[] = [
 
 export const HOME_PHRASES: AACPhrase[] = [
   { id: 'home-home', text: 'home', imageUrl: ARASAAC(6964), categoryId: 'home' },
-  { id: 'home-bedroom', text: 'bedroom', imageUrl: ARASAAC(26997), categoryId: 'home' },
+  { id: 'home-bedroom', text: 'bedroom', imageUrl: ARASAAC(5988), categoryId: 'home' },
   { id: 'home-bathroom', text: 'bathroom', imageUrl: ARASAAC(2272), categoryId: 'home' },
-  { id: 'home-kitchen', text: 'kitchen', imageUrl: ARASAAC(4610), categoryId: 'home' },
-  { id: 'home-living', text: 'living room', imageUrl: ARASAAC(26358), categoryId: 'home' },
+  { id: 'home-kitchen', text: 'kitchen', imageUrl: ARASAAC(10752), categoryId: 'home' },
+  { id: 'home-living', text: 'living room', imageUrl: ARASAAC(6211), categoryId: 'home' },
   { id: 'home-garden', text: 'garden', imageUrl: ARASAAC(2666), categoryId: 'home' },
 ];
 
