@@ -19,6 +19,12 @@ interface GenerateSongRequest {
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+const MAX_MODE_HEADER = `[Is_Max_Mode:Max]
+[Quality:Maxi]
+[Realism:Max]
+[Real_Instruments:Max]
+[Persona:Max]`;
+
 export async function POST(request: NextRequest) {
   try {
     const body: GenerateSongRequest = await request.json();
@@ -95,13 +101,14 @@ Keep it under 120 words. Make it easy to sing along to.`;
       ].join('\n');
     }
 
-    // Build Suno-compatible style string
-    const sunoStyle = [
+    // Build Suno-compatible style string with MAX MODE (from cowrite system)
+    const baseStyle = [
       style || "children's pop, playful",
       tempo || 'medium tempo',
     ]
       .filter(Boolean)
       .join(', ');
+    const sunoStyle = `${MAX_MODE_HEADER}\n\n${baseStyle}`;
 
     return NextResponse.json({
       title,

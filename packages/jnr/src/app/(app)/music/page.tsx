@@ -32,7 +32,7 @@ const MOOD_OPTIONS = [
     arasaacId: 35533,
     bg: '#FFF3C4',
     border: '#FFD700',
-    style: "children's pop, happy, playful, upbeat",
+    style: "children's pop, happy, playful, upbeat, bright, simple melody, acoustic guitar, clapping",
   },
   {
     id: 'calm',
@@ -40,7 +40,7 @@ const MOOD_OPTIONS = [
     arasaacId: 31310,
     bg: '#D6EAF8',
     border: '#87CEEB',
-    style: 'lullaby, calm, gentle, soothing',
+    style: 'lullaby, calm, gentle, soothing, soft piano, warm strings, whispered',
   },
   {
     id: 'dance',
@@ -48,7 +48,7 @@ const MOOD_OPTIONS = [
     arasaacId: 32364,
     bg: '#FADBD8',
     border: '#FF69B4',
-    style: 'dance, energetic, fun, kids dance party',
+    style: 'kids dance party, synth pop, energetic, fun, bouncy bass, electronic beat',
   },
   {
     id: 'silly',
@@ -56,7 +56,23 @@ const MOOD_OPTIONS = [
     arasaacId: 13354,
     bg: '#D5F5E3',
     border: '#98FB98',
-    style: 'silly, funny, goofy, cartoon music',
+    style: 'silly, funny, goofy, cartoon music, kazoo, wobble bass, sound effects',
+  },
+  {
+    id: 'adventure',
+    label: 'Epic!',
+    arasaacId: 7186,
+    bg: '#E8DAEF',
+    border: '#AF7AC5',
+    style: "cinematic children's, epic, heroic, orchestral, building drums, adventure theme, choir",
+  },
+  {
+    id: 'funky',
+    label: 'Groovy',
+    arasaacId: 6557,
+    bg: '#FAE5D3',
+    border: '#F5B041',
+    style: 'kids funk, groovy, tight pocket, bass-led, clean guitar, fun beat, head-nodding',
   },
 ];
 
