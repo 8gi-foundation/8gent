@@ -320,4 +320,19 @@ We're building the place where tools live.
 
 ---
 
+## 8gent Code Integration (v0.7.0)
+
+The terminal-first coding agent (`8gent-code`) powers the developer experience:
+
+- **Smart Onboarding** — 3-question setup with auto-detection
+- **Cloud Sync** — Preferences sync across devices via Convex
+- **Session Resume** — `/continue`, `/history`, `/resume`, `/compact`
+- **Adaptive Prompts** — Agent knows your name, role, and communication style
+- **Personal LoRA** — Training pipeline learns from your coding patterns
+- **ESC Interrupt** — Abort generation mid-stream
+
+Source: `~/8gent-code/` | Docs: `docs/PERSONALIZATION.md`
+
+---
+
 *8gent: Your OS. Your rules. Your AI.*
