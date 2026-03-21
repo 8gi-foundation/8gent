@@ -15,6 +15,8 @@ import { Dock } from '@/components/dock/Dock';
 import { MagicButton } from '@/components/aac/MagicButton';
 import { CardSuggestion } from '@/components/ai/CardSuggestion';
 import { speakWithKitten } from '@/lib/speech/tts';
+import { getSessionLogger } from '@/lib/session-logger';
+import { trackCardTap, trackSentenceSpeak } from '@/lib/personalization';
 
 /**
  * Main AAC App Page - Mobile-First iOS Style
@@ -48,6 +50,10 @@ export default function AACAppPage() {
   const handleCardTap = async (phrase: AACPhrase) => {
     const textToSpeak = phrase.spokenText || phrase.text;
     setSentence([...sentence, phrase.text]);
+
+    // Log to session logger and personalization
+    getSessionLogger().logCardTap(phrase.text, activeCategory?.id ?? 'unknown');
+    trackCardTap(phrase.text, activeCategory?.id ?? 'unknown');
 
     // Try KittenTTS (Kiki voice) first
     const kittenOk = await speakWithKitten(textToSpeak, settings.ttsRate || 0.85);
@@ -83,6 +89,7 @@ export default function AACAppPage() {
 
   const handleCategoryTap = (category: AACCategory) => {
     setActiveCategory(category);
+    getSessionLogger().logCategoryTap(category.id, category.name);
   };
 
   const handleBack = () => {
@@ -93,6 +100,10 @@ export default function AACAppPage() {
     if (sentence.length === 0) return;
 
     const text = sentence.join(' ');
+
+    // Log sentence speak
+    getSessionLogger().logSentenceSpeak(text);
+    trackSentenceSpeak(sentence);
 
     // Try KittenTTS (Kiki voice) first
     const kittenOk = await speakWithKitten(text, settings.ttsRate || 0.85);

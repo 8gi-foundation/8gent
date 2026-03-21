@@ -18,6 +18,7 @@ interface DockItem {
 
 const DOCK_ITEMS: DockItem[] = [
   { id: 'talk', label: 'Talk', emoji: '💬', href: '/app' },
+  { id: 'core', label: 'Core', emoji: '🗣️', href: '/core' },
   { id: 'ai', label: 'AI', emoji: '✨', href: '/ai' },
   { id: 'draw', label: 'Draw', emoji: '🎨', href: '/draw' },
   { id: 'music', label: 'Music', emoji: '🎵', href: '/music' },

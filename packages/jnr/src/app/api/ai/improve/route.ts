@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server';
 import { IMPROVE_SENTENCE_SYSTEM_PROMPT } from '@/lib/ai/prompts';
+import type { GLPStage } from '@/lib/glp/stages';
+import { GLP_STAGES } from '@/lib/glp/stages';
 
 export const runtime = 'edge';
 
@@ -19,6 +21,8 @@ interface ImproveRequest {
   cards: string[];
   /** Optional child name for personalization */
   childName?: string;
+  /** GLP stage (1-6). Stage 1-2: gestalts protected, Stage 3: cap at 5 words */
+  glpStage?: GLPStage;
 }
 
 interface MissingVocabulary {
@@ -31,6 +35,12 @@ interface ImproveResponse {
   improved: string;
   explanation: string;
   missing: MissingVocabulary[];
+}
+
+/** Cap a sentence to maxWords for stage 3 */
+function capWords(text: string, maxWords: number): string {
+  const words = text.split(/\s+/);
+  return words.length > maxWords ? words.slice(0, maxWords).join(' ') : text;
 }
 
 export async function POST(request: NextRequest) {
@@ -56,6 +66,39 @@ export async function POST(request: NextRequest) {
     }
 
     const rawSentence = body.cards.join(' ');
+
+    // GLP Stage Guard: protect gestalts at early stages
+    if (body.glpStage && body.glpStage <= 2) {
+      // Stage 1-2: gestalts are sacred, return input unchanged
+      return new Response(
+        JSON.stringify({
+          original: rawSentence,
+          improved: rawSentence,
+          explanation: `GLP Stage ${body.glpStage}: gestalts protected, no modifications made`,
+          missing: [],
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (body.glpStage === 3) {
+      // Stage 3: cap output at 5 words (single words + 2-word combos stage)
+      const stageConfig = GLP_STAGES[3];
+      const maxWords = Math.max(stageConfig.maxWordsPerUtterance, 5);
+      const words = rawSentence.split(/\s+/);
+      if (words.length <= maxWords) {
+        return new Response(
+          JSON.stringify({
+            original: rawSentence,
+            improved: rawSentence,
+            explanation: `GLP Stage 3: already within ${maxWords}-word limit`,
+            missing: [],
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+      // For longer inputs at stage 3, let AI improve but we'll cap after
+    }
 
     // Use Groq if available (primary - free and fast)
     if (groqKey) {
@@ -109,7 +152,7 @@ export async function POST(request: NextRequest) {
             return new Response(
               JSON.stringify({
                 original: rawSentence,
-                improved: result.improved,
+                improved: body.glpStage === 3 ? capWords(result.improved, 5) : result.improved,
                 explanation: result.explanation,
                 missing: result.missing || [],
               }),
@@ -123,7 +166,7 @@ export async function POST(request: NextRequest) {
             return new Response(
               JSON.stringify({
                 original: rawSentence,
-                improved: content.trim(),
+                improved: body.glpStage === 3 ? capWords(content.trim(), 5) : content.trim(),
                 explanation: 'Grammar improved',
                 missing: [],
               }),
