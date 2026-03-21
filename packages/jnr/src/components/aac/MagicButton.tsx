@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { speakWithKitten } from '@/lib/speech/tts';
 
 /**
  * MagicButton Component
@@ -59,28 +60,32 @@ export function MagicButton({
       const data = await response.json();
       const improvedText = data.improved;
 
-      // Speak the improved sentence
-      if (voiceId) {
-        try {
-          const ttsResponse = await fetch('/api/voice/speak', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: improvedText, voiceId }),
-          });
+      // Speak the improved sentence — KittenTTS (Kiki) first
+      const kittenOk = await speakWithKitten(improvedText, ttsRate || 0.85);
+      if (!kittenOk) {
+        // Try ElevenLabs if voice is selected
+        if (voiceId) {
+          try {
+            const ttsResponse = await fetch('/api/voice/speak', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text: improvedText, voiceId }),
+            });
 
-          if (ttsResponse.ok) {
-            const blob = await ttsResponse.blob();
-            const url = URL.createObjectURL(blob);
-            const audio = new Audio(url);
-            audio.play();
+            if (ttsResponse.ok) {
+              const blob = await ttsResponse.blob();
+              const url = URL.createObjectURL(blob);
+              const audio = new Audio(url);
+              audio.play();
+            } else {
+              speakWithBrowser(improvedText, ttsRate);
+            }
+          } catch {
+            speakWithBrowser(improvedText, ttsRate);
           }
-        } catch {
-          // Fall back to browser TTS
+        } else {
           speakWithBrowser(improvedText, ttsRate);
         }
-      } else {
-        // Use browser TTS
-        speakWithBrowser(improvedText, ttsRate);
       }
 
       // Report missing vocabulary

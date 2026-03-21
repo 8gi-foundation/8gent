@@ -14,6 +14,7 @@ import { useApp } from '@/context/AppContext';
 import { Dock } from '@/components/dock/Dock';
 import { MagicButton } from '@/components/aac/MagicButton';
 import { CardSuggestion } from '@/components/ai/CardSuggestion';
+import { speakWithKitten } from '@/lib/speech/tts';
 
 /**
  * Main AAC App Page - Mobile-First iOS Style
@@ -48,7 +49,11 @@ export default function AACAppPage() {
     const textToSpeak = phrase.spokenText || phrase.text;
     setSentence([...sentence, phrase.text]);
 
-    // Use ElevenLabs if voice is selected
+    // Try KittenTTS (Kiki voice) first
+    const kittenOk = await speakWithKitten(textToSpeak, settings.ttsRate || 0.85);
+    if (kittenOk) return;
+
+    // Try ElevenLabs if voice is selected
     if (settings.selectedVoiceId) {
       try {
         const response = await fetch('/api/voice/speak', {
@@ -89,6 +94,11 @@ export default function AACAppPage() {
 
     const text = sentence.join(' ');
 
+    // Try KittenTTS (Kiki voice) first
+    const kittenOk = await speakWithKitten(text, settings.ttsRate || 0.85);
+    if (kittenOk) return;
+
+    // Try ElevenLabs if voice is selected
     if (settings.selectedVoiceId) {
       try {
         const response = await fetch('/api/voice/speak', {
@@ -108,6 +118,7 @@ export default function AACAppPage() {
       }
     }
 
+    // Browser TTS fallback
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = settings.ttsRate;

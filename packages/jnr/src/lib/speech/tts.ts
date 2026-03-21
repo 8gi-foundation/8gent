@@ -163,6 +163,41 @@ export function speakWithWebSpeech(
 }
 
 /**
+ * Speak text using local KittenTTS (Kiki voice) via /api/tts
+ *
+ * Posts to the local KittenTTS API route and plays the returned WAV.
+ * Returns false if the API is unavailable (204) so callers can fall back.
+ *
+ * @param text - Text to speak
+ * @param speed - Speaking speed (default 0.85)
+ * @returns true if audio played, false if caller should fall back
+ */
+export async function speakWithKitten(
+  text: string,
+  speed: number = 0.85
+): Promise<boolean> {
+  try {
+    const response = await fetch('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, voice: 'Kiki', speed }),
+    });
+
+    if (!response.ok || response.status === 204) {
+      return false;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    await playAudio(url);
+    URL.revokeObjectURL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Play an audio file from URL
  */
 function playAudio(url: string): Promise<void> {
