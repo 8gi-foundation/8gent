@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Voice, VoiceSettings, RecordingState } from './types';
 import { DEFAULT_VOICES, ELEVENLABS_VOICES } from './types';
+import { speakWithKitten } from '@/lib/speech/tts';
 
 const STORAGE_KEY = '8gent-voice-settings';
 
@@ -192,7 +193,16 @@ export function useTTS(settings: VoiceSettings) {
         fallbackSpeak(text);
       }
 
-      function fallbackSpeak(textToSpeak: string) {
+      async function fallbackSpeak(textToSpeak: string) {
+        // Try Kiki TTS first
+        setIsSpeaking(true);
+        const kittenOk = await speakWithKitten(textToSpeak, settings.rate || 0.85);
+        if (kittenOk) {
+          setIsSpeaking(false);
+          return;
+        }
+
+        // Fall back to browser speechSynthesis
         if ('speechSynthesis' in window) {
           const utterance = new SpeechSynthesisUtterance(textToSpeak);
           utterance.rate = settings.rate;
@@ -209,6 +219,8 @@ export function useTTS(settings: VoiceSettings) {
           utterance.onstart = () => setIsSpeaking(true);
           utterance.onend = () => setIsSpeaking(false);
           speechSynthesis.speak(utterance);
+        } else {
+          setIsSpeaking(false);
         }
       }
     },

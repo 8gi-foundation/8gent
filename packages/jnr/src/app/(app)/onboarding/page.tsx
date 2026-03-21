@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
+import { speakWithKitten } from '@/lib/speech/tts';
 
 /**
  * Onboarding Page - Create child's tenant
@@ -140,9 +141,9 @@ export default function OnboardingPage() {
       }
     }
 
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
+    const kittenOk = await speakWithKitten(text);
+    if (!kittenOk && 'speechSynthesis' in window) {
+      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
     }
   };
 
