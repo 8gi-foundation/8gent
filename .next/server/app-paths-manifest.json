@@ -162,6 +162,7 @@
   "/operations/page": "app/operations/page.js",
   "/page": "app/page.js",
   "/photos/page": "app/photos/page.js",
+  "/presentations/page": "app/presentations/page.js",
   "/product/page": "app/product/page.js",
   "/projects/page": "app/projects/page.js",
   "/prototyping/page": "app/prototyping/page.js",

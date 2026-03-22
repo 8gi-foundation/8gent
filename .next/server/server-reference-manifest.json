@@ -1,6 +1,6 @@
 {
   "node": {
-    "002c91f93e23fc4073f609d687856f7bae68da1f32": {
+    "0018f9d245c66974a37d904b964c298bc64dc3446d": {
       "workers": {
         "app/_not-found/page": {
           "moduleId": 176455,
@@ -590,6 +590,12 @@
           "exportedName": "detectKeylessEnvDriftAction",
           "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
         },
+        "app/presentations/page": {
+          "moduleId": 43791,
+          "async": false,
+          "exportedName": "detectKeylessEnvDriftAction",
+          "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+        },
         "app/product/page": {
           "moduleId": 129036,
           "async": false,
@@ -900,6 +906,7 @@
         "app/operations/page": "action-browser",
         "app/page": "action-browser",
         "app/photos/page": "action-browser",
+        "app/presentations/page": "action-browser",
         "app/product/page": "action-browser",
         "app/projects/page": "action-browser",
         "app/prototyping/page": "action-browser",
@@ -939,7 +946,7 @@
       "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js",
       "exportedName": "detectKeylessEnvDriftAction"
     },
-    "0095ad672f53e6aeee5b1586d94bb898788afc9898": {
+    "00d6f75fd69b5830da04ee2a0b916c8e00f3aabb2b": {
       "workers": {
         "app/_not-found/page": {
           "moduleId": 176455,
@@ -1529,6 +1536,12 @@
           "exportedName": "invalidateCacheAction",
           "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js"
         },
+        "app/presentations/page": {
+          "moduleId": 43791,
+          "async": false,
+          "exportedName": "invalidateCacheAction",
+          "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js"
+        },
         "app/product/page": {
           "moduleId": 129036,
           "async": false,
@@ -1839,6 +1852,7 @@
         "app/operations/page": "action-browser",
         "app/page": "action-browser",
         "app/photos/page": "action-browser",
+        "app/presentations/page": "action-browser",
         "app/product/page": "action-browser",
         "app/projects/page": "action-browser",
         "app/prototyping/page": "action-browser",
@@ -1878,7 +1892,7 @@
       "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js",
       "exportedName": "invalidateCacheAction"
     },
-    "007ec36253e5816722d5a62489bb0a130755fd496c": {
+    "003f667f809f0fe55c2fb92452406b81dae365adb6": {
       "workers": {
         "app/_not-found/page": {
           "moduleId": 176455,
@@ -2468,6 +2482,12 @@
           "exportedName": "createOrReadKeylessAction",
           "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
         },
+        "app/presentations/page": {
+          "moduleId": 43791,
+          "async": false,
+          "exportedName": "createOrReadKeylessAction",
+          "filename": "node_modules/.pnpm/@clerk+nextjs@6.37.4_next@16.1.2_@babel+core@7.29.0_@opentelemetry+api@1.9.0_react-dom@19.2.3_uztesppahj7urmwhhbmqydlhqe/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+        },
         "app/product/page": {
           "moduleId": 129036,
           "async": false,
@@ -2778,6 +2798,7 @@
         "app/operations/page": "action-browser",
         "app/page": "action-browser",
         "app/photos/page": "action-browser",
+        "app/presentations/page": "action-browser",
         "app/product/page": "action-browser",
         "app/projects/page": "action-browser",
         "app/prototyping/page": "action-browser",
@@ -2819,5 +2840,5 @@
     }
   },
   "edge": {},
-  "encryptionKey": "MNKJ8699CGOgoevhrRkRNOP1qA2Vl9h9i6eqsBPk2Ak="
+  "encryptionKey": "M4xcGjA2bUJWHFzU1HY6rJE0AKO5Ypev+th3GHLFC40="
 }
