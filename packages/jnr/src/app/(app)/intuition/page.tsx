@@ -114,7 +114,7 @@ export default function IntuitionPage() {
   }, [gameState, round, initRound]);
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 overflow-hidden">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-stone-900 via-amber-950 to-stone-900 overflow-hidden">
       {/* Header */}
       <header
         className="sticky top-0 z-40 backdrop-blur-xl safe-top"
@@ -137,17 +137,17 @@ export default function IntuitionPage() {
         {/* INTRO SCREEN */}
         {gameState === 'intro' && (
           <div className="text-center max-w-sm">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto mb-6">
               <span className="text-5xl">🧠</span>
             </div>
             <h1 className="text-4xl font-bold text-white mb-3">Intuition</h1>
-            <p className="text-purple-200/70 mb-8">
+            <p className="text-amber-200/70 mb-8">
               Can you sense which card hides the picture? Trust your feelings!
             </p>
 
             <div className="bg-white/10 rounded-2xl p-5 mb-8 text-left">
               <h3 className="text-white font-semibold mb-3">How to play:</h3>
-              <ul className="text-purple-200/80 text-sm space-y-2">
+              <ul className="text-amber-200/80 text-sm space-y-2">
                 <li>• 4 colored cards, 1 hides a picture</li>
                 <li>• Tap the card you feel is right</li>
                 <li>• Get it right = you see the picture!</li>
@@ -171,20 +171,20 @@ export default function IntuitionPage() {
             {/* Progress Bar */}
             <div className="h-2 bg-white/20 rounded-full mb-6 overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all"
+                className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all"
                 style={{ width: `${(round / TOTAL_ROUNDS) * 100}%` }}
               />
             </div>
 
             {/* Score */}
             <div className="text-center mb-4">
-              <span className="text-purple-300/80 text-lg">Score: </span>
+              <span className="text-amber-300/80 text-lg">Score: </span>
               <span className="text-white text-3xl font-bold">{score}</span>
             </div>
 
             {/* Instruction */}
             <div className="text-center mb-6">
-              <p className="text-purple-200/80 text-lg">
+              <p className="text-amber-200/80 text-lg">
                 {showResult
                   ? selectedCard === correctCard
                     ? '✨ You sensed it!'
@@ -237,15 +237,15 @@ export default function IntuitionPage() {
             </div>
 
             <h2 className="text-3xl font-bold text-white mb-2">Game Over!</h2>
-            <p className="text-2xl text-purple-200 mb-6">{rating}</p>
+            <p className="text-2xl text-amber-200 mb-6">{rating}</p>
 
             <div className="bg-white/10 rounded-2xl p-6 mb-6">
               <div className="text-5xl font-bold text-white mb-2">
                 {score}
-                <span className="text-purple-300 text-2xl">/{TOTAL_ROUNDS}</span>
+                <span className="text-amber-300 text-2xl">/{TOTAL_ROUNDS}</span>
               </div>
-              <div className="text-purple-200">{percentage}% accuracy</div>
-              <div className="text-purple-300/60 text-sm mt-2">
+              <div className="text-amber-200">{percentage}% accuracy</div>
+              <div className="text-amber-300/60 text-sm mt-2">
                 Chance level: 25%
               </div>
               {bestStreak > 1 && (

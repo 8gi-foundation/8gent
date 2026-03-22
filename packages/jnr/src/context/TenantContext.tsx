@@ -139,10 +139,24 @@ const TenantContext = createContext<TenantContextValue>({
 });
 
 /**
+ * Extract tenant from URL path (/jr/[tenant])
+ */
+function getTenantFromPath(): string {
+  if (typeof window === 'undefined') return '';
+
+  const match = window.location.pathname.match(/^\/jr\/([a-z0-9-]+)/);
+  return match ? match[1] : '';
+}
+
+/**
  * Extract subdomain from hostname
  */
 function getSubdomainFromHost(): string {
   if (typeof window === 'undefined') return '';
+
+  // Prefer path-based tenant routing (/jr/[tenant])
+  const pathTenant = getTenantFromPath();
+  if (pathTenant) return pathTenant;
 
   const hostname = window.location.hostname;
 
@@ -155,8 +169,8 @@ function getSubdomainFromHost(): string {
     return '';
   }
 
-  // Handle production (e.g., nick.8gent.app)
-  if (hostname.endsWith('.8gent.app')) {
+  // Handle production (e.g., nick.8gent.app or nick.8gentjr.com)
+  if (hostname.endsWith('.8gent.app') || hostname.endsWith('.8gentjr.com')) {
     const parts = hostname.split('.');
     if (parts.length >= 3) {
       return parts[0];

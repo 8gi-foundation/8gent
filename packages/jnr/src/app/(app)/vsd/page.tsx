@@ -16,7 +16,7 @@ import type { VisualScene, Hotspot } from '@/lib/vsd/types';
 const SCENE_GRADIENTS: Record<string, string> = {
   kitchen: 'from-amber-200 to-orange-300',
   playground: 'from-green-200 to-emerald-300',
-  bedroom: 'from-indigo-200 to-purple-300',
+  bedroom: 'from-indigo-200 to-blue-300',
   school: 'from-blue-200 to-cyan-300',
   park: 'from-lime-200 to-green-300',
 };

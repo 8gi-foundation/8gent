@@ -364,8 +364,8 @@ export const AVAILABLE_FEATURES = [
  */
 export const THEME_COLOR_OPTIONS = [
   { id: 'blue', name: 'Ocean Blue', color: '#60A5FA', gradient: 'from-blue-400 to-blue-600' },
-  { id: 'purple', name: 'Magic Purple', color: '#A78BFA', gradient: 'from-purple-400 to-purple-600' },
-  { id: 'pink', name: 'Cotton Candy', color: '#F472B6', gradient: 'from-pink-400 to-pink-600' },
+  { id: 'amber', name: 'Golden Amber', color: '#F59E0B', gradient: 'from-amber-400 to-amber-600' },
+  { id: 'coral', name: 'Warm Coral', color: '#F97316', gradient: 'from-orange-400 to-orange-600' },
   { id: 'green', name: 'Forest Green', color: '#34D399', gradient: 'from-green-400 to-green-600' },
   { id: 'orange', name: 'Sunset Orange', color: '#FB923C', gradient: 'from-orange-400 to-orange-600' },
   { id: 'yellow', name: 'Sunshine', color: '#FBBF24', gradient: 'from-yellow-400 to-yellow-600' },

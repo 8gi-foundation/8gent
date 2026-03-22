@@ -5,7 +5,7 @@
  * Each scene uses placeholder gradient backgrounds until
  * real photos are uploaded by parents/therapists.
  *
- * Ported from Nick OS
+ * Originally from 8gent Jr prototype
  */
 
 import type { VisualScene } from './types';

@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/voice/speak', // TTS endpoint needs to work without auth for demo
+  '/jr(.*)', // Jr tenant routes are publicly accessible
 ]);
 
 // Marketing routes (main domain only)
@@ -24,33 +25,34 @@ export default clerkMiddleware(async (auth, request) => {
 
   // Parse subdomain
   // Handles: nick.8gent.app, nick.localhost:3001, etc.
-  const mainDomains = ['8gent.app', 'www.8gent.app', 'localhost:3001', '127.0.0.1:3001'];
-  const isMainDomain = mainDomains.some(
-    (domain) => hostname === domain || hostname.endsWith(`.${domain.split(':')[0]}`)
-  );
-
-  // Extract subdomain
   let subdomain: string | null = null;
-  if (!isMainDomain) {
-    const parts = hostname.split('.');
-    if (parts.length >= 2) {
-      // nick.8gent.app -> nick
-      // nick.localhost:3001 -> nick
-      subdomain = parts[0];
+  const hostnameNoPort = hostname.split(':')[0];
+
+  if (hostnameNoPort.endsWith('.8gent.app')) {
+    // e.g. nick.8gent.app → nick, www.8gent.app → www
+    const sub = hostnameNoPort.replace('.8gent.app', '');
+    if (sub && sub !== 'www' && sub !== 'clerk' && sub !== 'accounts') {
+      subdomain = sub;
+    }
+  } else if (hostnameNoPort.endsWith('.8gentjr.com')) {
+    // e.g. nick.8gentjr.com → nick
+    const sub = hostnameNoPort.replace('.8gentjr.com', '');
+    if (sub && sub !== 'www' && sub !== 'clerk' && sub !== 'accounts') {
+      subdomain = sub;
+    }
+  } else if (hostnameNoPort.endsWith('.localhost')) {
+    // e.g. nick.localhost → nick
+    const sub = hostnameNoPort.replace('.localhost', '');
+    if (sub && sub !== 'localhost') {
+      subdomain = sub;
     }
   }
 
   // If on subdomain, inject it into headers for the app to use
+  // Note: subdomain routing kept for backwards compat but path-based (/jr/[tenant]) is preferred
   if (subdomain) {
-    // Subdomain tenant routes
     const response = NextResponse.next();
     response.headers.set('x-tenant-subdomain', subdomain);
-
-    // Protect app routes on subdomains
-    if (!isPublicRoute(request)) {
-      await auth.protect();
-    }
-
     return response;
   }
 

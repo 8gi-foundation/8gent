@@ -6,6 +6,36 @@
 
 ---
 
+## Ecosystem & Constitution
+
+8gent is a multi-product ecosystem governed by a shared constitution. See `BRAND.md` for brand rules.
+
+| Product | Domain | Role | Status |
+|---------|--------|------|--------|
+| **8gent OS** | 8gentos.com | Adult personal AI operating system | In development |
+| **8gent Jr** | 8gentjr.com | Children's OS (AAC, education, communication) | Live |
+| **8gent Code** | github.com/PodJamz/8gent-code | Developer coding agent | Open source |
+| **8gent World** | 8gent.world | Ecosystem hub | Live |
+| **8gent Games** | 8gent.games | Gaming experiences | Live |
+
+### Constitutional Principles (Key Articles)
+
+- **Article III - Privacy as a right, not a feature.** GDPR compliance is constitutional. Consent gate, data deletion, and privacy policies are enforced in code. See `/docs/DPIA.md`.
+- **Article VI - 8gent Jr is the moral center.** Every child deserves a voice. Jr is free forever. Accessibility first. Built by a father for his non-verbal autistic son, with therapists from day one.
+- **Brand rules live in `BRAND.md`** — do not duplicate them here. Reference that file for fonts, colors, banned hues, and design principles.
+
+### 8gent Jr Architecture
+
+- **Codebase:** `packages/jnr/`
+- **Domain:** `8gentjr.com` (also accessible via `8gent.app/jr/[tenant]`)
+- **Auth:** Clerk (production instance, `clerk.8gent.app`)
+- **Backend:** Convex (`kindly-pony-819` production)
+- **Routing:** Path-based (`/jr/nick`) — subdomain routing available but path preferred
+- **Roles:** Owner (parent) + Child + Visitor per tenant
+- **GDPR:** Consent gate mandatory before any child data processing
+
+---
+
 ## The Vision
 
 **8gent.app** is the consumer-facing manifestation of AIJAMESOS - a personal generative operating system that:

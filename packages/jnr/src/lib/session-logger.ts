@@ -1,8 +1,13 @@
 /**
  * 8gent Jr Session Logger
  *
- * Ported from NickOS. Buffers events in memory, flushes to localStorage every 30s.
+ * Buffers events in memory, flushes to localStorage every 30s.
  * Provides session summaries with rule-based recommendations.
+ *
+ * CONSENT GATE: No data is persisted to localStorage unless
+ * the parent has granted analytics consent. In-memory buffering
+ * still works (for the current session UX) but flush() and end()
+ * skip all writes when consent is absent.
  */
 
 export type EventType =
@@ -33,6 +38,23 @@ export interface SessionSummary {
 
 const EVENTS_KEY = '8gent-jr-session-events';
 const HISTORY_KEY = '8gent-jr-session-history';
+const CONSENTS_KEY = '8gent-jr-consents';
+
+/**
+ * Check if the parent has granted analytics consent.
+ * Returns false if no consent record exists (safe default).
+ */
+function hasAnalyticsConsent(): boolean {
+  if (typeof localStorage === 'undefined') return false;
+  try {
+    const raw = localStorage.getItem(CONSENTS_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    return parsed.analytics === true;
+  } catch {
+    return false;
+  }
+}
 
 export class SessionLogger {
   private sessionId: string;
@@ -101,6 +123,11 @@ export class SessionLogger {
 
   flush(): void {
     if (typeof localStorage === 'undefined' || this.events.length === 0) return;
+    // CONSENT GATE: Do not persist session events without analytics consent
+    if (!hasAnalyticsConsent()) {
+      this.events = [];
+      return;
+    }
     try {
       const existing = JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]') as SessionEvent[];
       localStorage.setItem(EVENTS_KEY, JSON.stringify([...existing, ...this.events]));
@@ -112,7 +139,8 @@ export class SessionLogger {
     this.log('session_end', { duration: Date.now() - this.startTime }, 'system');
     const summary = this.getSessionSummary();
     this.flush();
-    if (typeof localStorage !== 'undefined') {
+    // CONSENT GATE: Do not persist session history without analytics consent
+    if (typeof localStorage !== 'undefined' && hasAnalyticsConsent()) {
       try {
         const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]') as SessionSummary[];
         history.push(summary);

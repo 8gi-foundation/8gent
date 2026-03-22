@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * Generate Song API Route for NickOS
+ * Generate Song API Route for 8gent Jr
  *
  * POST /api/nick/generate-song
  * Body: { sentences: string[], childName?: string, style?: string, tempo?: string }

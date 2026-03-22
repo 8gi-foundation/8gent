@@ -115,8 +115,8 @@ export const CHILD_FRIENDLY_COLORS = {
   yellow: '#FBBF24',
   orange: '#FB923C',
   red: '#EF4444',
-  purple: '#A78BFA',
-  pink: '#F472B6',
+  amber: '#F59E0B',
+  coral: '#F97316',
 
   // Neutrals
   white: '#FFFFFF',

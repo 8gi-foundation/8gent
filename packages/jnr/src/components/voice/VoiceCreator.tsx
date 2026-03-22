@@ -151,8 +151,8 @@ const VoicePresetCard = ({
   // Get color based on gender
   const getColor = () => {
     if (preset.gender === 'male') return 'from-blue-400 to-blue-500';
-    if (preset.gender === 'female') return 'from-pink-400 to-pink-500';
-    return 'from-purple-400 to-purple-500';
+    if (preset.gender === 'female') return 'from-amber-400 to-amber-500';
+    return 'from-orange-400 to-orange-500';
   };
 
   return (
@@ -341,7 +341,7 @@ export function VoiceCreator({
   // Step: Creating voice
   if (step === 'creating' || isCreating) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 p-6 flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-[#FFF8F0] to-[#FFF3E8] p-6 flex flex-col items-center justify-center">
         <motion.div
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -442,7 +442,7 @@ export function VoiceCreator({
   // Step: Preview voice
   if (step === 'preview' && preview) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-6 flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-[#FFFDF9] to-[#FFF3E8] p-6 flex flex-col items-center justify-center">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

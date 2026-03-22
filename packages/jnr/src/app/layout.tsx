@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Fraunces, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 
@@ -8,10 +8,22 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  weight: ['400', '700', '800'],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '500'],
+});
+
 const siteConfig = {
-  name: '8gent',
-  tagline: 'Your Voice, Your Way',
-  description: 'Personal AI operating system that learns how you communicate. AAC communication for children, AI-generated custom symbols, and personalized voice synthesis.',
+  name: '8gent Jr',
+  tagline: 'No more gatekeeping. A voice for every kid.',
+  description: 'A super-powered AI assistant that learns with your child. Accessibility first. Free forever. AAC communication, AI-generated custom symbols, and personalized voice synthesis.',
   url: 'https://www.8gent.app',
   ogImage: 'https://www.8gent.app/og-image.png',
   twitterHandle: '@8gentapp',
@@ -123,7 +135,7 @@ export const metadata: Metadata = {
 
   // Additional link tags
   other: {
-    'msapplication-TileColor': '#2563eb',
+    'msapplication-TileColor': '#E8610A',
   },
 };
 
@@ -134,8 +146,8 @@ export const viewport: Viewport = {
   userScalable: false, // Important for AAC - prevent accidental zooming
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: light)', color: '#FFFDF9' },
+    { media: '(prefers-color-scheme: dark)', color: '#1A1612' },
   ],
 };
 
@@ -307,7 +319,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="icon" href="/favicon.ico" sizes="any" />

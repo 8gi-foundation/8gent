@@ -5,24 +5,39 @@
 /* 8gent Jr Design System Variables */
 :root {
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-mono: var(--font-mono), 'JetBrains Mono', monospace;
+
+  /* Brand colors — warm palette */
+  --brand-accent: #E8610A;
+  --brand-accent-hover: #D15709;
+  --brand-bg: #FFFDF9;
+  --brand-bg-warm: #FFF8F0;
+  --brand-bg-accent: #FFF3E8;
+  --brand-text: #1A1612;
+  --brand-text-soft: #5C544A;
+  --brand-text-muted: #9A9088;
+  --brand-border: #E8E0D6;
 
   /* Light mode */
-  --background: 0 0% 100%;
-  --foreground: 0 0% 3.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 3.9%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --border: 214.3 31.8% 91.4%;
+  --background: 40 100% 99%;
+  --foreground: 24 14% 8%;
+  --card: 40 100% 99%;
+  --card-foreground: 24 14% 8%;
+  --primary: 24 91% 47%;
+  --primary-foreground: 40 100% 99%;
+  --secondary: 30 40% 96%;
+  --secondary-foreground: 24 14% 11%;
+  --muted: 30 40% 96%;
+  --muted-foreground: 24 10% 47%;
+  --accent: 30 40% 96%;
+  --accent-foreground: 24 14% 11%;
+  --border: 30 20% 90%;
   --radius: 1rem;
 
-  /* Fitzgerald Key Colors */
+  /* Fitzgerald Key Colors — these are AAC standards, not brand colors.
+     Purple/pink preserved here ONLY because they are part of the
+     Fitzgerald Key clinical standard used in AAC worldwide. */
   --fitzgerald-yellow: #FFF59D;
   --fitzgerald-green: #A5D6A7;
   --fitzgerald-blue: #90CAF9;
@@ -40,19 +55,19 @@
 }
 
 .dark {
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 8%;
-  --card-foreground: 0 0% 98%;
-  --primary: 217.2 91.2% 59.8%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
+  --background: 24 14% 6%;
+  --foreground: 40 20% 96%;
+  --card: 24 14% 10%;
+  --card-foreground: 40 20% 96%;
+  --primary: 24 91% 52%;
+  --primary-foreground: 24 14% 11%;
+  --secondary: 24 20% 17%;
+  --secondary-foreground: 40 20% 96%;
+  --muted: 24 20% 17%;
+  --muted-foreground: 24 15% 60%;
+  --accent: 24 20% 17%;
+  --accent-foreground: 40 20% 96%;
+  --border: 24 20% 17%;
 }
 
 /* Global styles */

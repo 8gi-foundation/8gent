@@ -160,6 +160,14 @@ export const create = mutation({
       updatedAt: Date.now(),
     });
 
+    // Create owner membership
+    await ctx.db.insert("tenantMembers", {
+      tenantId,
+      userId: user._id,
+      role: "owner",
+      createdAt: Date.now(),
+    });
+
     // Initialize empty userCards for tenant
     await ctx.db.insert("userCards", {
       tenantId,

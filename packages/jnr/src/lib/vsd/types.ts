@@ -4,7 +4,7 @@
  * Photo-based AAC where real photos have interactive hotspots
  * that speak whole language chunks. Critical for GLP Stage 1-2 learners.
  *
- * Ported from Nick OS (Linda Burkhart's VSD research)
+ * Based on Linda Burkhart's VSD research
  */
 
 export interface VisualScene {

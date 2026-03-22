@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useClerk } from '@clerk/nextjs';
 import { useApp } from '@/context/AppContext';
 import { Dock } from '@/components/dock/Dock';
 import { ELEVENLABS_VOICES } from '@/lib/voice/types';
@@ -12,6 +13,7 @@ import { ELEVENLABS_VOICES } from '@/lib/voice/types';
 const GRID_OPTIONS = [2, 3, 4, 5];
 
 export default function SettingsPage() {
+  const { signOut } = useClerk();
   const { settings, updateSettings, isLoaded } = useApp();
 
   if (!isLoaded) {
@@ -72,7 +74,7 @@ export default function SettingsPage() {
             </div>
             {/* Restart onboarding */}
             <Link
-              href="/onboarding"
+              href="/onboarding?restart=1"
               onClick={() => updateSettings({ hasCompletedOnboarding: false })}
               className="flex items-center justify-between px-4 py-3 active:bg-gray-50"
             >
@@ -181,6 +183,41 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        {/* Sign Out */}
+        <div className="px-4 pt-6">
+          <div className="bg-white rounded-xl overflow-hidden">
+            <button
+              onClick={() => signOut({ redirectUrl: '/' })}
+              className="w-full px-4 py-3 text-[17px] text-red-500 font-medium text-center active:bg-gray-50"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+
+        {/* Privacy */}
+        <div className="px-4 pt-6">
+          <p className="text-[13px] text-gray-500 uppercase tracking-wide px-4 mb-2">
+            Privacy
+          </p>
+          <div className="bg-white rounded-xl overflow-hidden">
+            <Link
+              href="/jr/privacy"
+              className="flex items-center justify-between px-4 py-3 border-b border-gray-100 active:bg-gray-50"
+            >
+              <span className="text-[17px] text-black">Privacy Policy</span>
+              <span className="text-gray-300">&rsaquo;</span>
+            </Link>
+            <Link
+              href="/jr/privacy/kids"
+              className="flex items-center justify-between px-4 py-3 active:bg-gray-50"
+            >
+              <span className="text-[17px] text-black">Children&apos;s Privacy Policy</span>
+              <span className="text-gray-300">&rsaquo;</span>
+            </Link>
+          </div>
+        </div>
+
         {/* About */}
         <div className="px-4 pt-6 pb-8">
           <p className="text-[13px] text-gray-500 uppercase tracking-wide px-4 mb-2">
@@ -188,7 +225,7 @@ export default function SettingsPage() {
           </p>
           <div className="bg-white rounded-xl overflow-hidden px-4 py-3">
             <p className="text-gray-600 text-[15px] mb-2">
-              <strong>8gent</strong> - Your Voice, Your Way
+              <strong>8gent Jr</strong> - No more gatekeeping. A voice for every kid.
             </p>
             <p className="text-gray-400 text-[13px]">
               Version 1.0.0 · Symbols © ARASAAC

@@ -338,6 +338,45 @@ export default defineSchema({
     updatedAt: v.number(),
   }).index("by_tenant", ["tenantId"]),
 
+  // Tenant members - role-based access control
+  // Jr accounts: owner (parent) + child
+  // OS accounts: owner (account holder) + visitor
+  tenantMembers: defineTable({
+    tenantId: v.id("tenants"),
+    userId: v.id("users"),
+    role: v.union(
+      v.literal("owner"),
+      v.literal("child"),
+      v.literal("visitor")
+    ),
+    createdAt: v.number(),
+  })
+    .index("by_tenant", ["tenantId"])
+    .index("by_user", ["userId"])
+    .index("by_tenant_user", ["tenantId", "userId"]),
+
+  // GDPR Consent Records (Article 9 - special category data)
+  // Immutable audit trail: records are never deleted, only withdrawn
+  consentRecords: defineTable({
+    userId: v.id("users"),
+    tenantId: v.id("tenants"),
+    consentType: v.union(
+      v.literal("data_processing"),      // Basic data processing consent
+      v.literal("health_data"),          // Article 9 - special category data
+      v.literal("personalization"),      // Consent for learning/personalization
+      v.literal("analytics")            // Consent for usage analytics
+    ),
+    granted: v.boolean(),
+    grantedAt: v.number(),
+    withdrawnAt: v.optional(v.number()),
+    ipAddress: v.optional(v.string()),
+    userAgent: v.optional(v.string()),
+    version: v.string(),  // privacy policy version at time of consent
+  })
+    .index("by_user", ["userId"])
+    .index("by_tenant", ["tenantId"])
+    .index("by_user_type", ["userId", "consentType"]),
+
   // Sentence history (per-tenant)
   sentenceHistory: defineTable({
     tenantId: v.id("tenants"),

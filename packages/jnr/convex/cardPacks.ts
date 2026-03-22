@@ -1,5 +1,44 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import type { MutationCtx } from "./_generated/server";
+import type { Id } from "./_generated/dataModel";
+
+// Required consent types that must be active before storing child data
+const REQUIRED_CONSENTS = ["data_processing", "health_data"] as const;
+
+/**
+ * Server-side consent gate.
+ * Returns true only if ALL required consents are active (granted + not withdrawn)
+ * for the given tenant. This MUST be checked before any mutation that stores
+ * child-related data.
+ */
+async function hasActiveConsent(
+  ctx: MutationCtx,
+  tenantId: Id<"tenants">
+): Promise<boolean> {
+  const tenant = await ctx.db.get(tenantId);
+  if (!tenant) return false;
+
+  // Find the owner/parent user for this tenant
+  const ownerId = tenant.parentId ?? tenant.ownerId;
+  if (!ownerId) return false;
+
+  const allConsents = await ctx.db
+    .query("consentRecords")
+    .withIndex("by_tenant", (q) => q.eq("tenantId", tenantId))
+    .collect();
+
+  for (const required of REQUIRED_CONSENTS) {
+    const hasActive = allConsents.some(
+      (c) =>
+        c.consentType === required &&
+        c.granted &&
+        !c.withdrawnAt
+    );
+    if (!hasActive) return false;
+  }
+  return true;
+}
 
 // Card schema for validation
 const cardSchema = v.object({
@@ -56,7 +95,7 @@ export const getCardsForTenant = query({
       .first();
 
     if (!tenant) {
-      throw new Error("Tenant not found");
+      return null;
     }
 
     // Get default card pack (latest)
@@ -271,6 +310,7 @@ export const toggleFavorite = mutation({
 
 /**
  * Record card usage (for recently used)
+ * CONSENT GATE: Requires active data_processing + health_data consent.
  */
 export const recordCardUsage = mutation({
   args: {
@@ -278,6 +318,11 @@ export const recordCardUsage = mutation({
     cardId: v.string(),
   },
   handler: async (ctx, { tenantId, cardId }) => {
+    // CONSENT GATE: No consent = no data stored
+    if (!(await hasActiveConsent(ctx, tenantId))) {
+      return; // Silently skip — no data stored without consent
+    }
+
     // Get userCards
     const userCards = await ctx.db
       .query("userCards")
@@ -370,6 +415,7 @@ export const unhideCard = mutation({
 
 /**
  * Save sentence to history
+ * CONSENT GATE: Requires active data_processing + health_data consent.
  */
 export const saveSentence = mutation({
   args: {
@@ -378,6 +424,11 @@ export const saveSentence = mutation({
     cardIds: v.array(v.string()),
   },
   handler: async (ctx, { tenantId, sentence, cardIds }) => {
+    // CONSENT GATE: No consent = no data stored
+    if (!(await hasActiveConsent(ctx, tenantId))) {
+      return { success: false, reason: "consent_required" };
+    }
+
     await ctx.db.insert("sentenceHistory", {
       tenantId,
       sentence,

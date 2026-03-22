@@ -81,7 +81,7 @@ export default function SchoolTubePage() {
                 {reel.emoji}
                 {/* Game badge */}
                 {reel.type === 'game' && (
-                  <div className="absolute top-2 right-2 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  <div className="absolute top-2 right-2 bg-[#E8610A] text-white text-xs font-bold px-2 py-1 rounded-full">
                     GAME
                   </div>
                 )}
@@ -99,7 +99,7 @@ export default function SchoolTubePage() {
                   <p className="text-[13px] text-gray-500 mt-1">{reel.duration}</p>
                 )}
                 {reel.type === 'game' && (
-                  <p className="text-[13px] text-pink-500 mt-1 font-medium">Tap to play!</p>
+                  <p className="text-[13px] text-[#E8610A] mt-1 font-medium">Tap to play!</p>
                 )}
               </div>
             </button>

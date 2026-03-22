@@ -39,8 +39,8 @@ export const FITZGERALD_COLORS = {
   verbs: '#4CAF50',       // Green - Actions/Verbs
   descriptors: '#2196F3', // Blue - Descriptors/Adjectives
   nouns: '#FF9800',       // Orange - Things/Nouns
-  places: '#9C27B0',      // Purple - Places
-  feelings: '#E91E63',    // Pink - Feelings/Social
+  places: '#8B6914',      // Warm brown - Places
+  feelings: '#E8610A',    // Warm orange - Feelings/Social
   questions: '#00BCD4',   // Cyan - Questions
   misc: '#9E9E9E',        // Gray - Miscellaneous
 } as const;

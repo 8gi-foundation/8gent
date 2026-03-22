@@ -7,7 +7,7 @@ import { speakWithKitten } from '@/lib/speech/tts';
 /**
  * MagicButton Component
  *
- * Purple sparkle button that improves grammar and speaks the result.
+ * Orange sparkle button that improves grammar and speaks the result.
  * Placed next to the green Speak button in the sentence strip.
  */
 
@@ -117,7 +117,7 @@ export function MagicButton({
                    flex items-center justify-center gap-1.5 px-3 transition-all
                    ${isDisabled
                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                     : 'bg-purple-500 hover:bg-purple-600 text-white shadow-lg shadow-purple-500/30'
+                     : 'bg-[#E8610A] hover:bg-[#D15709] text-white shadow-lg shadow-[#E8610A]/30'
                    }`}
         whileTap={!isDisabled ? { scale: 0.95 } : {}}
         title="Magic: Improve grammar and speak"
@@ -126,7 +126,9 @@ export function MagicButton({
           <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
         ) : (
           <>
-            <span className="text-lg">✨</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
             <span className="hidden sm:inline text-[15px]">Magic</span>
           </>
         )}

@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 /**
  * Marketing layout for 8gent public pages
  *
- * This layout is for unauthenticated pages like the landing page,
- * features, pricing, etc.
+ * Overrides body overflow:hidden (set globally for AAC boards)
+ * so marketing pages can scroll normally.
  */
 export default function MarketingLayout({
   children,
@@ -12,8 +12,11 @@ export default function MarketingLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {children}
-    </div>
+    <>
+      <style>{`html, body { overflow: auto !important; height: auto !important; }`}</style>
+      <div className="min-h-screen">
+        {children}
+      </div>
+    </>
   );
 }

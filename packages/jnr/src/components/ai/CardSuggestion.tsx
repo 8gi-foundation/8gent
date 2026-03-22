@@ -37,18 +37,20 @@ export function CardSuggestion({
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
-        className="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-xl"
+        className="mt-3 p-3 bg-orange-50 border border-orange-200 rounded-xl"
       >
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-2">
-            <span className="text-lg">✨</span>
-            <span className="text-sm font-medium text-purple-800">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8610A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span className="text-sm font-medium text-orange-800">
               Vocabulary suggestions
             </span>
           </div>
           <button
             onClick={onDismiss}
-            className="p-1 text-purple-400 hover:text-purple-600 transition-colors"
+            className="p-1 text-orange-400 hover:text-orange-600 transition-colors"
             aria-label="Dismiss"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -82,7 +84,7 @@ export function CardSuggestion({
               </div>
               <button
                 onClick={() => onCreateCard(suggestion.word, suggestion.category)}
-                className="px-3 py-1.5 bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
+                className="px-3 py-1.5 bg-[#E8610A] hover:bg-[#D15709] text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
               >
                 + Create
               </button>

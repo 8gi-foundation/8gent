@@ -7,7 +7,7 @@
  * - Noun plurals: cat/cats
  * - Negations: can/can't
  *
- * Ported from NickOS, simplified for 8gent Jr's flat vocabulary model.
+ * Simplified for 8gent Jr's flat vocabulary model.
  */
 
 export type MorphType =

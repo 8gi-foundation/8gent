@@ -8,7 +8,7 @@
  * Key principle: NEVER remove earlier-stage content. GLPs regress under
  * stress and need access to whole gestalts even at later stages.
  *
- * Ported from Nick OS
+ * Originally from 8gent Jr prototype
  */
 
 export type GLPStage = 1 | 2 | 3 | 4 | 5 | 6;

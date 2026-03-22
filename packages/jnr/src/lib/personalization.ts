@@ -1,8 +1,13 @@
 /**
  * 8gent Jr Personalization
  *
- * Ported from NickOS. Tracks word frequency, category preferences.
+ * Tracks word frequency, category preferences.
  * Recommends underused words. All persistence via localStorage.
+ *
+ * CONSENT GATE: All tracking functions are no-ops unless the
+ * parent has granted personalization consent. Read-only functions
+ * (getProfile, getRecommendations) return empty/default data
+ * when consent is absent.
  */
 
 export interface JrProfile {
@@ -30,7 +35,24 @@ interface PersonalizationData {
 }
 
 const STORAGE_KEY = '8gent-jr-personalization';
+const CONSENTS_KEY = '8gent-jr-consents';
 const CORE_WORDS = ['want', 'need', 'more', 'stop', 'help', 'go', 'like', 'yes', 'no', 'please'];
+
+/**
+ * Check if the parent has granted personalization consent.
+ * Returns false if no consent record exists (safe default).
+ */
+function hasPersonalizationConsent(): boolean {
+  if (typeof localStorage === 'undefined') return false;
+  try {
+    const raw = localStorage.getItem(CONSENTS_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    return parsed.personalization === true;
+  } catch {
+    return false;
+  }
+}
 
 function empty(): PersonalizationData {
   return { wordFrequency: {}, categoryFrequency: {}, sentenceLengths: [], activeDates: [], totalInteractions: 0 };
@@ -51,8 +73,9 @@ function save(data: PersonalizationData): void {
 
 function todayISO(): string { return new Date().toISOString().slice(0, 10); }
 
-// Tracking
+// Tracking — gated by personalization consent
 export function trackCardTap(word: string, category: string): void {
+  if (!hasPersonalizationConsent()) return; // CONSENT GATE
   const d = load();
   d.wordFrequency[word] = (d.wordFrequency[word] || 0) + 1;
   d.categoryFrequency[category] = (d.categoryFrequency[category] || 0) + 1;
@@ -63,6 +86,7 @@ export function trackCardTap(word: string, category: string): void {
 }
 
 export function trackSentenceSpeak(words: string[]): void {
+  if (!hasPersonalizationConsent()) return; // CONSENT GATE
   const d = load();
   d.sentenceLengths.push(words.length);
   if (d.sentenceLengths.length > 200) d.sentenceLengths.splice(0, d.sentenceLengths.length - 200);
@@ -70,8 +94,11 @@ export function trackSentenceSpeak(words: string[]): void {
   save(d);
 }
 
-// Profile
+// Profile — returns empty defaults without personalization consent
 export function getProfile(): JrProfile {
+  if (!hasPersonalizationConsent()) {
+    return { totalInteractions: 0, favoriteCategories: [], averageSentenceLength: 0, vocabularySize: 0, streakDays: 0, lastActive: null };
+  }
   const d = load();
   const catEntries = Object.entries(d.categoryFrequency).sort((a, b) => b[1] - a[1]);
   const avgLen = d.sentenceLengths.length > 0
@@ -97,8 +124,9 @@ export function getProfile(): JrProfile {
   };
 }
 
-// Recommendations
+// Recommendations — returns core words without personalization consent
 export function getRecommendedWords(count = 5): string[] {
+  if (!hasPersonalizationConsent()) return CORE_WORDS.slice(0, count);
   const d = load();
   const used = new Set(Object.keys(d.wordFrequency).map(w => w.toLowerCase()));
   const underused = CORE_WORDS.filter(w => !used.has(w));
@@ -107,6 +135,9 @@ export function getRecommendedWords(count = 5): string[] {
 }
 
 export function getRecommendations(count = 5): Recommendations {
+  if (!hasPersonalizationConsent()) {
+    return { underusedWords: CORE_WORDS.slice(0, count), underusedCategories: [], sentenceSuggestion: 'Try building sentences with 2-3 words', timeBasedHint: null };
+  }
   const d = load();
   const underusedWords = getRecommendedWords(count);
   const underusedCategories = Object.keys(d.categoryFrequency)
