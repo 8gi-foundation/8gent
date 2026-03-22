@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#F5F0EB] text-[#1A1614] overflow-y-auto">
+    <main className="min-h-screen bg-[#F5F0EB] text-[#1A1614] overflow-y-auto fixed inset-0 z-50">
       {/* Nav */}
       <nav className="flex items-center justify-between px-5 py-4 max-w-5xl mx-auto">
         <div className="flex items-center gap-2">
