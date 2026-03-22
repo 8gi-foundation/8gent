@@ -75,7 +75,10 @@ export default clerkMiddleware(async (auth, request) => {
     await auth.protect();
   }
 
-  return NextResponse.next();
+  // Pass hostname to pages so they can render domain-specific content
+  const response = NextResponse.next();
+  response.headers.set('x-hostname', hostname);
+  return response;
 });
 
 export const config = {

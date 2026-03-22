@@ -19,21 +19,34 @@
   --brand-text-muted: #9A9088;
   --brand-border: #E8E0D6;
 
-  /* Light mode */
-  --background: 40 100% 99%;
-  --foreground: 24 14% 8%;
-  --card: 40 100% 99%;
-  --card-foreground: 24 14% 8%;
-  --primary: 24 91% 47%;
+  /* Light mode — warm palette, proper contrast */
+  --background: 30 33% 95%;       /* #F5F0EB warm cream */
+  --foreground: 24 14% 9%;        /* #1A1614 warm dark */
+  --card: 30 50% 99%;             /* #FDFCFA warm white */
+  --card-foreground: 24 14% 9%;   /* #1A1614 */
+  --primary: 24 91% 47%;          /* #E8610A brand orange */
   --primary-foreground: 40 100% 99%;
-  --secondary: 30 40% 96%;
+  --secondary: 30 30% 95%;        /* warm light bg */
   --secondary-foreground: 24 14% 11%;
-  --muted: 30 40% 96%;
-  --muted-foreground: 24 10% 47%;
-  --accent: 30 40% 96%;
+  --muted: 30 20% 93%;            /* warm muted bg */
+  --muted-foreground: 24 12% 44%; /* warm medium text */
+  --accent: 30 30% 95%;
   --accent-foreground: 24 14% 11%;
-  --border: 30 20% 90%;
+  --border: 30 20% 88%;           /* #E8E0D6 warm border */
+  --input: 30 20% 88%;            /* warm input border */
+  --ring: 24 91% 47%;             /* focus ring = brand */
   --radius: 1rem;
+
+  /* Warm gray scale for utility classes override */
+  --warm-bg-subtle: #FAF7F4;
+  --warm-bg-page: #F5F0EB;
+  --warm-bg-card: #FDFCFA;
+  --warm-border: #E8E0D6;
+  --warm-border-light: #F0EAE3;
+  --warm-text: #1A1614;
+  --warm-text-secondary: #5C544A;
+  --warm-text-muted: #9A9088;
+  --warm-text-placeholder: #B5ADA4;
 
   /* Fitzgerald Key Colors — these are AAC standards, not brand colors.
      Purple/pink preserved here ONLY because they are part of the
@@ -68,6 +81,18 @@
   --accent: 24 20% 17%;
   --accent-foreground: 40 20% 96%;
   --border: 24 20% 17%;
+  --input: 24 20% 22%;
+  --ring: 24 91% 52%;
+
+  --warm-bg-subtle: #1E1A17;
+  --warm-bg-page: #15120F;
+  --warm-bg-card: #1E1A17;
+  --warm-border: #2E2820;
+  --warm-border-light: #252018;
+  --warm-text: #F0EAE3;
+  --warm-text-secondary: #B5ADA4;
+  --warm-text-muted: #7A7068;
+  --warm-text-placeholder: #5C544A;
 }
 
 /* Global styles */

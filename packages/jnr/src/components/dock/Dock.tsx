@@ -84,7 +84,7 @@ export function Dock({ primaryColor = '#E8610A' }: DockProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-t border-[#E8E0D6]/50 safe-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t safe-bottom" style={{ backgroundColor: 'rgba(253,252,250,0.9)', borderColor: 'var(--warm-border, #E8E0D6)' }}>
       <div className="flex items-center justify-around px-2 py-2">
         {DOCK_ITEMS.map((item) => {
           const isActive = pathname === item.href;

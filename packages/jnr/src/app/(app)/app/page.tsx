@@ -154,7 +154,7 @@ export default function AACAppPage() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #E0F7FA 0%, #E8F5E9 50%, #F1F8E9 100%)' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--warm-bg-page, #F5F0EB)' }}>
         <div
           className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
           style={{ borderColor: primaryColor, borderTopColor: 'transparent' }}
@@ -164,7 +164,7 @@ export default function AACAppPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'linear-gradient(135deg, #E0F7FA 0%, #E8F5E9 50%, #F1F8E9 100%)' }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'var(--warm-bg-page, #F5F0EB)' }}>
       {/* Header - Sticky with blur */}
       <header
         className="sticky top-0 z-40 backdrop-blur-xl safe-top"
@@ -205,10 +205,10 @@ export default function AACAppPage() {
       </header>
 
       {/* Sentence Strip */}
-      <div className="px-3 sm:px-4 py-2 sm:py-3 bg-white/70 backdrop-blur-sm border-b border-gray-200/30">
-        <div className="flex items-center gap-2 min-h-[48px] sm:min-h-[56px] p-2 sm:p-3 bg-white/50 rounded-2xl overflow-x-auto">
+      <div className="px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-sm border-b" style={{ backgroundColor: 'rgba(253,252,250,0.7)', borderColor: 'var(--warm-border-light, #F0EAE3)' }}>
+        <div className="flex items-center gap-2 min-h-[48px] sm:min-h-[56px] p-2 sm:p-3 rounded-2xl overflow-x-auto" style={{ backgroundColor: 'rgba(253,252,250,0.5)' }}>
           {sentence.length === 0 ? (
-            <span className="text-gray-400 text-[15px] sm:text-[17px] whitespace-nowrap">
+            <span className="text-[15px] sm:text-[17px] whitespace-nowrap" style={{ color: 'var(--warm-text-placeholder, #B5ADA4)' }}>
               Tap cards to build a sentence...
             </span>
           ) : (
@@ -252,18 +252,20 @@ export default function AACAppPage() {
           <button
             onClick={handleBackspace}
             disabled={sentence.length === 0}
-            className="min-w-[44px] sm:min-w-[50px] min-h-[44px] sm:min-h-[50px] bg-white text-gray-700 font-semibold rounded-2xl border border-gray-200
-                     active:bg-gray-100 transition-colors
+            className="min-w-[44px] sm:min-w-[50px] min-h-[44px] sm:min-h-[50px] font-semibold rounded-2xl border
+                     transition-colors
                      disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center text-lg sm:text-xl"
+            style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', color: 'var(--warm-text-secondary, #5C544A)', borderColor: 'var(--warm-border, #E8E0D6)' }}
           >
             ⌫
           </button>
           <button
             onClick={handleClear}
             disabled={sentence.length === 0}
-            className="px-3 sm:px-5 min-h-[44px] sm:min-h-[50px] bg-white text-[#FF3B30] font-semibold rounded-xl border border-gray-200
+            className="px-3 sm:px-5 min-h-[44px] sm:min-h-[50px] text-[#FF3B30] font-semibold rounded-xl border
                      active:bg-red-50 transition-colors
                      disabled:opacity-40 disabled:cursor-not-allowed text-[15px] sm:text-[17px]"
+            style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: 'var(--warm-border, #E8E0D6)' }}
           >
             Clear
           </button>
@@ -297,11 +299,12 @@ export default function AACAppPage() {
               <button
                 key={phrase.id}
                 onClick={() => handleCardTap(phrase)}
-                className="bg-white rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
                           aspect-square min-w-[48px] min-h-[48px]
-                          shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)]
+                          shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
                           active:scale-[0.95] active:shadow-sm transition-all
-                          border border-gray-100 focus:outline-none"
+                          border focus:outline-none"
+                style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: 'var(--warm-border-light, #F0EAE3)' }}
               >
                 <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
                   <Image
@@ -312,7 +315,7 @@ export default function AACAppPage() {
                     unoptimized
                   />
                 </div>
-                <span className="text-[14px] sm:text-[15px] font-bold text-gray-800 text-center leading-tight line-clamp-2">
+                <span className="text-[14px] sm:text-[15px] font-bold text-center leading-tight line-clamp-2" style={{ color: 'var(--warm-text, #1A1614)' }}>
                   {phrase.text}
                 </span>
               </button>
@@ -330,12 +333,12 @@ export default function AACAppPage() {
               <button
                 key={category.id}
                 onClick={() => handleCategoryTap(category)}
-                className="bg-white rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
                           aspect-square min-w-[48px] min-h-[48px]
-                          shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)]
+                          shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
                           active:scale-[0.95] active:shadow-sm transition-all
                           border-2"
-                style={{ borderColor: category.color }}
+                style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: category.color }}
               >
                 <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
                   <Image

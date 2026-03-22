@@ -23,21 +23,21 @@ export function Providers({ children }: { children: ReactNode }) {
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: '#2563eb',
-          colorBackground: '#ffffff',
-          colorText: '#0a0a0a',
+          colorPrimary: '#E8610A',
+          colorBackground: '#FDFCFA',
+          colorText: '#1A1614',
           borderRadius: '0.75rem',
         },
         elements: {
           formButtonPrimary:
-            'bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-xl',
-          card: 'shadow-xl rounded-2xl border border-gray-100',
-          headerTitle: 'text-2xl font-bold',
-          headerSubtitle: 'text-gray-600',
+            'bg-[#E8610A] hover:bg-[#D15709] text-white font-medium py-3 px-4 rounded-xl',
+          card: 'shadow-xl rounded-2xl border border-[#E8E0D6]',
+          headerTitle: 'text-2xl font-bold text-[#1A1614]',
+          headerSubtitle: 'text-[#5C544A]',
           socialButtonsBlockButton:
-            'border-gray-200 hover:border-gray-300 rounded-xl py-3',
-          formFieldInput: 'rounded-xl border-gray-200 py-3',
-          footerActionLink: 'text-blue-600 hover:text-blue-700 font-medium',
+            'border-[#E8E0D6] hover:border-[#D6CEC4] rounded-xl py-3',
+          formFieldInput: 'rounded-xl border-[#E8E0D6] py-3',
+          footerActionLink: 'text-[#E8610A] hover:text-[#D15709] font-medium',
         },
       }}
       signInUrl="/sign-in"

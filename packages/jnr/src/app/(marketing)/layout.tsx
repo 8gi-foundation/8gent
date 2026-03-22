@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
  *
  * Overrides body overflow:hidden (set globally for AAC boards)
  * so marketing pages can scroll normally.
+ * EcosystemFooter is included at the page level (pages already have it).
  */
 export default function MarketingLayout({
   children,

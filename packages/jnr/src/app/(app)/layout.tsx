@@ -18,7 +18,7 @@ export default function AppLayout({
   return (
     <TenantProvider>
       <AppProvider>
-        <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #E0F7FA 0%, #E8F5E9 50%, #F1F8E9 100%)' }}>
+        <div className="min-h-screen" style={{ background: 'var(--warm-bg-page, #F5F0EB)' }}>
           {children}
         </div>
       </AppProvider>
