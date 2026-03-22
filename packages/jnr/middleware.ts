@@ -40,6 +40,12 @@ export default clerkMiddleware(async (auth, request) => {
     if (sub && sub !== 'www' && sub !== 'clerk' && sub !== 'accounts') {
       subdomain = sub;
     }
+  } else if (hostnameNoPort.endsWith('.8gentos.com')) {
+    // e.g. james.8gentos.com → james
+    const sub = hostnameNoPort.replace('.8gentos.com', '');
+    if (sub && sub !== 'www' && sub !== 'clerk' && sub !== 'accounts') {
+      subdomain = sub;
+    }
   } else if (hostnameNoPort.endsWith('.localhost')) {
     // e.g. nick.localhost → nick
     const sub = hostnameNoPort.replace('.localhost', '');
@@ -53,6 +59,14 @@ export default clerkMiddleware(async (auth, request) => {
   if (subdomain) {
     const response = NextResponse.next();
     response.headers.set('x-tenant-subdomain', subdomain);
+
+    // Set tenant mode based on domain
+    if (hostnameNoPort.endsWith('.8gentos.com')) {
+      response.headers.set('x-tenant-mode', 'adult');
+    } else if (hostnameNoPort.endsWith('.8gentjr.com')) {
+      response.headers.set('x-tenant-mode', 'kid');
+    }
+
     return response;
   }
 

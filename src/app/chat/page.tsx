@@ -17,7 +17,11 @@ import { ClawAIUIRenderer, parseUITree } from '@/lib/8gent/json-render-provider'
 import { useAppContext, formatAppContextForAI } from '@/context/AppContext';
 import { usePauseMusicForVoice } from '@/hooks/usePauseMusicForVoice';
 import { ToolProviderSelector, SelectedToolsChips, type SelectedTool } from '@/components/claw-ai/ToolProviderSelector';
+import { useDaemon } from '@/hooks/useDaemon';
 import '@/lib/themes/themes.css';
+
+// Check at module level — only true when the env var is set
+const DAEMON_ENABLED = !!process.env.NEXT_PUBLIC_DAEMON_URL;
 
 // ============================================================================
 // Types
@@ -77,12 +81,18 @@ export default function ChatPage() {
     ensureThread,
   } = useChatThreads();
 
+  // Daemon connection (no-ops when NEXT_PUBLIC_DAEMON_URL is not set)
+  const daemon = useDaemon();
+  const useDaemonChat = DAEMON_ENABLED && daemon.isConnected;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedTools, setSelectedTools] = useState<SelectedTool[]>([]);
+  const [streamingContent, setStreamingContent] = useState('');
+  const [activeTool, setActiveTool] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -126,12 +136,85 @@ export default function ChatPage() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, scrollToBottom]);
+  }, [messages, streamingContent, scrollToBottom]);
 
   // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Daemon event subscriptions — stream chunks, tool calls, errors
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    if (!DAEMON_ENABLED) return;
+
+    const unsubs: (() => void)[] = [];
+
+    unsubs.push(daemon.on('agent:thinking', () => {
+      setIsTyping(true);
+      setStreamingContent('');
+      setActiveTool(null);
+    }));
+
+    unsubs.push(daemon.on('agent:stream', (payload) => {
+      if (payload.final) {
+        // Final chunk — commit the full message
+        const finalText = payload.chunk;
+        const assistantMessage = addMessage('assistant', finalText);
+        if (assistantMessage) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: assistantMessage.id,
+              role: 'assistant',
+              content: finalText,
+              timestamp: assistantMessage.timestamp,
+            },
+          ]);
+        }
+        setStreamingContent('');
+        setIsTyping(false);
+        setActiveTool(null);
+
+        if (voiceChat.isVoiceEnabled) {
+          voiceChat.speakResponse(finalText);
+        }
+      } else {
+        // Partial chunk — append to streaming buffer
+        setStreamingContent((prev) => prev + payload.chunk);
+      }
+    }));
+
+    unsubs.push(daemon.on('tool:start', (payload) => {
+      setActiveTool(payload.tool);
+    }));
+
+    unsubs.push(daemon.on('tool:result', () => {
+      setActiveTool(null);
+    }));
+
+    unsubs.push(daemon.on('agent:error', (payload) => {
+      const errContent = `Error: ${payload.error}`;
+      const assistantMessage = addMessage('assistant', errContent);
+      if (assistantMessage) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: assistantMessage.id,
+            role: 'assistant',
+            content: errContent,
+            timestamp: assistantMessage.timestamp,
+          },
+        ]);
+      }
+      setStreamingContent('');
+      setIsTyping(false);
+      setActiveTool(null);
+    }));
+
+    return () => unsubs.forEach((u) => u());
+  }, [daemon, addMessage, voiceChat]);
 
   // Send message with specific text
   const handleSendWithText = useCallback(async (text: string) => {
@@ -156,6 +239,14 @@ export default function ChatPage() {
       ]);
     }
 
+    // ---- Daemon path: send via WebSocket and return (events handle the rest)
+    if (useDaemonChat) {
+      setIsTyping(true);
+      daemon.sendPrompt(userContent);
+      return;
+    }
+
+    // ---- API route path (existing behavior) ----
     setIsTyping(true);
 
     try {
@@ -248,7 +339,7 @@ export default function ChatPage() {
     }
 
     setIsTyping(false);
-  }, [messages, addMessage, voiceChat, ensureThread]);
+  }, [messages, addMessage, voiceChat, ensureThread, useDaemonChat, daemon]);
 
   // Handle form submit
   const handleSend = async () => {
@@ -386,14 +477,28 @@ export default function ChatPage() {
                   8gent
                 </h1>
                 <p
-                  className="text-xs"
+                  className="text-xs flex items-center gap-1.5"
                   style={{ color: 'hsl(var(--theme-muted-foreground))' }}
                 >
                   {voiceRecorder.isRecording ? 'Recording...' :
                     isTranscribing ? 'Transcribing...' :
                       voiceChat.mode === 'speaking' ? 'Speaking...' :
-                        isTyping ? 'Thinking...' :
-                          'Online'}
+                        activeTool ? `Running ${activeTool}...` :
+                          isTyping ? 'Thinking...' :
+                            'Online'}
+                  {DAEMON_ENABLED && (
+                    <span
+                      className="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      title={`Daemon: ${daemon.status}`}
+                      style={{
+                        background: daemon.isConnected
+                          ? 'hsl(142 71% 45%)'   // green
+                          : daemon.status === 'connecting'
+                            ? 'hsl(45 93% 47%)'   // amber
+                            : 'hsl(0 84% 60%)',    // red
+                      }}
+                    />
+                  )}
                 </p>
               </div>
             </div>
@@ -560,8 +665,42 @@ export default function ChatPage() {
               </motion.div>
             ))}
 
+            {/* Daemon streaming message */}
+            {streamingContent && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-start"
+              >
+                <div className="max-w-[85%] md:max-w-[75%] flex gap-3">
+                  <ClawAIAvatar size={32} isActive={true} className="mt-1" />
+                  <div
+                    className="px-4 py-3"
+                    style={{
+                      background: 'var(--theme-chat-assistant-bg, hsl(var(--theme-card)))',
+                      color: 'var(--theme-chat-assistant-fg, hsl(var(--theme-card-foreground)))',
+                      borderRadius: 'var(--theme-chat-bubble-radius-tail, 0.25rem) var(--theme-chat-bubble-radius, 1.25rem) var(--theme-chat-bubble-radius, 1.25rem) var(--theme-chat-bubble-radius, 1.25rem)',
+                    }}
+                  >
+                    <div className="prose prose-sm max-w-none prose-p:my-2 prose-headings:my-3 [&_*]:!text-inherit">
+                      <Streamdown>{streamingContent}</Streamdown>
+                    </div>
+                    {activeTool && (
+                      <div
+                        className="mt-2 flex items-center gap-2 text-xs"
+                        style={{ color: 'hsl(var(--theme-muted-foreground))' }}
+                      >
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        <span>Using {activeTool}...</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
             {/* Typing indicator */}
-            {isTyping && (
+            {isTyping && !streamingContent && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}

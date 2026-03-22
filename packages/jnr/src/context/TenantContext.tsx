@@ -79,6 +79,9 @@ interface TenantContextValue {
   /** Current subdomain */
   subdomain: string;
 
+  /** Tenant mode derived from domain (8gentos.com=adult, 8gentjr.com=kid) */
+  tenantMode: 'adult' | 'kid' | null;
+
   /** Default cards from card pack */
   defaultCards: Card[];
 
@@ -124,6 +127,7 @@ const TenantContext = createContext<TenantContextValue>({
   isLoading: true,
   error: null,
   subdomain: '',
+  tenantMode: null,
   defaultCards: [],
   customCards: [],
   allCards: [],
@@ -137,6 +141,18 @@ const TenantContext = createContext<TenantContextValue>({
   updatePreferences: async () => {},
   refresh: () => {},
 });
+
+/**
+ * Detect tenant mode from the current hostname.
+ * 8gentos.com → adult, 8gentjr.com → kid, otherwise fallback to tenant config.
+ */
+function getTenantModeFromHost(): 'adult' | 'kid' | null {
+  if (typeof window === 'undefined') return null;
+  const hostname = window.location.hostname;
+  if (hostname.endsWith('.8gentos.com')) return 'adult';
+  if (hostname.endsWith('.8gentjr.com')) return 'kid';
+  return null;
+}
 
 /**
  * Extract tenant from URL path (/jr/[tenant])
@@ -169,8 +185,12 @@ function getSubdomainFromHost(): string {
     return '';
   }
 
-  // Handle production (e.g., nick.8gent.app or nick.8gentjr.com)
-  if (hostname.endsWith('.8gent.app') || hostname.endsWith('.8gentjr.com')) {
+  // Handle production (e.g., nick.8gent.app, nick.8gentjr.com, james.8gentos.com)
+  if (
+    hostname.endsWith('.8gent.app') ||
+    hostname.endsWith('.8gentjr.com') ||
+    hostname.endsWith('.8gentos.com')
+  ) {
     const parts = hostname.split('.');
     if (parts.length >= 3) {
       return parts[0];
@@ -204,13 +224,15 @@ export function TenantProvider({
   initialSubdomain,
 }: TenantProviderProps): React.ReactElement {
   const [subdomain, setSubdomain] = useState(initialSubdomain || '');
+  const [tenantMode, setTenantMode] = useState<'adult' | 'kid' | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Get subdomain from URL on client
+  // Get subdomain and tenant mode from URL on client
   useEffect(() => {
     if (!initialSubdomain) {
       setSubdomain(getSubdomainFromHost());
     }
+    setTenantMode(getTenantModeFromHost());
   }, [initialSubdomain]);
 
   // Convex queries
@@ -301,6 +323,7 @@ export function TenantProvider({
       isLoading,
       error,
       subdomain,
+      tenantMode,
       defaultCards: cardsData?.defaultCards || [],
       customCards: cardsData?.customCards || [],
       allCards,
@@ -319,6 +342,7 @@ export function TenantProvider({
       isLoading,
       error,
       subdomain,
+      tenantMode,
       cardsData,
       allCards,
       toggleFavorite,
