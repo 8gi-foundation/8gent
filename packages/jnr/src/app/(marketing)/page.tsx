@@ -4,159 +4,177 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-[#E0F7FA] via-[#E8F5E9] to-[#F1F8E9]">
-      {/* Hero Section */}
-      <section className="flex-1 flex flex-col items-center justify-center px-5 py-12 sm:py-16">
-        <div className="text-center space-y-5 max-w-lg w-full">
-          {/* Animated Logo */}
-          <div className="relative mx-auto w-28 h-28 sm:w-32 sm:h-32 mb-4">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50] to-[#00ACC1] rounded-[32px] shadow-lg shadow-green-200/50 animate-[gentle-bob_3s_ease-in-out_infinite]" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 18.5C15.5 18.5 18.5 15.5 18.5 12C18.5 8.5 15.5 5.5 12 5.5C8.5 5.5 5.5 8.5 5.5 12" />
-                <circle cx="9" cy="11" r="1.2" fill="white" />
-                <circle cx="15" cy="11" r="1.2" fill="white" />
-                <path d="M9.5 15C10.2 16 11 16.5 12 16.5C13 16.5 13.8 16 14.5 15" />
-                <path d="M3 12C2 13.5 2.5 16 4 17" />
-                <path d="M1.5 10C1 11.5 1 13 1.5 14.5" />
-              </svg>
-            </div>
+    <main className="min-h-screen bg-[#F5F0EB] text-[#1A1614] overflow-y-auto">
+      {/* Nav */}
+      <nav className="flex items-center justify-between px-5 py-4 max-w-5xl mx-auto">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-[#E8610A]/10 border border-[#E8610A]/30 flex items-center justify-center">
+            <span className="text-[#E8610A] font-bold text-sm" style={{ fontFamily: 'Georgia, serif' }}>8</span>
+          </div>
+          <span className="text-sm font-medium tracking-tight">8gent</span>
+        </div>
+        <Link
+          href="/sign-in"
+          className="text-sm text-[#6B6560] hover:text-[#1A1614] transition-colors"
+        >
+          Sign In
+        </Link>
+      </nav>
+
+      <div className="max-w-5xl mx-auto px-5">
+        {/* Hero */}
+        <section className="pt-16 pb-16 sm:pt-24 sm:pb-20">
+          <div className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-[#E8610A]/20 bg-[#E8610A]/5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E8610A]" />
+            <span className="text-[10px] font-mono text-[#E8610A] tracking-wide uppercase">Open Source · 3 Products · 1 Intelligence</span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-[2.25rem] sm:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight">
-            Your Voice,
+          <h1
+            className="text-3xl sm:text-4xl md:text-5xl leading-[1.1] tracking-tight mb-4"
+            style={{ fontFamily: 'Georgia, serif', fontWeight: 500 }}
+          >
+            One AI that learns you.
             <br />
-            <span className="bg-gradient-to-r from-[#4CAF50] to-[#00ACC1] bg-clip-text text-transparent">
-              Your Way
+            <span className="bg-gradient-to-r from-[#E8610A] to-[#C47F17] bg-clip-text text-transparent">
+              Three interfaces to use it.
             </span>
           </h1>
 
-          {/* Subheadline */}
-          <p className="text-base sm:text-lg text-gray-600 max-w-sm mx-auto leading-relaxed">
-            An AI-powered AAC app that learns how your child communicates and grows with them.
+          <p className="text-base sm:text-lg text-[#6B6560] max-w-xl leading-relaxed mb-8">
+            8gent is a personal AI operating system. It codes, it communicates, it grows with your family.
+            Free, local-first, self-improving.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col gap-3 pt-3 w-full max-w-xs mx-auto">
+          <div className="flex flex-wrap gap-3">
             <Link
               href="/sign-up"
-              className="w-full py-4 bg-gradient-to-r from-[#4CAF50] to-[#43A047] text-white text-lg font-bold rounded-2xl
-                       hover:from-[#43A047] hover:to-[#388E3C] active:scale-[0.97] transition-all
-                       shadow-lg shadow-green-300/40 text-center"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E8610A] text-white text-sm font-medium
+                       hover:bg-[#CC5508] active:scale-[0.97] transition-all"
             >
               Get Started Free
             </Link>
-            <Link
-              href="/sign-in"
-              className="w-full py-4 bg-white/80 text-gray-700 text-lg font-semibold rounded-2xl
-                       hover:bg-white active:scale-[0.97] transition-all
-                       border border-gray-200/80 shadow-sm text-center"
+            <a
+              href="https://github.com/PodJamz/8gent-code"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-[#1A1614]/12 text-[#6B6560] text-sm
+                       hover:border-[#1A1614]/24 hover:text-[#1A1614] transition-all"
             >
-              Sign In
-            </Link>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              Clone &amp; Run
+            </a>
           </div>
-        </div>
 
-        {/* Features */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12 max-w-lg sm:max-w-3xl w-full px-1">
-          <FeatureCard
-            icon={
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" rx="2" />
-                <rect x="14" y="3" width="7" height="7" rx="2" />
-                <rect x="3" y="14" width="7" height="7" rx="2" />
-                <rect x="14" y="14" width="7" height="7" rx="2" />
-              </svg>
-            }
-            title="Core Words"
-            description="50 Supercore words with symbols your child already knows"
-            color="#4CAF50"
-          />
-          <FeatureCard
-            icon={
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00ACC1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="22" />
-              </svg>
-            }
-            title="Neural Voice"
-            description="Kiki — a warm, natural-sounding voice made for kids"
-            color="#00ACC1"
-          />
-          <FeatureCard
-            icon={
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF9800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-              </svg>
-            }
-            title="AI That Adapts"
-            description="Learns your child's GLP stage and grows with them"
-            color="#FF9800"
-          />
-        </div>
-
-        {/* Trust Signal */}
-        <div className="mt-10 text-center">
-          <p className="text-xs text-gray-400 tracking-wide uppercase font-medium">
-            Built with speech-language pathologists
-          </p>
-          <div className="flex items-center justify-center gap-4 mt-3 text-gray-300">
-            <span className="text-sm font-medium">ARASAAC Symbols</span>
-            <span>·</span>
-            <span className="text-sm font-medium">Fitzgerald Key</span>
-            <span>·</span>
-            <span className="text-sm font-medium">GLP Stages 1-6</span>
+          <div className="flex flex-wrap items-center gap-3 mt-6 text-[10px] font-mono text-[#6B6560]">
+            <span>MIT License</span>
+            <span className="w-1 h-1 rounded-full bg-[#6B6560]" />
+            <span>$0 to start</span>
+            <span className="w-1 h-1 rounded-full bg-[#6B6560]" />
+            <span>Local-first</span>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Three Product Cards */}
+        <section className="pb-16 sm:pb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Code */}
+            <div className="p-6 rounded-xl border border-[#E8610A]/20 bg-white flex flex-col">
+              <div className="w-10 h-10 rounded-lg bg-[#E8610A]/10 border border-[#E8610A]/20 flex items-center justify-center text-[#E8610A] font-mono text-sm font-bold mb-3">
+                &lt;/&gt;
+              </div>
+              <span className="text-[10px] font-mono text-[#E8610A] uppercase tracking-wider mb-1">For Developers</span>
+              <h3 className="text-base font-medium mb-2">Your coding agent. $0. Local.</h3>
+              <p className="text-sm text-[#6B6560] leading-relaxed mb-4 flex-1">
+                Plans every change. Validates with tests. Runs on Ollama with 14 local models. Open source.
+              </p>
+              <a href="https://github.com/PodJamz/8gent-code" className="text-sm font-medium text-[#E8610A] hover:opacity-80">
+                Clone &amp; Run &rarr;
+              </a>
+            </div>
+
+            {/* OS */}
+            <div className="p-6 rounded-xl border border-[#C47F17]/20 bg-white flex flex-col">
+              <div className="w-10 h-10 rounded-lg bg-[#C47F17]/10 border border-[#C47F17]/20 flex items-center justify-center text-[#C47F17] font-mono text-sm font-bold mb-3">
+                ~
+              </div>
+              <span className="text-[10px] font-mono text-[#C47F17] uppercase tracking-wider mb-1">For Everyone</span>
+              <h3 className="text-base font-medium mb-2">Your personal AI OS.</h3>
+              <p className="text-sm text-[#6B6560] leading-relaxed mb-4 flex-1">
+                An always-on system that manages projects, automates workflows, and handles communication. Your data stays yours.
+              </p>
+              <Link href="/sign-up" className="text-sm font-medium text-[#C47F17] hover:opacity-80">
+                Join Waitlist &rarr;
+              </Link>
+            </div>
+
+            {/* Jr */}
+            <div className="p-6 rounded-xl border border-[#4C9AFF]/20 bg-white flex flex-col">
+              <div className="w-10 h-10 rounded-lg bg-[#4C9AFF]/10 border border-[#4C9AFF]/20 flex items-center justify-center text-[#4C9AFF] text-lg mb-3">
+                &#9829;
+              </div>
+              <span className="text-[10px] font-mono text-[#4C9AFF] uppercase tracking-wider mb-1">For Families</span>
+              <h3 className="text-base font-medium mb-2">Every child deserves a voice.</h3>
+              <p className="text-sm text-[#6B6560] leading-relaxed mb-4 flex-1">
+                AAC communication for autistic and non-verbal children. GLP-stage adaptive. Kiki neural voice. Free forever.
+              </p>
+              <Link href="/sign-up" className="text-sm font-medium text-[#4C9AFF] hover:opacity-80">
+                Get Started &rarr;
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Jr Spotlight — kid-friendly sub-section */}
+        <section className="pb-16 sm:pb-20">
+          <div className="border-t border-[#1A1614]/8 pt-12">
+            <div className="text-center mb-8">
+              <span className="text-[10px] font-mono text-[#4C9AFF] uppercase tracking-[0.2em] block mb-3">8gent Jr</span>
+              <h2
+                className="text-2xl sm:text-3xl tracking-tight mb-3"
+                style={{ fontFamily: 'Georgia, serif', fontWeight: 500 }}
+              >
+                Built for children who see<br />the world differently.
+              </h2>
+              <p className="text-sm text-[#6B6560] max-w-md mx-auto leading-relaxed">
+                Designed with speech-language pathologists. ARASAAC symbols. Fitzgerald Key colors.
+                GLP stages 1-6. Motor planning lock so buttons never move.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: 'Core Words', detail: '50 Supercore', color: '#4CAF50' },
+                { label: 'Neural Voice', detail: 'Kiki TTS', color: '#4C9AFF' },
+                { label: 'GLP Stages', detail: '1-6 adaptive', color: '#E8610A' },
+                { label: 'SchoolTube', detail: 'Learning games', color: '#C47F17' },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="p-4 rounded-xl bg-white border border-[#1A1614]/8 text-center"
+                >
+                  <div
+                    className="w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center"
+                    style={{ backgroundColor: `${item.color}15` }}
+                  >
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                  </div>
+                  <div className="text-sm font-medium mb-0.5">{item.label}</div>
+                  <div className="text-[11px] text-[#6B6560]">{item.detail}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* Footer */}
-      <footer className="px-5 py-6 text-center text-sm text-gray-400 border-t border-white/60">
-        <p>
-          <a href="https://8gent.world" className="text-[#4CAF50] hover:underline font-medium">
-            8gent
-          </a>
-          {' · '}
-          <a href="https://x.com/8gentapp" className="text-gray-500 hover:underline">
-            @8gentapp
-          </a>
-        </p>
+      <footer className="px-5 py-6 text-center text-sm text-[#6B6560] border-t border-[#1A1614]/8">
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <a href="https://8gent.world" className="text-[#E8610A] hover:underline font-medium">8gent.world</a>
+          <span className="w-1 h-1 rounded-full bg-[#6B6560]" />
+          <a href="https://x.com/8gentapp" className="hover:underline">@8gentapp</a>
+          <span className="w-1 h-1 rounded-full bg-[#6B6560]" />
+          <a href="https://github.com/PodJamz/8gent-code" className="hover:underline">GitHub</a>
+        </div>
       </footer>
-
-      <style>{`
-        @keyframes gentle-bob {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-6px) rotate(2deg); }
-        }
-      `}</style>
     </main>
-  );
-}
-
-function FeatureCard({
-  icon,
-  title,
-  description,
-  color,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  color: string;
-}) {
-  return (
-    <div className="p-5 bg-white/70 backdrop-blur-sm rounded-[20px] border border-white/80 shadow-sm
-                    hover:shadow-md hover:bg-white/90 transition-all">
-      <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3"
-        style={{ backgroundColor: `${color}15` }}
-      >
-        {icon}
-      </div>
-      <h3 className="text-base font-bold text-gray-900 mb-1">{title}</h3>
-      <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
-    </div>
   );
 }
