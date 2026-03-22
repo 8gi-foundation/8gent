@@ -4,7 +4,7 @@ import { HomeIcon, NotebookIcon, BookOpen, Palette, Music, PencilRuler } from "l
 export const DATA = {
   name: "8gent",
   initials: "OC",
-  url: "https://openclaw.io/",
+  url: "https://8gent.app",
   location: "Dublin, Ireland",
   locationLink: "https://www.google.com/maps/place/dublin+ireland",
   description:
@@ -37,7 +37,7 @@ export const DATA = {
   contact: {
     email: "hello@openclaw.io",
     tel: "",
-    website: "https://openclaw.io/",
+    website: "https://8gent.app",
     social: {
       GitHub: {
         name: "GitHub",
@@ -59,7 +59,7 @@ export const DATA = {
       },
       website: {
         name: "Website",
-        url: "https://openclaw.io/",
+        url: "https://8gent.app",
         icon: Icons.globe,
         navbar: false,
       },

@@ -4,5 +4,5 @@
 Contact: mailto:security@8gent.app
 Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en
-Canonical: https://www.8gent.app/.well-known/security.txt
-Policy: https://www.8gent.app/security-policy
+Canonical: https://8gentjr.com/.well-known/security.txt
+Policy: https://8gentjr.com/security-policy

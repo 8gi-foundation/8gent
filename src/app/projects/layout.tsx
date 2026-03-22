@@ -25,11 +25,11 @@ export const metadata: Metadata = {
     title: "Projects - 8gent | AI & System Development",
     description:
       "AI applications, agentic tools, and more. Explore the architecture of 8gent.",
-    url: "https://openclaw.io/projects",
+    url: "https://8gent.app/projects",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Projects",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/projects",
+    canonical: "https://8gent.app/projects",
   },
 };
 

@@ -1,11 +1,7 @@
 import { MetadataRoute } from 'next';
 
-/**
- * Dynamic sitemap generation for 8gent Jr
- * https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
- */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.8gent.app';
+  const baseUrl = 'https://8gentjr.com';
   const lastModified = new Date();
 
   return [
@@ -16,29 +12,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/demo`,
+      url: `${baseUrl}/privacy`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.9,
+      priority: 0.6,
     },
     {
-      url: `${baseUrl}/onboarding`,
+      url: `${baseUrl}/privacy/kids`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.6,
     },
-    // Future pages can be added here
-    // {
-    //   url: `${baseUrl}/pricing`,
-    //   lastModified,
-    //   changeFrequency: 'monthly',
-    //   priority: 0.7,
-    // },
-    // {
-    //   url: `${baseUrl}/about`,
-    //   lastModified,
-    //   changeFrequency: 'monthly',
-    //   priority: 0.6,
-    // },
   ];
 }

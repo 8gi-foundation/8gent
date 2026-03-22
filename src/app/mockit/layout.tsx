@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Mockit - Free Device Mockup Generator',
     description: 'Generate beautiful device mockups from any website. iPhone, iPad, MacBook frames with animations and export options.',
-    url: 'https://openclaw.io/mockit',
+    url: 'https://8gent.app/mockit',
     type: 'website',
     images: [
       {
-        url: 'https://openclaw.io/8gent-logo.png',
+        url: 'https://8gent.app/8gent-logo.png',
         width: 1200,
         height: 630,
         alt: 'Mockit - Device Mockup Generator by 8gent',
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     title: 'Mockit - Free Device Mockup Generator',
     description: 'Generate beautiful device mockups from any website.',
     card: 'summary_large_image',
-    images: ['https://openclaw.io/8gent-logo.png'],
+    images: ['https://8gent.app/8gent-logo.png'],
   },
   alternates: {
-    canonical: 'https://openclaw.io/mockit',
+    canonical: 'https://8gent.app/mockit',
   },
 };
 

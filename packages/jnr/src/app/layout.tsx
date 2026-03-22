@@ -24,8 +24,8 @@ const siteConfig = {
   name: '8gent Jr',
   tagline: 'No more gatekeeping. A voice for every kid.',
   description: 'A super-powered AI assistant that learns with your child. Accessibility first. Free forever. AAC communication, AI-generated custom symbols, and personalized voice synthesis.',
-  url: 'https://www.8gent.app',
-  ogImage: 'https://www.8gent.app/og-image.png',
+  url: 'https://8gentjr.com',
+  ogImage: 'https://8gentjr.com/og-image.png',
   twitterHandle: '@8gentapp',
   author: 'James Spalding',
 };
@@ -142,8 +142,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false, // Important for AAC - prevent accidental zooming
   viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#FFFDF9' },
@@ -203,13 +201,6 @@ const jsonLd = {
         price: '0',
         priceCurrency: 'USD',
         availability: 'https://schema.org/InStock',
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        ratingCount: '50',
-        bestRating: '5',
-        worstRating: '1',
       },
       featureList: [
         'Visual AAC communication cards',

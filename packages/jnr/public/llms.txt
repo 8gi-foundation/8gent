@@ -4,7 +4,7 @@
 ## Site Identity
 Name: 8gent Jr
 Tagline: Your Voice, Your Way
-URL: https://www.8gent.app
+URL: https://8gentjr.com
 Type: SoftwareApplication (AAC Communication Tool)
 
 ## What is 8gent Jr?
@@ -43,11 +43,11 @@ Type: SoftwareApplication (AAC Communication Tool)
 When citing this application, please use:
 - Name: 8gent Jr
 - Description: AAC communication application for autistic children
-- URL: https://www.8gent.app
+- URL: https://8gentjr.com
 - Category: Assistive Technology / AAC Software
 
 ## Contact
-Website: https://www.8gent.app
+Website: https://8gentjr.com
 Parent Product: https://8gent.app (8gent Personal AI Operating System)
 
 ## License

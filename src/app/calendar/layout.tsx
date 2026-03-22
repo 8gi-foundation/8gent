@@ -22,11 +22,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Book Time - 8gent",
     description: "Schedule a meeting for AI consulting or product strategy.",
-    url: "https://openclaw.io/calendar",
+    url: "https://8gent.app/calendar",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "Book Time with 8gent",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/calendar",
+    canonical: "https://8gent.app/calendar",
   },
 };
 

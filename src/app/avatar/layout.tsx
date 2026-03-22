@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Avatar - Interactive 3D Avatar Generator",
     description: "Generate interactive 3D avatars from photos using AI.",
-    url: "https://openclaw.io/avatar",
+    url: "https://8gent.app/avatar",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/avatar",
+    canonical: "https://8gent.app/avatar",
   },
 };
 

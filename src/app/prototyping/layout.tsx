@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Rapid Prototyping - 8gent",
     description: "MVP development from concept to production. High-velocity engineering.",
-    url: "https://openclaw.io/prototyping",
+    url: "https://8gent.app/prototyping",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Rapid Prototyping",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/prototyping",
+    canonical: "https://8gent.app/prototyping",
   },
 };
 

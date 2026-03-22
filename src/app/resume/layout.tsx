@@ -26,11 +26,11 @@ export const metadata: Metadata = {
     title: "Resume - 8gent | Creative Technologist",
     description:
       "12+ years in product strategy, AI development, and full-stack engineering. Dublin, Ireland. Available for consulting.",
-    url: "https://openclaw.io/resume",
+    url: "https://8gent.app/resume",
     type: "profile",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Resume & Professional Background",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/resume",
+    canonical: "https://8gent.app/resume",
   },
 };
 

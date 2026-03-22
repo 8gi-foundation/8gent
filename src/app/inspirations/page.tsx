@@ -52,7 +52,7 @@ const inspirations: Inspiration[] = [
     description: 'The primary architect of 8gent. Transformed the vision of an AI-native operating system into a working reality through agentic orchestration and design-led engineering.',
     links: {
       github: 'https://github.com/openclaw',
-      website: 'https://openclaw.io',
+      website: 'https://8gent.app',
     },
     gradient: 'from-violet-500/20 via-fuchsia-500/10 to-transparent',
     accentColor: 'text-violet-400',

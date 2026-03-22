@@ -19,11 +19,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Music - 8gent",
     description: "Music production and audio creations from a Creative Technologist.",
-    url: "https://openclaw.io/music",
+    url: "https://8gent.app/music",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Music",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/music",
+    canonical: "https://8gent.app/music",
   },
 };
 

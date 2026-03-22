@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Product Strategy - 8gent",
     description: "Product leadership and strategy consulting. Dublin-based CPO.",
-    url: "https://openclaw.io/product",
+    url: "https://8gent.app/product",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Product Strategy",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/product",
+    canonical: "https://8gent.app/product",
   },
 };
 

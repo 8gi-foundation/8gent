@@ -34,8 +34,8 @@ export async function generateMetadata({
 
   const { title, summary, publishedAt, image, authors } = post.metadata;
   const ogImage = image
-    ? (image.startsWith("http") ? image : `https://openclaw.io${image}`)
-    : "https://openclaw.io/8gent-logo.png";
+    ? (image.startsWith("http") ? image : `https://8gent.app${image}`)
+    : "https://8gent.app/8gent-logo.png";
 
   return {
     title: `${title} | 8gent Blog`,
@@ -52,12 +52,12 @@ export async function generateMetadata({
       ...(authors?.map((a) => a.name) || []),
     ],
     authors: authors?.map((a) => ({ name: a.name })) || [
-      { name: "8gent", url: "https://openclaw.io" },
+      { name: "8gent", url: "https://8gent.app" },
     ],
     openGraph: {
       title: title,
       description: summary,
-      url: `https://openclaw.io/blog/${slug}`,
+      url: `https://8gent.app/blog/${slug}`,
       type: "article",
       publishedTime: publishedAt,
       authors: authors?.map((a) => a.name) || ["8gent"],
@@ -78,7 +78,7 @@ export async function generateMetadata({
       images: [ogImage],
     },
     alternates: {
-      canonical: `https://openclaw.io/blog/${slug}`,
+      canonical: `https://8gent.app/blog/${slug}`,
     },
   };
 }
@@ -110,9 +110,9 @@ export default async function Blog({
       />
       <BreadcrumbJsonLd
         items={[
-          { name: "Home", url: "https://openclaw.io" },
-          { name: "Blog", url: "https://openclaw.io/blog" },
-          { name: title, url: `https://openclaw.io/blog/${post.slug}` },
+          { name: "Home", url: "https://8gent.app" },
+          { name: "Blog", url: "https://8gent.app/blog" },
+          { name: title, url: `https://8gent.app/blog/${post.slug}` },
         ]}
       />
 

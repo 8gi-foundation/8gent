@@ -1,32 +1,32 @@
-"use client";
-
 import { DATA } from "@/data/resume";
+
+const BASE_URL = "https://8gent.app";
 
 // WebSite Schema
 export function WebSiteJsonLd() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://openclaw.io/#website",
-    url: DATA.url,
+    "@id": `${BASE_URL}/#website`,
+    url: BASE_URL,
     name: `${DATA.name} - The AI-Native Operating System`,
     description: DATA.description,
     publisher: {
       "@type": "Organization",
-      "@id": "https://openclaw.io/#organization",
-      name: "OpenClaw Team",
+      "@id": `${BASE_URL}/#organization`,
+      name: "8gent",
     },
     inLanguage: ["en"],
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://openclaw.io/search?q={search_term_string}",
+        urlTemplate: `${BASE_URL}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
     copyrightHolder: {
-      "@id": "https://openclaw.io/#organization",
+      "@id": `${BASE_URL}/#organization`,
     },
     copyrightYear: 2025,
     keywords: [
@@ -53,16 +53,16 @@ export function OrganizationJsonLd() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": "https://openclaw.io/#organization",
-    name: "OpenClaw",
-    url: DATA.url,
+    "@id": `${BASE_URL}/#organization`,
+    name: "8gent",
+    url: BASE_URL,
     logo: {
       "@type": "ImageObject",
-      url: "https://openclaw.io/8gent-logo.png",
+      url: `${BASE_URL}/8gent-logo.png`,
       width: 1200,
       height: 630,
     },
-    image: "https://openclaw.io/8gent-logo.png",
+    image: `${BASE_URL}/8gent-logo.png`,
     description: DATA.description,
     address: {
       "@type": "PostalAddress",
@@ -76,7 +76,6 @@ export function OrganizationJsonLd() {
       },
     ],
     foundingDate: "2024",
-    email: "hello@openclaw.io",
   };
 
   return (
@@ -134,7 +133,7 @@ export function ServiceJsonLd() {
       name: service.name,
       description: service.description,
       provider: {
-        "@id": "https://openclaw.io/#organization",
+        "@id": `${BASE_URL}/#organization`,
       },
       areaServed: {
         "@type": "Place",

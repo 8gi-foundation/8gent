@@ -28,11 +28,11 @@ export const metadata: Metadata = {
     title: "Design System Gallery - 35+ UI Themes",
     description:
       "Beautiful UI themes with copy-ready AI prompts. Dark/light mode, comprehensive design tokens.",
-    url: "https://openclaw.io/design",
+    url: "https://8gent.app/design",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Design System Gallery",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/design",
+    canonical: "https://8gent.app/design",
   },
 };
 

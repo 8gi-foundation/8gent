@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Photos - 8gent",
     description: "Visual journey and photography from a Creative Technologist.",
-    url: "https://openclaw.io/photos",
+    url: "https://8gent.app/photos",
     type: "website",
     images: [
       {
-        url: "https://openclaw.io/8gent-logo.png",
+        url: "https://8gent.app/8gent-logo.png",
         width: 1200,
         height: 630,
         alt: "8gent - Photos",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://openclaw.io/photos",
+    canonical: "https://8gent.app/photos",
   },
 };
 
