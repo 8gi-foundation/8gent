@@ -6,6 +6,7 @@ import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import JrHomePage from './jr-home/page';
 import { EcosystemFooter } from './components/ecosystem-footer';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 /**
  * Domain-aware root page:
@@ -51,6 +52,11 @@ function AppGateway() {
 
   return (
     <main className="min-h-screen bg-[#F5F0EB] dark:bg-[#1A1612] flex flex-col items-center justify-center px-6">
+      {/* Theme toggle */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
       {/* Logo */}
       <div className="mb-10 flex flex-col items-center">
         <div className="w-16 h-16 rounded-2xl bg-[#E8610A]/10 border border-[#E8610A]/20 flex items-center justify-center mb-5">

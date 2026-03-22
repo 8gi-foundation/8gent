@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { EcosystemFooter } from '../components/ecosystem-footer';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 /* ─── SVG Icon Components ─── */
 
@@ -124,12 +125,15 @@ export default function JrHomePage() {
             8gent Jr<span className="text-[#E8610A]">.</span>
           </span>
         </div>
-        <Link
-          href="/sign-in"
-          className="text-sm text-[#5C544A] hover:text-[#1A1612] transition-colors"
-        >
-          Sign In
-        </Link>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Link
+            href="/sign-in"
+            className="text-sm text-[#5C544A] hover:text-[#1A1612] transition-colors"
+          >
+            Sign In
+          </Link>
+        </div>
       </nav>
 
       <div className="max-w-3xl mx-auto px-5">
