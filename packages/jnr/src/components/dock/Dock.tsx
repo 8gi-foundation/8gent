@@ -19,13 +19,8 @@ interface DockItem {
 const DOCK_ITEMS: DockItem[] = [
   { id: 'talk', label: 'Talk', emoji: '💬', href: '/app' },
   { id: 'core', label: 'Core', emoji: '🗣️', href: '/core' },
-  { id: 'toolshed', label: 'Toolshed', emoji: '🧰', href: '/toolshed' },
-  { id: 'ai', label: 'AI', emoji: '✨', href: '/ai' },
-  { id: 'draw', label: 'Draw', emoji: '🎨', href: '/draw' },
-  { id: 'music', label: 'Music', emoji: '🎵', href: '/music' },
-  { id: 'timer', label: 'Timer', emoji: '⏱️', href: '/timer' },
   { id: 'schooltube', label: 'SchoolTube', emoji: '📺', href: '/schooltube' },
-  { id: 'analytics', label: 'Analytics', emoji: '📊', href: '/analytics' },
+  { id: 'more', label: 'More', emoji: '➕', href: '/toolshed' },
 ];
 
 interface DockProps {
@@ -44,15 +39,15 @@ export function Dock({ primaryColor = '#4CAF50' }: DockProps) {
             <Link
               key={item.id}
               href={item.href}
-              className="flex flex-col items-center justify-center min-w-[64px] min-h-[50px] py-1 transition-transform active:scale-90"
+              className="flex flex-col items-center justify-center min-w-[72px] min-h-[48px] py-1.5 transition-transform active:scale-90"
             >
               <span
-                className={`text-2xl mb-0.5 transition-transform ${isActive ? 'scale-110' : ''}`}
+                className={`text-[32px] leading-none mb-0.5 transition-transform ${isActive ? 'scale-110' : ''}`}
               >
                 {item.emoji}
               </span>
               <span
-                className="text-[10px] font-medium"
+                className="text-[11px] font-medium"
                 style={{ color: isActive ? primaryColor : '#8E8E93' }}
               >
                 {item.label}

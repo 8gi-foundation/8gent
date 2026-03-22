@@ -153,7 +153,7 @@ export default function AACAppPage() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-[#f2f2f7] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #E0F7FA 0%, #E8F5E9 50%, #F1F8E9 100%)' }}>
         <div
           className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
           style={{ borderColor: primaryColor, borderTopColor: 'transparent' }}
@@ -163,7 +163,7 @@ export default function AACAppPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-[#f2f2f7] overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'linear-gradient(135deg, #E0F7FA 0%, #E8F5E9 50%, #F1F8E9 100%)' }}>
       {/* Header - Sticky with blur */}
       <header
         className="sticky top-0 z-40 backdrop-blur-xl safe-top"
@@ -201,8 +201,8 @@ export default function AACAppPage() {
       </header>
 
       {/* Sentence Strip */}
-      <div className="px-3 sm:px-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
-        <div className="flex items-center gap-2 min-h-[48px] sm:min-h-[56px] p-2 sm:p-3 bg-[#f2f2f7] rounded-xl overflow-x-auto">
+      <div className="px-3 sm:px-4 py-2 sm:py-3 bg-white/70 backdrop-blur-sm border-b border-gray-200/30">
+        <div className="flex items-center gap-2 min-h-[48px] sm:min-h-[56px] p-2 sm:p-3 bg-white/50 rounded-2xl overflow-x-auto">
           {sentence.length === 0 ? (
             <span className="text-gray-400 text-[15px] sm:text-[17px] whitespace-nowrap">
               Tap cards to build a sentence...
@@ -244,7 +244,7 @@ export default function AACAppPage() {
           <button
             onClick={handleBackspace}
             disabled={sentence.length === 0}
-            className="min-w-[44px] sm:min-w-[50px] min-h-[44px] sm:min-h-[50px] bg-white text-gray-700 font-semibold rounded-xl border border-gray-200
+            className="min-w-[44px] sm:min-w-[50px] min-h-[44px] sm:min-h-[50px] bg-white text-gray-700 font-semibold rounded-2xl border border-gray-200
                      active:bg-gray-100 transition-colors
                      disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center text-lg sm:text-xl"
           >
@@ -280,7 +280,7 @@ export default function AACAppPage() {
         {activeCategory ? (
           // Show phrases for selected category
           <div
-            className="grid gap-2 sm:gap-3"
+            className="grid gap-2.5 sm:gap-3.5"
             style={{
               gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
             }}
@@ -289,12 +289,13 @@ export default function AACAppPage() {
               <button
                 key={phrase.id}
                 onClick={() => handleCardTap(phrase)}
-                className="bg-white rounded-lg sm:rounded-xl p-1 sm:p-2 flex flex-col items-center justify-center
-                          aspect-square shadow-sm
-                          active:scale-[0.95] active:shadow-none transition-all
-                          border border-transparent focus:outline-none"
+                className="bg-white rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                          aspect-square min-w-[48px] min-h-[48px]
+                          shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)]
+                          active:scale-[0.95] active:shadow-sm transition-all
+                          border border-gray-100 focus:outline-none"
               >
-                <div className="relative w-full h-[60%] mb-0.5 sm:mb-1">
+                <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
                   <Image
                     src={phrase.imageUrl}
                     alt={phrase.text}
@@ -303,7 +304,7 @@ export default function AACAppPage() {
                     unoptimized
                   />
                 </div>
-                <span className="text-[9px] sm:text-[11px] font-semibold text-gray-800 text-center leading-tight line-clamp-2">
+                <span className="text-[14px] sm:text-[15px] font-bold text-gray-800 text-center leading-tight line-clamp-2">
                   {phrase.text}
                 </span>
               </button>
@@ -312,7 +313,7 @@ export default function AACAppPage() {
         ) : (
           // Show categories
           <div
-            className="grid gap-2 sm:gap-3"
+            className="grid gap-2.5 sm:gap-3.5"
             style={{
               gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
             }}
@@ -321,13 +322,14 @@ export default function AACAppPage() {
               <button
                 key={category.id}
                 onClick={() => handleCategoryTap(category)}
-                className="bg-white rounded-lg sm:rounded-xl p-1 sm:p-2 flex flex-col items-center justify-center
-                          aspect-square shadow-sm
-                          active:scale-[0.95] active:shadow-none transition-all
+                className="bg-white rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                          aspect-square min-w-[48px] min-h-[48px]
+                          shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)]
+                          active:scale-[0.95] active:shadow-sm transition-all
                           border-2"
                 style={{ borderColor: category.color }}
               >
-                <div className="relative w-full h-[60%] mb-0.5 sm:mb-1">
+                <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
                   <Image
                     src={category.imageUrl}
                     alt={category.name}
@@ -337,7 +339,7 @@ export default function AACAppPage() {
                   />
                 </div>
                 <span
-                  className="text-[9px] sm:text-[11px] font-bold text-center leading-tight"
+                  className="text-[14px] sm:text-[16px] font-bold text-center leading-tight"
                   style={{ color: category.color }}
                 >
                   {category.name}
