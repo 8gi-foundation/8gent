@@ -200,17 +200,12 @@ export const publishCardPack = mutation({
 export const addCustomCard = mutation({
   args: {
     tenantId: v.id("tenants"),
-    card: v.object({
-      id: v.string(),
-      label: v.string(),
-      speechText: v.string(),
-      imageUrl: v.string(),
-      categoryId: v.string(),
-      arasaacId: v.optional(v.number()),
-      generatedBy: v.optional(v.string()),
-    }),
+    label: v.string(),
+    speechText: v.string(),
+    imageUrl: v.string(),
+    categoryId: v.string(),
   },
-  handler: async (ctx, { tenantId, card }) => {
+  handler: async (ctx, { tenantId, label, speechText, imageUrl, categoryId }) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Not authenticated");
@@ -252,9 +247,16 @@ export const addCustomCard = mutation({
       throw new Error("Failed to get userCards");
     }
 
+    // Generate unique card ID server-side
+    const cardId = `custom_${Date.now()}`;
+
     // Add the custom card
     const customCard = {
-      ...card,
+      id: cardId,
+      label,
+      speechText,
+      imageUrl,
+      categoryId,
       isCustom: true as const,
       createdAt: Date.now(),
     };
@@ -264,7 +266,7 @@ export const addCustomCard = mutation({
       updatedAt: Date.now(),
     });
 
-    return { success: true, cardId: card.id };
+    return { success: true, cardId };
   },
 });
 

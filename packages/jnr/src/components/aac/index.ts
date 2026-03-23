@@ -15,3 +15,5 @@ export { SpeechEngine, SpeechEngineContext } from './SpeechEngine';
 export type { SpeechEngineProps, SpeechEngineContextValue } from './SpeechEngine';
 
 export { CardGenerator } from './CardGenerator';
+
+export { CreateCardModal } from './CreateCardModal';

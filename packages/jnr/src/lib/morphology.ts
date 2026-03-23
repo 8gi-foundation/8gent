@@ -1,22 +1,37 @@
 /**
  * 8gent Jr Morphology Engine
  *
- * Word form variations for AAC vocabulary:
- * - Verb tenses: eat/eats/eating/ate
- * - Adjective comparisons: big/bigger/biggest
- * - Noun plurals: cat/cats
- * - Negations: can/can't
+ * Pure-function word morphology for AAC vocabulary.
+ * Handles verb tenses, adjective comparisons, noun plurals,
+ * possessives, and negations — including common irregular forms.
  *
- * Simplified for 8gent Jr's flat vocabulary model.
+ * No external dependencies. No side effects.
+ *
+ * @module morphology
  */
 
+/** Morphological form category */
 export type MorphType =
   | 'base' | 'present' | 'past' | 'progressive'
   | 'plural' | 'possessive' | 'comparative' | 'superlative' | 'negative';
 
-export interface MorphForm { type: MorphType; text: string; suffix?: string }
+/** A single morphological form of a word */
+export interface MorphForm {
+  /** Which morphological transformation was applied */
+  type: MorphType;
+  /** The resulting word text */
+  text: string;
+  /** Visual suffix label for UI (e.g. "-s", "-ing") */
+  suffix?: string;
+}
+
+/** Word class determines which morphology rules apply */
 export type WordClass = 'verb' | 'adjective' | 'noun' | 'modal';
 
+/**
+ * Generate regular verb forms: base, present (-s), progressive (-ing), past (-ed).
+ * Does not handle irregulars — use {@link getForms} for that.
+ */
 export function getVerbForms(base: string): MorphForm[] {
   const endsE = base.endsWith('e');
   const endsConsonantY = /[bcdfghjklmnpqrstvwxyz]y$/.test(base);
@@ -43,6 +58,10 @@ export function getVerbForms(base: string): MorphForm[] {
   ];
 }
 
+/**
+ * Generate regular adjective forms: base, comparative (-er/more), superlative (-est/most).
+ * Short adjectives (<=5 chars) use suffixes; longer ones use "more"/"most".
+ */
 export function getAdjectiveForms(base: string): MorphForm[] {
   const endsE = base.endsWith('e');
   const endsY = base.endsWith('y');
@@ -66,6 +85,10 @@ export function getAdjectiveForms(base: string): MorphForm[] {
   ];
 }
 
+/**
+ * Generate regular noun forms: base, plural (-s/-es/-ves/-ies), possessive ('s).
+ * Handles -s/-sh/-ch/-x/-z endings, consonant+y, and -f/-fe patterns.
+ */
 export function getNounForms(base: string): MorphForm[] {
   const endsConsonantY = /[bcdfghjklmnpqrstvwxyz]y$/.test(base);
   let plural: string;
@@ -116,7 +139,27 @@ const NEGATIONS: Record<string, string> = {
   could: "couldn't", should: "shouldn't",
 };
 
-/** Get all morphological forms for a word */
+/**
+ * Get all morphological forms for a word, including irregular forms.
+ *
+ * This is the primary entry point. It checks irregular lookup tables first,
+ * then falls back to regular rule-based morphology.
+ *
+ * @param base - The base/dictionary form of the word
+ * @param wordClass - The grammatical class (verb, noun, adjective, modal)
+ * @returns Array of all applicable morphological forms
+ *
+ * @example
+ * ```ts
+ * getForms('go', 'verb')
+ * // [{ type: 'base', text: 'go' }, { type: 'present', text: 'goes', suffix: '-s' },
+ * //  { type: 'progressive', text: 'going', suffix: '-ing' }, { type: 'past', text: 'went', suffix: '-ed' }]
+ *
+ * getForms('child', 'noun')
+ * // [{ type: 'base', text: 'child' }, { type: 'plural', text: 'children', suffix: '-s' },
+ * //  { type: 'possessive', text: "child's", suffix: "'s" }]
+ * ```
+ */
 export function getForms(base: string, wordClass: WordClass): MorphForm[] {
   const key = base.toLowerCase();
 
@@ -163,7 +206,12 @@ export function getForms(base: string, wordClass: WordClass): MorphForm[] {
     : [{ type: 'base', text: base }];
 }
 
-/** Get negation of a word (returns null if none) */
+/**
+ * Get the contracted negation of a modal/auxiliary verb.
+ *
+ * @param word - The word to negate (e.g. "can", "will", "do")
+ * @returns The negated form (e.g. "can't", "won't", "don't") or null if no negation exists
+ */
 export function getNegation(word: string): string | null {
   return NEGATIONS[word.toLowerCase()] ?? null;
 }
