@@ -17,6 +17,11 @@ import { SizeSortGame } from '@/components/schooltube/games/SizeSort';
 import { CountingBallsAdvancedGame } from '@/components/schooltube/games/CountingBallsAdvanced';
 import { RainbowPaintGame } from '@/components/schooltube/games/RainbowPaint';
 import { ParticleFireworksGame } from '@/components/schooltube/games/ParticleFireworks';
+import { MusicalBallsGame } from '@/components/schooltube/games/MusicalBalls';
+import { SpinFidgetGame } from '@/components/schooltube/games/SpinFidget';
+import { WaterPourGame } from '@/components/schooltube/games/WaterPour';
+import { IceCreamBuilderGame } from '@/components/schooltube/games/IceCreamBuilder';
+import { BottleFillGame } from '@/components/schooltube/games/BottleFill';
 
 // Utility functions (kept for existing inline games)
 const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -370,4 +375,9 @@ export const GAME_COMPONENTS: Record<string, React.ComponentType<GameProps>> = {
   // Ported from Nick prototype - Sensory
   rainbowPaint: RainbowPaintGame,
   fireworks: ParticleFireworksGame,
+  musicalBalls: MusicalBallsGame,
+  spinFidget: SpinFidgetGame,
+  waterPour: WaterPourGame,
+  iceCreamBuilder: IceCreamBuilderGame,
+  bottleFill: BottleFillGame,
 };

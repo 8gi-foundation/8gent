@@ -183,6 +183,48 @@ export const REELS_DATA: Reel[] = [
     gameType: 'rainbowPaint',
   },
 
+  // Sensory - Ported from Nick prototype (batch 2)
+  {
+    id: 'musical-balls',
+    title: 'Musical Balls',
+    emoji: '🎵',
+    type: 'game',
+    category: 'sensory',
+    gameType: 'musicalBalls',
+  },
+  {
+    id: 'spin-fidget',
+    title: 'Fidget Spinner',
+    emoji: '🌀',
+    type: 'game',
+    category: 'sensory',
+    gameType: 'spinFidget',
+  },
+  {
+    id: 'water-pour',
+    title: 'Water Pour',
+    emoji: '🫗',
+    type: 'game',
+    category: 'sensory',
+    gameType: 'waterPour',
+  },
+  {
+    id: 'ice-cream-builder',
+    title: 'Ice Cream Builder',
+    emoji: '🍦',
+    type: 'game',
+    category: 'sensory',
+    gameType: 'iceCreamBuilder',
+  },
+  {
+    id: 'bottle-fill',
+    title: 'Bottle Fill',
+    emoji: '🍶',
+    type: 'game',
+    category: 'sensory',
+    gameType: 'bottleFill',
+  },
+
   // Learning Videos
   {
     id: 'vid-colors',
