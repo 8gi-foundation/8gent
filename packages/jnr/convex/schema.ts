@@ -12,7 +12,7 @@ export default defineSchema({
   // Users with unique usernames for subdomain routing
   users: defineTable({
     clerkId: v.string(), // Clerk user ID
-    username: v.string(), // Unique username for {username}.8gent.app
+    username: v.string(), // Unique username for {username}.8gentjr.com
     email: v.string(),
     name: v.optional(v.string()),
     avatarUrl: v.optional(v.string()),
@@ -260,9 +260,9 @@ export default defineSchema({
   // JNR MULTI-TENANCY (8gent Jr AAC System)
   // ============================================
 
-  // Tenants - one per child (kidname.8gent.app)
+  // Tenants - one per child (kidname.8gentjr.com)
   tenants: defineTable({
-    subdomain: v.string(), // "nick" for nick.8gent.app
+    subdomain: v.string(), // "nick" for nick.8gentjr.com
     ownerId: v.id("users"), // Parent or child user ID
     parentId: v.optional(v.id("users")), // Parent's user ID (if owner is child)
     displayName: v.string(), // "Nick's AAC Board"

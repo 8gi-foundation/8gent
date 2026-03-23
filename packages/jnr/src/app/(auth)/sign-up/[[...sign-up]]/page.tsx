@@ -7,7 +7,7 @@ import Link from 'next/link';
  * Sign Up page using Clerk
  *
  * After Clerk signup, users are redirected to /onboarding
- * where they create their child's tenant (kidname.8gent.app)
+ * where they create their child's tenant (kidname.8gentjr.com)
  */
 export default function SignUpPage() {
   return (
@@ -47,7 +47,7 @@ export default function SignUpPage() {
       <div className="mt-6 text-center text-sm text-gray-500">
         <p>
           After signing up, you&apos;ll create a personalized AAC board for your child at{' '}
-          <span className="font-medium text-blue-600">kidname.8gent.app</span>
+          <span className="font-medium text-blue-600">kidname.8gentjr.com</span>
         </p>
       </div>
 

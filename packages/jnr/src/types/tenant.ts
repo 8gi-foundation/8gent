@@ -2,7 +2,7 @@
  * @fileoverview Tenant Types for 8gent Multi-tenancy
  *
  * Defines the type system for subdomain-based multi-tenancy.
- * Each user gets their own subdomain (e.g., nick.8gent.app)
+ * Each user gets their own subdomain (e.g., nick.8gentjr.com)
  * with mode (kid/adult) as a settings toggle, not a domain change.
  *
  * Key principle: URL is permanent identity, mode is preference.
@@ -53,7 +53,7 @@ export interface TenantConfig {
   /** Unique tenant identifier */
   id: string;
 
-  /** Subdomain slug (e.g., 'nick' for nick.8gent.app) */
+  /** Subdomain slug (e.g., 'nick' for nick.8gentjr.com) */
   subdomain: string;
 
   /** User ID who owns this tenant */
@@ -128,7 +128,7 @@ export interface TenantPreferences {
  * Configuration for the graduation process
  *
  * Graduation is a MODE CHANGE, not a domain migration.
- * nick.8gent.app stays the same - mode flips from 'kid' to 'adult'.
+ * nick.8gentjr.com stays the same - mode flips from 'kid' to 'adult'.
  * This preserves URL identity while unlocking full features.
  */
 export interface GraduationConfig {

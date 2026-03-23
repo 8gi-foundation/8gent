@@ -253,7 +253,7 @@ export default function AdminPage() {
                 </p>
                 <p className="text-[13px] text-gray-400">
                   {tenant?.subdomain
-                    ? `${tenant.subdomain}.8gent.app`
+                    ? `${tenant.subdomain}.8gentjr.com`
                     : 'No subdomain'}
                 </p>
               </div>
@@ -396,7 +396,7 @@ export default function AdminPage() {
                   >
                     <div>
                       <p className="text-[15px] text-black">{t.displayName}</p>
-                      <p className="text-[12px] text-gray-400">{t.subdomain}.8gent.app</p>
+                      <p className="text-[12px] text-gray-400">{t.subdomain}.8gentjr.com</p>
                     </div>
                     <span
                       className="text-[12px] font-medium px-2 py-0.5 rounded-full"

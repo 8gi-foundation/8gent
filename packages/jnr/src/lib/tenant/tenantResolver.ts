@@ -5,8 +5,8 @@
  * Handles subdomain routing for multi-tenant architecture.
  *
  * Each user gets their own subdomain:
- * - nick.8gentjr.app -> Nick's 8gent Jr
- * - nick.8gent.app -> Nick's 8gent (senior, at 16+)
+ * - nick.8gentjr.com -> Nick's 8gent Jr
+ * - nick.8gentos.com -> Nick's 8gent (senior, at 16+)
  *
  * @module lib/tenant/tenantResolver
  */
@@ -67,7 +67,7 @@ export interface TenantDatabase {
  * Default configuration values
  */
 const DEFAULT_CONFIG: TenantResolverConfig = {
-  juniorDomain: '8gentjr.app',
+  juniorDomain: '8gentjr.com',
   seniorDomain: '8gent.app',
   db: null as unknown as TenantDatabase, // Must be provided
 };

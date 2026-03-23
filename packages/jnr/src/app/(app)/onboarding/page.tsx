@@ -382,7 +382,7 @@ export default function OnboardingPage() {
 
             <p className="text-[13px] text-gray-400 mb-6">
               Read our full{' '}
-              <a href="/jr/privacy" className="underline text-[#E8610A]" target="_blank" rel="noopener noreferrer">
+              <a href="/privacy" className="underline text-[#E8610A]" target="_blank" rel="noopener noreferrer">
                 Privacy Policy
               </a>
               . You can withdraw consent at any time from Settings. Data is stored in the EU.

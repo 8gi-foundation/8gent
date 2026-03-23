@@ -203,7 +203,7 @@ export default function SettingsPage() {
           </p>
           <div className="rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)' }}>
             <Link
-              href="/jr/privacy"
+              href="/privacy"
               className="flex items-center justify-between px-4 py-3 border-b active:opacity-80"
               style={{ borderColor: 'var(--warm-border-light, #F0EAE3)' }}
             >
@@ -211,7 +211,7 @@ export default function SettingsPage() {
               <span style={{ color: 'var(--warm-text-placeholder, #B5ADA4)' }}>&rsaquo;</span>
             </Link>
             <Link
-              href="/jr/privacy/kids"
+              href="/privacy/kids"
               className="flex items-center justify-between px-4 py-3 active:opacity-80"
             >
               <span className="text-[17px]" style={{ color: 'var(--warm-text, #1A1614)' }}>Children&apos;s Privacy Policy</span>
