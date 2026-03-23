@@ -156,7 +156,7 @@ export default function JrHomePage() {
 
           <div className="flex flex-wrap gap-3">
             <Link
-              href="https://www.8gent.app/sign-up"
+              href="https://www.8gent.app/sign-up?product=jr"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E8610A] text-white text-sm font-medium
                        hover:bg-[#D15709] active:scale-[0.97] transition-all"
             >

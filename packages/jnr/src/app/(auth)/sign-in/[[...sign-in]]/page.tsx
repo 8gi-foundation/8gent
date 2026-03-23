@@ -5,14 +5,20 @@ import Link from 'next/link';
 
 /**
  * Sign In page using Clerk
+ *
+ * After sign-in, redirects to /onboarding which handles:
+ * - Existing users with tenants → redirect to their subdomain
+ * - New users → product selector → tenant creation flow
  */
 export default function SignInPage() {
   return (
     <div className="w-full max-w-md">
       {/* Mobile Logo */}
       <div className="lg:hidden text-center mb-8">
-        <div className="text-4xl mb-2">🗣️</div>
-        <h1 className="text-2xl font-bold text-gray-900">8gent</h1>
+        <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-[#E8610A]/10 border border-[#E8610A]/20 flex items-center justify-center">
+          <span className="text-[#E8610A] text-xl font-bold" style={{ fontFamily: 'var(--font-fraunces), Georgia, serif' }}>8</span>
+        </div>
+        <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-fraunces), Georgia, serif' }}>8gent</h1>
         <p className="text-gray-600 mt-2">Welcome back</p>
       </div>
 
@@ -25,19 +31,19 @@ export default function SignInPage() {
             headerTitle: 'text-2xl font-bold text-gray-900',
             headerSubtitle: 'text-gray-600',
             formButtonPrimary:
-              'w-full py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all',
+              'w-full py-3 bg-[#E8610A] text-white font-semibold rounded-xl hover:bg-[#D15709] transition-all',
             formFieldInput:
-              'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none',
+              'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E8610A] focus:ring-2 focus:ring-[#E8610A]/20 transition-all outline-none',
             formFieldLabel: 'text-sm font-medium text-gray-700 mb-1',
             socialButtonsBlockButton:
               'border border-gray-200 hover:border-gray-300 rounded-xl py-3 transition-all',
-            footerActionLink: 'text-blue-600 hover:underline font-medium',
+            footerActionLink: 'text-[#E8610A] hover:underline font-medium',
             dividerLine: 'bg-gray-200',
             dividerText: 'text-gray-500',
           },
         }}
         signUpUrl="/sign-up"
-        forceRedirectUrl="/app"
+        forceRedirectUrl="/onboarding"
       />
 
       {/* Back to Home */}

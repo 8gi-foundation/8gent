@@ -1,6 +1,7 @@
 'use client';
 
 import { SignUp } from '@clerk/nextjs';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 /**
@@ -8,15 +9,29 @@ import Link from 'next/link';
  *
  * After Clerk signup, users are redirected to /onboarding
  * where they create their child's tenant (kidname.8gentjr.com)
+ *
+ * Supports ?product=jr to skip product selector in onboarding
  */
 export default function SignUpPage() {
+  const searchParams = useSearchParams();
+  const product = searchParams.get('product');
+  const redirectUrl = product
+    ? `/onboarding?product=${product}`
+    : '/onboarding';
+
   return (
     <div className="w-full max-w-md">
       {/* Mobile Logo */}
       <div className="lg:hidden text-center mb-8">
-        <div className="text-4xl mb-2">🗣️</div>
-        <h1 className="text-2xl font-bold text-gray-900">8gent</h1>
-        <p className="text-gray-600 mt-2">Your Voice, Your Way</p>
+        <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-[#E8610A]/10 border border-[#E8610A]/20 flex items-center justify-center">
+          <span className="text-[#E8610A] text-xl font-bold" style={{ fontFamily: 'var(--font-fraunces), Georgia, serif' }}>8</span>
+        </div>
+        <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-fraunces), Georgia, serif' }}>
+          {product === 'jr' ? '8gent Jr' : '8gent'}
+        </h1>
+        <p className="text-gray-600 mt-2">
+          {product === 'jr' ? 'A voice for every kid' : 'Your Voice, Your Way'}
+        </p>
       </div>
 
       {/* Clerk SignUp Component */}
@@ -28,19 +43,19 @@ export default function SignUpPage() {
             headerTitle: 'text-2xl font-bold text-gray-900',
             headerSubtitle: 'text-gray-600',
             formButtonPrimary:
-              'w-full py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all',
+              'w-full py-3 bg-[#E8610A] text-white font-semibold rounded-xl hover:bg-[#D15709] transition-all',
             formFieldInput:
-              'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none',
+              'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E8610A] focus:ring-2 focus:ring-[#E8610A]/20 transition-all outline-none',
             formFieldLabel: 'text-sm font-medium text-gray-700 mb-1',
             socialButtonsBlockButton:
               'border border-gray-200 hover:border-gray-300 rounded-xl py-3 transition-all',
-            footerActionLink: 'text-blue-600 hover:underline font-medium',
+            footerActionLink: 'text-[#E8610A] hover:underline font-medium',
             dividerLine: 'bg-gray-200',
             dividerText: 'text-gray-500',
           },
         }}
         signInUrl="/sign-in"
-        forceRedirectUrl="/onboarding"
+        forceRedirectUrl={redirectUrl}
       />
 
       {/* Info text */}

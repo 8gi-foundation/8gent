@@ -18,6 +18,34 @@ async function getCurrentUser(ctx: { auth: { getUserIdentity: () => Promise<any>
     .first();
 }
 
+/** Required consent types for reading child data in reports */
+const REPORT_CONSENTS = ["data_processing", "health_data"] as const;
+
+/** Helper: check active consent for read-only queries */
+async function hasActiveConsentForQuery(
+  ctx: { db: any },
+  tenantId: any
+): Promise<boolean> {
+  const tenant = await ctx.db.get(tenantId);
+  if (!tenant) return false;
+
+  const allConsents = await ctx.db
+    .query("consentRecords")
+    .withIndex("by_tenant", (q: any) => q.eq("tenantId", tenantId))
+    .collect();
+
+  for (const required of REPORT_CONSENTS) {
+    const hasActive = allConsents.some(
+      (c: any) =>
+        c.consentType === required &&
+        c.granted &&
+        !c.withdrawnAt
+    );
+    if (!hasActive) return false;
+  }
+  return true;
+}
+
 /** Helper: verify caller is owner of tenant */
 async function requireOwner(ctx: { auth: { getUserIdentity: () => Promise<any> }; db: any }, tenantId: any) {
   const user = await getCurrentUser(ctx);
@@ -149,6 +177,124 @@ export const exportChildData = mutation({
         withdrawnAt: c.withdrawnAt ? new Date(c.withdrawnAt).toISOString() : null,
         policyVersion: c.version,
       })),
+    };
+  },
+});
+
+/**
+ * Generate aggregated therapist report — communication progress metrics.
+ * GDPR: Owner-only access + active consent required.
+ * Returns anonymized aggregates, not raw sentences.
+ */
+export const generateTherapistReport = query({
+  args: {
+    tenantId: v.id("tenants"),
+    startDate: v.number(),
+    endDate: v.number(),
+  },
+  handler: async (ctx, { tenantId, startDate, endDate }) => {
+    // Owner-only access
+    const user = await getCurrentUser(ctx);
+    if (!user) throw new Error("Not authenticated");
+
+    const membership = await ctx.db
+      .query("tenantMembers")
+      .withIndex("by_tenant_user", (q: any) =>
+        q.eq("tenantId", tenantId).eq("userId", user._id)
+      )
+      .first();
+
+    if (!membership || membership.role !== "owner") {
+      throw new Error("Only the account owner can access therapist reports");
+    }
+
+    // Consent gate — no report without active consent
+    if (!(await hasActiveConsentForQuery(ctx, tenantId))) {
+      throw new Error("Active data processing consent required for reports");
+    }
+
+    // Fetch sentences in date range
+    const allSentences = await ctx.db
+      .query("sentenceHistory")
+      .withIndex("by_tenant", (q: any) => q.eq("tenantId", tenantId))
+      .collect();
+
+    const sentences = allSentences.filter(
+      (s: any) => s.spokenAt >= startDate && s.spokenAt <= endDate
+    );
+
+    if (sentences.length === 0) {
+      return {
+        totalSentences: 0,
+        uniqueWords: 0,
+        avgSentenceLength: 0,
+        dailyBreakdown: [],
+        topWords: [],
+        vocabularyGrowth: 0,
+      };
+    }
+
+    // Word frequency analysis
+    const wordCounts: Record<string, number> = {};
+    let totalWords = 0;
+
+    for (const s of sentences) {
+      const words = s.sentence.toLowerCase().split(/\s+/).filter(Boolean);
+      totalWords += words.length;
+      for (const w of words) {
+        wordCounts[w] = (wordCounts[w] || 0) + 1;
+      }
+    }
+
+    const uniqueWords = Object.keys(wordCounts).length;
+    const avgSentenceLength = totalWords / sentences.length;
+
+    // Top words (top 20)
+    const topWords = Object.entries(wordCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([word, count]) => ({ word, count }));
+
+    // Daily breakdown
+    const dailyMap: Record<string, { count: number; totalWords: number }> = {};
+
+    for (const s of sentences) {
+      const dateKey = new Date(s.spokenAt).toISOString().split("T")[0];
+      if (!dailyMap[dateKey]) {
+        dailyMap[dateKey] = { count: 0, totalWords: 0 };
+      }
+      dailyMap[dateKey].count += 1;
+      dailyMap[dateKey].totalWords += s.sentence.split(/\s+/).filter(Boolean).length;
+    }
+
+    const dailyBreakdown = Object.entries(dailyMap)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([date, data]) => ({
+        date,
+        count: data.count,
+        avgLength: Math.round((data.totalWords / data.count) * 10) / 10,
+      }));
+
+    // Vocabulary growth: unique words in last half vs first half of period
+    const midpoint = startDate + (endDate - startDate) / 2;
+    const firstHalfWords = new Set<string>();
+    const secondHalfWords = new Set<string>();
+
+    for (const s of sentences) {
+      const words = s.sentence.toLowerCase().split(/\s+/).filter(Boolean);
+      const target = s.spokenAt < midpoint ? firstHalfWords : secondHalfWords;
+      for (const w of words) target.add(w);
+    }
+
+    const vocabularyGrowth = secondHalfWords.size - firstHalfWords.size;
+
+    return {
+      totalSentences: sentences.length,
+      uniqueWords,
+      avgSentenceLength: Math.round(avgSentenceLength * 10) / 10,
+      dailyBreakdown,
+      topWords,
+      vocabularyGrowth,
     };
   },
 });

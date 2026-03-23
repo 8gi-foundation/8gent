@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/privacy(.*)',
   '/api/voice/speak', // TTS endpoint needs to work without auth for demo
   '/jr(.*)', // Jr tenant routes are publicly accessible
 ]);

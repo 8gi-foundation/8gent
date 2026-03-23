@@ -23,7 +23,9 @@ function AppGateway() {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      router.replace('/app');
+      // Send to onboarding — it handles "already has tenants" by redirecting to subdomain
+      // This avoids the /app → /onboarding → subdomain redirect chain
+      router.replace('/onboarding');
     }
   }, [isLoaded, isSignedIn, router]);
 

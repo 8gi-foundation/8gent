@@ -47,8 +47,13 @@ type ConsentState = {
 export default function OnboardingPage() {
   const router = useRouter();
   const { user, isLoaded } = useUser();
-  const [step, setStep] = useState<Step>('product');
-  const [product, setProduct] = useState<Product | null>(null);
+  // Check if product was pre-selected (e.g. ?product=jr from 8gentjr.com sign-up)
+  const preselectedProduct = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('product') as Product | null
+    : null;
+
+  const [step, setStep] = useState<Step>(preselectedProduct === 'jr' ? 'consent' : 'product');
+  const [product, setProduct] = useState<Product | null>(preselectedProduct);
   const [childName, setChildName] = useState('');
   const [subdomain, setSubdomain] = useState('');
   const [color, setColor] = useState('#4CAF50');
