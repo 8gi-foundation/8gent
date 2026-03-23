@@ -12,7 +12,7 @@ import { speakWithKitten } from '@/lib/speech/tts';
  *
  * Flow:
  * 1. Enter child's name → generates subdomain suggestions
- * 2. Pick subdomain (e.g., emma.8gent.app)
+ * 2. Pick subdomain (e.g., emma.8gentjr.com)
  * 3. Pick a color theme
  * 4. Select voice
  * 5. Create tenant → redirect to subdomain
@@ -81,7 +81,7 @@ export default function OnboardingPage() {
     const isRestart = new URLSearchParams(window.location.search).has('restart');
     if (existingTenants && existingTenants.length > 0 && !isRestart) {
       const firstTenant = existingTenants[0];
-      router.push(`/jr/${firstTenant.subdomain}`);
+      window.location.href = `https://${firstTenant.subdomain}.8gentjr.com`;
     }
   }, [existingTenants, router]);
 
@@ -150,9 +150,9 @@ export default function OnboardingPage() {
 
       setStep('done');
 
-      // Redirect to the new tenant path
+      // Redirect to the new subdomain (cross-domain, so use window.location)
       setTimeout(() => {
-        router.push(`/jr/${result.subdomain}`);
+        window.location.href = `https://${result.subdomain}.8gentjr.com`;
       }, 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -466,7 +466,7 @@ export default function OnboardingPage() {
                 className="flex-1 px-3 py-2 text-[18px] text-right bg-transparent outline-none"
                 placeholder="emma"
               />
-              <span className="text-[18px] text-gray-400">.8gent.app</span>
+              <span className="text-[18px] text-gray-400">.8gentjr.com</span>
             </div>
 
             {checkSubdomain && (
@@ -622,7 +622,7 @@ export default function OnboardingPage() {
               Creating {childName}&apos;s 8gent Jr
             </h1>
             <p className="text-[17px] text-gray-500 mb-8">
-              Setting up {subdomain}.8gent.app...
+              Setting up {subdomain}.8gentjr.com...
             </p>
             <div
               className="w-12 h-12 mx-auto border-4 border-t-transparent rounded-full animate-spin"
@@ -647,7 +647,7 @@ export default function OnboardingPage() {
               {childName}&apos;s 8gent is ready at
             </p>
             <p className="text-[20px] font-bold" style={{ color }}>
-              {subdomain}.8gent.app
+              {subdomain}.8gentjr.com
             </p>
             <p className="text-[14px] text-gray-400 mt-6">
               Redirecting...
