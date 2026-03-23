@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = '8gent Jr - Your Voice, Your Way';
+export const alt = '8gent Jr. - No more gatekeeping. A voice for every kid.';
 export const size = {
   width: 1200,
   height: 630,
@@ -20,83 +20,52 @@ export default async function Image() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #eff6ff 0%, #f3e8ff 50%, #fce7f3 100%)',
-          fontFamily: 'Inter, system-ui, sans-serif',
+          backgroundColor: '#FFF8F0',
+          fontFamily: 'Georgia, "Times New Roman", serif',
         }}
       >
-        {/* Logo/Emoji */}
-        <div
-          style={{
-            fontSize: 120,
-            marginBottom: 20,
-          }}
-        >
-          <span role="img" aria-label="speech">
-            &#128483;&#65039;
-          </span>
-        </div>
-
         {/* Title */}
         <div
           style={{
-            fontSize: 72,
+            display: 'flex',
+            alignItems: 'baseline',
+            fontSize: 96,
             fontWeight: 700,
-            color: '#1f2937',
-            marginBottom: 16,
-            letterSpacing: '-0.02em',
+            color: '#1A1612',
+            letterSpacing: '-0.03em',
           }}
         >
-          8gent Jr
+          <span>8gent Jr</span>
+          <span style={{ color: '#E8610A' }}>.</span>
         </div>
 
         {/* Tagline */}
         <div
           style={{
-            fontSize: 36,
-            color: '#4b5563',
-            marginBottom: 40,
+            fontSize: 32,
+            color: '#5C534A',
+            marginTop: 24,
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            fontWeight: 400,
           }}
         >
-          Your Voice, Your Way
+          No more gatekeeping. A voice for every kid.
         </div>
 
-        {/* Feature badges */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 24,
-          }}
-        >
-          {['AAC Communication', 'AI-Powered', 'Personalized Voice'].map((feature) => (
-            <div
-              key={feature}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '12px 24px',
-                background: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: 9999,
-                fontSize: 20,
-                color: '#2563eb',
-                fontWeight: 500,
-                border: '1px solid rgba(37, 99, 235, 0.2)',
-              }}
-            >
-              {feature}
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom tagline */}
+        {/* Bottom bar */}
         <div
           style={{
             position: 'absolute',
-            bottom: 40,
-            fontSize: 24,
-            color: '#6b7280',
+            bottom: 48,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            fontSize: 20,
+            color: '#9C9389',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
-          Every child deserves a voice
+          <span>8gentjr.com</span>
         </div>
       </div>
     ),

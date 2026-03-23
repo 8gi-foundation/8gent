@@ -25,7 +25,7 @@ const siteConfig = {
   tagline: 'No more gatekeeping. A voice for every kid.',
   description: 'A super-powered AI assistant that learns with your child. Accessibility first. Free forever. AAC communication, AI-generated custom symbols, and personalized voice synthesis.',
   url: 'https://8gentjr.com',
-  ogImage: 'https://8gentjr.com/og-image.png',
+  ogImage: 'https://8gentjr.com/opengraph-image',
   twitterHandle: '@8gentapp',
   author: 'James Spalding',
 };
