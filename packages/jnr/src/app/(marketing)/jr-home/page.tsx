@@ -128,7 +128,7 @@ export default function JrHomePage() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <Link
-            href="/sign-in"
+            href="https://www.8gent.app/sign-in"
             className="text-sm text-[#5C544A] hover:text-[#1A1612] transition-colors"
           >
             Sign In
@@ -156,7 +156,7 @@ export default function JrHomePage() {
 
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/sign-up"
+              href="https://www.8gent.app/sign-up"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E8610A] text-white text-sm font-medium
                        hover:bg-[#D15709] active:scale-[0.97] transition-all"
             >
