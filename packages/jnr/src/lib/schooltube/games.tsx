@@ -23,6 +23,12 @@ import { WaterPourGame } from '@/components/schooltube/games/WaterPour';
 import { IceCreamBuilderGame } from '@/components/schooltube/games/IceCreamBuilder';
 import { BottleFillGame } from '@/components/schooltube/games/BottleFill';
 
+// Sensory games - ported from Nick prototype (calming/regulation)
+import { BallRainSensoryGame } from '@/components/schooltube/games/BallRain';
+import { BubbleWrapSensoryGame } from '@/components/schooltube/games/BubbleWrap';
+import { MarbleRunSensoryGame } from '@/components/schooltube/games/MarbleRun';
+import { ShapeTowerSensoryGame } from '@/components/schooltube/games/ShapeTower';
+
 // Utility functions (kept for existing inline games)
 const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
@@ -380,4 +386,10 @@ export const GAME_COMPONENTS: Record<string, React.ComponentType<GameProps>> = {
   waterPour: WaterPourGame,
   iceCreamBuilder: IceCreamBuilderGame,
   bottleFill: BottleFillGame,
+
+  // Sensory games - calming/regulation (ported from Nick)
+  ballRainSensory: BallRainSensoryGame,
+  bubbleWrapSensory: BubbleWrapSensoryGame,
+  marbleRun: MarbleRunSensoryGame,
+  shapeTower: ShapeTowerSensoryGame,
 };
