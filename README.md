@@ -1,140 +1,165 @@
-# ♾️ 8gent (Infinity Agent)
+# 8gent -- Personal Generative Operating System
 
-**8gent** (Infinity Agent) is a next-generation, AI-native operating system interface. It is a highly modular, standalone frontend for the **OpenClaw** ecosystem, featuring a specialized workspace abstracted from [jamesspalding.org](https://jamesspalding.org).
+> "Personal AI operating systems will replace SaaS."
 
-> [!IMPORTANT]
-> **Agent-Ready Modularity**: This repository is designed to be easily "latched" onto any existing OpenClaw agentic backend. Whether you are a human developer or a coding agent, you can integrate this frontend by simply pointing your backend to this source.
-
-## ✨ What You Get
-
-- **59+ Default Apps** - Everything from AI Agent to Music Studio to 3D Gallery
-- **Backend-Driven AI** - Leverage any provider supported by your OpenClaw backend (Ollama, OpenAI, Anthropic, etc.). 8gent is the glass; OpenClaw is the engine.
-- **Recursive Memory Layer** - Context-aware AI that remembers across sessions
-- **Beautiful iOS-Style UI** - Draggable windows, smooth animations, premium design
-- **Local-First Architecture** - Your data stays on your machine
-- **Agentic Workflows** - BMAD Method + CCPM integration
-
-## 🔗 Modular Frontend Integration (For Agents & Humans)
-
-**8gent** is a "headless" frontend designed to be easily "latched" onto any existing OpenClaw agentic backend. 
-
-> [!IMPORTANT]
-> **Non-Interference**: 8gent is strictly a presentation and interaction layer. It communicates with the OpenClaw Gateway via WebSockets but **does not interfere with or modify the backend logic**. It is the "glass" through which you interact with your agentic engine.
-
-### How to Latch (For AI Agents)
-If you are a coding agent helping a user, follow these steps or simply refer to this link:
-> "Clone the [8gent repository](https://github.com/PodJamz/8gent), install dependencies, and point the `NEXT_PUBLIC_OPENCLAW_GATEWAY_URL` in `.env.local` to the user's running OpenClaw Gateway. The system identity is **8gent** by default, but it can be customized as needed."
-
-### How to Latch (Manual)
-1.  **Clone the Repo**: `git clone https://github.com/PodJamz/8gent`
-2.  **Attach to Backend**: Point your `NEXT_PUBLIC_OPENCLAW_GATEWAY_URL` to your existing OpenClaw Gateway.
-
-### Customization
-During installation, you can rename the workspace. While the default is **8gent**, you are free to customize the identity in `package.json` and `system-prompt.ts` to suit your specific agentic needs.
-
-## 🚀 Quick Start
-
-### Prerequisites
-*   Node.js v22+
-*   pnpm
-*   OpenClaw Gateway running
-
-### Installation
-
-To get started immediately, run the installer:
-
-```bash
-./install.sh
-```
-
-Or manually:
-
-```bash
-pnpm install
-pnpm dev
-```
-
-The application runs on **http://localhost:3000**
-
-## 📚 Documentation
-
-- **[APPS.md](./APPS.md)** - Complete list of all 59+ default apps
-- **[FRONTEND_OVERVIEW.md](./FRONTEND_OVERVIEW.md)** - Comprehensive frontend documentation
-- **[git-workflow-discipline.md](./git-workflow-discipline.md)** - Git workflow guide
-- **[agents.md](./agents.md)** - Agent documentation
-
-## 🏗 Architecture
-
-### Frontend (`/src`)
-Review the `src` folder for the Next.js-based UI.
-*   **Desktop & Window Manager**: iOS-style home screen with draggable windows
-*   **Onboarding**: Slick, detailed onboarding flow (`/src/components/onboarding`)
-*   **Apps**: 59+ built-in apps for productivity, creativity, and AI collaboration
-
-### Backend Integration (`/src/lib/openclaw`)
-*   **Client**: Custom WebSocket client connecting to OpenClaw Gateway
-*   **Hooks**: React hooks (`useQuery`, `useMutation`) for reactive data fetching
-*   **Auth**: Single-user owner authentication
-*   **Shim Layer**: Convex compatibility for legacy code
-
-## 🔐 Access Control
-OpenClaw-OS operates in **Single User Mode**.
-*   **Owner**: You. Full access to all system capabilities.
-*   **Visitor**: Restricted access (if public).
-*   **Integrations**: Connect external accounts (GitHub, Discord, Slack) in `/settings` to empower your AI agent.
-
-## 🛠 Development
-
-### Key Commands
-*   `pnpm dev`: Start the development server
-*   `pnpm build`: Build for production
-*   `pnpm lint`: Run linter
-
-### Project Structure
-*   `src/app`: Next.js App Router pages (59+ apps)
-*   `src/components`: UI components (Dock, Windows, Terminal, etc.)
-*   `src/lib`: Core logic and backend clients
-*   `src/hooks`: React hooks for OS state
-
-## 🤖 AI Agent
-The system is integrated with **OpenClaw Agent**, capable of:
-*   Running terminal commands
-*   Managing files
-*   Interacting with connected integrations
-*   Chatting via the `Agent` app or integrated chat interfaces
-*   Tool execution with security validation
-*   Memory retention via Recursive Memory Layer (RLM)
-
-## 🎨 Key Features
-
-### AI-Native Design
-Every app is designed with AI collaboration in mind. The OS doesn't just have AI features—it's built around AI as a first-class citizen.
-
-### Beautiful UX
-iOS-inspired design with:
-- Glassmorphism effects
-- Smooth Framer Motion animations
-- Premium color palettes
-- Responsive layouts
-
-### Local-First
-Prioritizes local models (Ollama, Lynkr) with cloud fallback. Your data stays on your machine.
-
-## 🙏 Credits
-
-### Creator
-**8gent Team**
-- The primary architect and maintainer of the 8gent ecosystem.
-- Abstracted from the [jamesspalding.org](https://jamesspalding.org) personal workspace.
-
-### Backend
-**The OpenClaw Team** - Agentic Backend Foundation
-- GitHub: [github.com/openclaw](https://github.com/openclaw)
-- Website: [openclaw.dev](https://openclaw.dev)
-
-### Inspirations
-See [/inspirations](http://localhost:3000/inspirations) for 20+ amazing creators who inspired this project.
+8gent is an ecosystem of AI-native products built around one idea: everyone deserves a personal operating system that learns, adapts, and works for them.
 
 ---
 
-*Built with ❤️ by the 8gent Team — An OpenClaw Integrated Workspace*
+## The Ecosystem
+
+| Product | Domain | Description | Status |
+|---------|--------|-------------|--------|
+| **8gent Jr** | [8gentjr.com](https://8gentjr.com) | Children's AAC, education, and communication OS | Live |
+| **8gent OS** | [8gentos.com](https://8gentos.com) | Adult personal AI operating system | In development |
+| **8gent Code** | [GitHub](https://github.com/PodJamz/8gent-code) | Terminal-first developer coding agent | Open source |
+| **8gent World** | [8gent.world](https://8gent.world) | Ecosystem hub | Live |
+| **8gent Games** | [8gent.games](https://8gent.games) | Gaming experiences | Live |
+
+All products share the Eight kernel. Constitution: [8gent.world/constitution](https://8gent.world/constitution)
+
+---
+
+## 8gent Jr
+
+Built by a father for his non-verbal autistic son. Free forever. Accessibility first. Developed with speech-language therapists from day one.
+
+**AAC Engine:**
+- 200+ core words on the communication board
+- GLP stages 1-6 (Marge Blanc Natural Language Acquisition model)
+- Fitzgerald Key color coding for word categories
+- Morphology engine (verb tenses, plurals, possessives)
+- AI-powered sentence engine: autocomplete, improvement, and encouragement
+- Custom card creation for personalized vocabulary
+- Motor lock and parent PIN lock
+
+**40 Educational Games** across 6 categories:
+- Speech (10) -- articulation, phonics, word building
+- Sensory (10) -- regulation and stimulation
+- Sensory 3D (5) -- immersive 3D experiences
+- Math (5) -- number recognition and counting
+- Language (5) -- vocabulary and comprehension
+- Patterns (5) -- sequencing and recognition
+
+**7 Standalone Apps:**
+AAC Board, Draw, Music (DrumPads + Xylophone via Web Audio API), Timer, VSD (Visual Scene Display), Speech Therapy, Intuition
+
+**SchoolTube:**
+YouTube Kids-style launcher with reels feed, video player, and weekly schedule.
+
+**Therapist Tools:**
+Progress reports with CSV export, session data capture, GLP stage tracking.
+
+**GDPR Compliant:**
+Consent gate, 90-day data retention with automated cleanup, breach notification procedure, full DPIA.
+
+---
+
+## Tech Stack
+
+| Layer | Jr (`packages/jnr/`) | OS (`web/`) | Mobile (`mobile/`) |
+|-------|----------------------|-------------|-------------------|
+| Framework | Next.js 14 | Next.js | Expo SDK 54 |
+| UI | React + Tailwind CSS | React + Tailwind | React Native + Reanimated |
+| Backend | Convex | Convex | Convex |
+| Auth | Clerk | Clerk | Clerk |
+| AI | Claude via AI SDK | Claude via AI SDK | Claude via AI SDK |
+| TTS | ElevenLabs + SpeechSynthesis | -- | -- |
+| Deploy | Vercel | Vercel | EAS |
+
+---
+
+## Monorepo Structure
+
+```
+8gent/
+  packages/jnr/     8gent Jr (Next.js 14, children's AAC/education)
+  mobile/            Expo React Native (iOS/Android)
+  web/               Next.js web app (8gent OS)
+  convex/            Shared Convex backend
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v22+
+- pnpm
+- Convex account
+- Clerk account
+
+### Installation
+
+```bash
+git clone https://github.com/PodJamz/8gent.git
+cd 8gent
+pnpm install
+```
+
+### Development
+
+```bash
+# 8gent Jr
+cd packages/jnr && pnpm dev
+
+# Web (OS)
+cd web && pnpm dev
+
+# Mobile
+cd mobile && pnpm dev
+
+# Convex backend
+npx convex dev
+```
+
+### Environment Variables
+
+Copy `.env.local.example` to `.env.local` and configure:
+
+```
+CONVEX_DEPLOYMENT=
+NEXT_PUBLIC_CONVEX_URL=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+ANTHROPIC_API_KEY=
+ELEVENLABS_API_KEY=
+```
+
+---
+
+## Domain Routing
+
+| URL | Destination |
+|-----|-------------|
+| 8gent.app | Sign-in gateway |
+| 8gentjr.com | Jr landing page |
+| nick.8gentjr.com | Child's AAC board (subdomain per child) |
+| 8gentos.com | OS product |
+| 8gent.world | Ecosystem hub |
+| 8gent.games | Gaming experiences |
+
+---
+
+## Links
+
+- [Brand guidelines](./BRAND.md)
+- [Constitution](https://8gent.world/constitution)
+- [DPIA](./docs/DPIA.md)
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+---
+
+## License
+
+Proprietary. All rights reserved.
+
+---
+
+*8gent: Your OS. Your rules. Your AI.*

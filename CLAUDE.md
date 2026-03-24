@@ -10,13 +10,13 @@
 
 8gent is a multi-product ecosystem governed by a shared constitution. See `BRAND.md` for brand rules.
 
-| Product | Domain | Role | Status |
+| Product | Domain | Repo | Status |
 |---------|--------|------|--------|
-| **8gent OS** | 8gentos.com | Adult personal AI operating system | In development |
-| **8gent Jr** | 8gentjr.com | Children's OS (AAC, education, communication) | Live |
-| **8gent Code** | github.com/PodJamz/8gent-code | Developer coding agent | Open source |
-| **8gent World** | 8gent.world | Ecosystem hub | Live |
-| **8gent Games** | 8gent.games | Gaming experiences | Live |
+| **8gent Jr** | 8gentjr.com | `PodJamz/8gent` (`packages/jnr/`) | Live, production |
+| **8gent OS** | 8gentos.com | `PodJamz/8gent-OS` | In development |
+| **8gent Code** | github.com/PodJamz/8gent-code | `PodJamz/8gent-code` | Open source |
+| **8gent World** | 8gent.world | `PodJamz/8gent-world` | Live |
+| **8gent Games** | 8gent.games | `PodJamz/8gent-games` | Live |
 
 ### Constitutional Principles (Key Articles)
 
@@ -24,15 +24,90 @@
 - **Article VI - 8gent Jr is the moral center.** Every child deserves a voice. Jr is free forever. Accessibility first. Built by a father for his non-verbal autistic son, with therapists from day one.
 - **Brand rules live in `BRAND.md`** — do not duplicate them here. Reference that file for fonts, colors, banned hues, and design principles.
 
-### 8gent Jr Architecture
+### 8gent Jr Architecture (`packages/jnr/`)
 
-- **Codebase:** `packages/jnr/`
-- **Domain:** `8gentjr.com` (also accessible via `8gent.app/jr/[tenant]`)
+- **Domain:** `8gentjr.com` (subdomain per child: `nick.8gentjr.com`)
 - **Auth:** Clerk (production instance, `clerk.8gent.app`)
 - **Backend:** Convex (`kindly-pony-819` production)
-- **Routing:** Path-based (`/jr/nick`) — subdomain routing available but path preferred
+- **Stack:** Next.js 14, React, Tailwind CSS, Convex, Clerk
+- **Routing:** Subdomain per child (`nick.8gentjr.com`), path-based also supported (`/jr/nick`)
 - **Roles:** Owner (parent) + Child + Visitor per tenant
-- **GDPR:** Consent gate mandatory before any child data processing
+- **Brand:** Fraunces + Inter fonts, `#E8610A` accent, warm palette
+- **UX:** 80px+ touch targets, no emojis (SVG icons only), sensory-safe, clinically accurate
+
+#### AAC Engine
+
+- **200+ core words** on the communication board
+- **GLP stages 1-6** (Marge Blanc Natural Language Acquisition model)
+- **Fitzgerald Key** color coding for word categories
+- **Morphology engine** for verb tenses, plurals, possessives
+- **AI sentence engine** — autocomplete, sentence improvement, encouragement (Claude via AI SDK)
+- **Custom card creation** — parents/therapists add personalized vocabulary
+- **Motor lock** — prevents accidental navigation during communication
+- **Parent PIN lock** — restricts settings access
+
+#### 40 Educational Games
+
+| Category | Games |
+|----------|-------|
+| **Speech** | 10 games targeting articulation, phonics, word building |
+| **Sensory** | 10 games for sensory regulation and stimulation |
+| **Sensory 3D** | 5 immersive 3D sensory experiences |
+| **Math** | 5 number recognition and counting games |
+| **Language** | 5 vocabulary and comprehension games |
+| **Patterns** | 5 pattern recognition and sequencing games |
+
+#### 7 Standalone Apps
+
+| App | Description |
+|-----|-------------|
+| **AAC Board** | Core communication board with 200+ words |
+| **Draw** | Creative drawing canvas |
+| **Music** | DrumPads (16 sounds) + XylophoneKeys (8 notes), Web Audio API |
+| **Timer** | Visual timer for routines and transitions |
+| **VSD (Visual Scene Display)** | Photo-based communication scenes |
+| **Speech Therapy** | Guided speech practice exercises |
+| **Intuition** | Pattern and prediction training |
+
+#### SchoolTube
+
+YouTube Kids-style media experience:
+- Reels feed with curated educational content
+- Video player with parental controls
+- Weekly schedule for structured screen time
+
+#### API Routes
+
+| Route | Purpose |
+|-------|---------|
+| `/api/autocomplete` | AI-powered word/phrase prediction |
+| `/api/encourage` | Contextual encouragement messages |
+| `/api/sentence-improve` | Grammar and sentence structure suggestions |
+| `/api/tts` | Text-to-speech (ElevenLabs API + browser SpeechSynthesis fallback) |
+
+#### Therapist Tools
+
+- **Reports** with CSV export for progress tracking
+- **Session data** captured per interaction
+- **GLP stage tracking** across sessions
+
+#### GDPR Compliance
+
+- Consent gate mandatory before any child data processing
+- 90-day data retention with automated cron cleanup
+- Breach notification procedure documented
+- Full DPIA at `/docs/DPIA.md`
+
+### Domain Routing
+
+| URL | Destination |
+|-----|-------------|
+| `8gent.app` | Sign-in gateway (Clerk auth) |
+| `8gentjr.com` | Jr landing page |
+| `nick.8gentjr.com` | Nick's AAC board (subdomain per child) |
+| `8gentos.com` | OS product (in development) |
+| `8gent.world` | Ecosystem hub |
+| `8gent.games` | Gaming experiences |
 
 ---
 
@@ -99,8 +174,9 @@ They just **speak**, **tap**, or **gesture** - and the system:
 
 ```
 8gent/
-├── mobile/          # Expo React Native (iOS/Android) - PRIMARY
-├── web/             # Next.js 16 web app
+├── packages/jnr/    # 8gent Jr - Children's AAC/education OS (Next.js 14)
+├── mobile/          # Expo React Native (iOS/Android)
+├── web/             # Next.js web app (8gent OS frontend)
 ├── convex/          # Shared backend (in web/)
 └── CLAUDE.md        # This file
 ```
@@ -272,18 +348,22 @@ chatMessages: defineTable({
 ### Commands
 
 ```bash
-# Mobile (primary)
-cd mobile && pnpm dev        # Start Expo dev server
-cd mobile && pnpm ios        # Run on iOS simulator
-cd mobile && pnpm android    # Run on Android emulator
+# 8gent Jr
+cd packages/jnr && pnpm dev    # Start Jr dev server (Next.js 14)
+cd packages/jnr && pnpm build  # Production build
 
-# Web
-cd web && pnpm dev           # Start Next.js dev server
-cd web && pnpm build         # Production build
+# Mobile
+cd mobile && pnpm dev          # Start Expo dev server
+cd mobile && pnpm ios          # Run on iOS simulator
+cd mobile && pnpm android      # Run on Android emulator
+
+# Web (OS)
+cd web && pnpm dev             # Start Next.js dev server
+cd web && pnpm build           # Production build
 
 # Convex (from web/)
-npx convex dev               # Start Convex dev server
-npx convex deploy            # Deploy to production
+npx convex dev                 # Start Convex dev server
+npx convex deploy              # Deploy to production
 ```
 
 ### Environment Variables
@@ -293,10 +373,13 @@ npx convex deploy            # Deploy to production
 CONVEX_DEPLOYMENT=
 ANTHROPIC_API_KEY=
 
-# Web
+# Web / Jr
 NEXT_PUBLIC_CONVEX_URL=
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
+
+# Jr TTS
+ELEVENLABS_API_KEY=
 
 # Mobile (Expo)
 EXPO_PUBLIC_CONVEX_URL=
