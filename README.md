@@ -1,3 +1,5 @@
+![Header](.github/assets/readme-header.png)
+
 # 8gent -- Personal Generative Operating System
 
 > "Personal AI operating systems will replace SaaS."
