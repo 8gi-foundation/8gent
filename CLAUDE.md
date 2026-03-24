@@ -1,372 +1,223 @@
-# 8gent - Personal Generative Operating System
+# CLAUDE.md
 
-> **"Personal AI operating systems will replace SaaS."**
->
-> Claude Code gave developers infinite building power. 8gent gives everyone else that same abundance.
+## What This Is
+
+8gent is the consumer GUI client for the 8gent OS, live at **8gent.app**. It also hosts **8gent Jr** (8gentjr.com) at `packages/jnr/`. Both run from this monorepo.
 
 ---
 
-## Ecosystem & Constitution
+## Ecosystem
 
-8gent is a multi-product ecosystem governed by a shared constitution. See `BRAND.md` for brand rules.
+Six products sharing the Eight kernel, deployed at `eight-vessel.fly.dev` (Amsterdam).
 
-| Product | Domain | Repo | Status |
-|---------|--------|------|--------|
-| **8gent Jr** | 8gentjr.com | `PodJamz/8gent` (`packages/jnr/`) | Live, production |
-| **8gent OS** | 8gentos.com | `PodJamz/8gent-OS` | In development |
-| **8gent Code** | github.com/PodJamz/8gent-code | `PodJamz/8gent-code` | Open source |
-| **8gent World** | 8gent.world | `PodJamz/8gent-world` | Live |
-| **8gent Games** | 8gent.games | `PodJamz/8gent-games` | Live |
+| Domain | Product | Role |
+|--------|---------|------|
+| **8gentos.com** | 8gent OS | Parent product. Paid. Revenue engine. |
+| **8gent.app** | 8gent | This repo. Consumer GUI client. |
+| **8gent.dev** | 8gent Code | Open source developer agent. Free on-ramp. |
+| **8gent.world** | 8gent World | Ecosystem story, docs, media portal. |
+| **8gent.games** | 8gent Games | Agent simulation playground. |
+| **8gentjr.com** | 8gent Jr | AI assistant for kids. Free forever. |
 
-### Constitutional Principles (Key Articles)
+Constitution: [8gent.world/constitution](https://8gent.world/constitution)
+Media/Decks: [8gent.world/media/decks](https://8gent.world/media/decks)
+Inspirations: [8gent.world/inspirations](https://8gent.world/inspirations)
 
-- **Article III - Privacy as a right, not a feature.** GDPR compliance is constitutional. Consent gate, data deletion, and privacy policies are enforced in code. See `/docs/DPIA.md`.
-- **Article VI - 8gent Jr is the moral center.** Every child deserves a voice. Jr is free forever. Accessibility first. Built by a father for his non-verbal autistic son, with therapists from day one.
-- **Brand rules live in `BRAND.md`** — do not duplicate them here. Reference that file for fonts, colors, banned hues, and design principles.
+---
 
-### 8gent Jr Architecture (`packages/jnr/`)
+## Monorepo Structure
 
-- **Domain:** `8gentjr.com` (subdomain per child: `nick.8gentjr.com`)
-- **Auth:** Clerk (production instance, `clerk.8gent.app`)
-- **Backend:** Convex (`kindly-pony-819` production)
-- **Stack:** Next.js 14, React, Tailwind CSS, Convex, Clerk
-- **Routing:** Subdomain per child (`nick.8gentjr.com`), path-based also supported (`/jr/nick`)
-- **Roles:** Owner (parent) + Child + Visitor per tenant
-- **Brand:** Fraunces + Inter fonts, `#E8610A` accent, warm palette
-- **UX:** 80px+ touch targets, no emojis (SVG icons only), sensory-safe, clinically accurate
+```
+8gent/
+├── src/app/                  # Next.js App Router (OS GUI routes)
+├── packages/jnr/             # 8gent Jr (children's AAC/education, Next.js 14)
+├── packages/control-plane/
+├── packages/lynkr/
+├── packages/toolshed/
+├── packages/livekit-agent/
+├── packages/whatsapp-bridge/
+├── mobile/                   # Expo React Native (iOS/Android)
+├── web/                      # Next.js web app (OS frontend)
+└── convex/                   # Backend (in web/)
+```
 
-#### AAC Engine
+---
 
-- **200+ core words** on the communication board
-- **GLP stages 1-6** (Marge Blanc Natural Language Acquisition model)
-- **Fitzgerald Key** color coding for word categories
-- **Morphology engine** for verb tenses, plurals, possessives
-- **AI sentence engine** — autocomplete, sentence improvement, encouragement (Claude via AI SDK)
-- **Custom card creation** — parents/therapists add personalized vocabulary
-- **Motor lock** — prevents accidental navigation during communication
-- **Parent PIN lock** — restricts settings access
+## Commands
 
-#### 40 Educational Games
+```bash
+# Root app
+pnpm dev              # Dev server on localhost:3000
+pnpm build            # Production build
+pnpm lint             # Linting
+pnpm test             # Vitest
+pnpm test:run         # Single run
+pnpm test:coverage    # Coverage report
 
-| Category | Games |
-|----------|-------|
-| **Speech** | 10 games targeting articulation, phonics, word building |
-| **Sensory** | 10 games for sensory regulation and stimulation |
-| **Sensory 3D** | 5 immersive 3D sensory experiences |
-| **Math** | 5 number recognition and counting games |
-| **Language** | 5 vocabulary and comprehension games |
-| **Patterns** | 5 pattern recognition and sequencing games |
+# Jr
+cd packages/jnr && pnpm dev
+cd packages/jnr && pnpm build
 
-#### 7 Standalone Apps
+# Mobile
+cd mobile && pnpm dev
+cd mobile && pnpm ios
+cd mobile && pnpm android
 
-| App | Description |
-|-----|-------------|
-| **AAC Board** | Core communication board with 200+ words |
-| **Draw** | Creative drawing canvas |
-| **Music** | DrumPads (16 sounds) + XylophoneKeys (8 notes), Web Audio API |
-| **Timer** | Visual timer for routines and transitions |
-| **VSD (Visual Scene Display)** | Photo-based communication scenes |
-| **Speech Therapy** | Guided speech practice exercises |
-| **Intuition** | Pattern and prediction training |
+# Web (OS)
+cd web && pnpm dev
+cd web && pnpm build
 
-#### SchoolTube
+# Convex (from web/)
+npx convex dev
+npx convex deploy
+```
 
-YouTube Kids-style media experience:
-- Reels feed with curated educational content
-- Video player with parental controls
-- Weekly schedule for structured screen time
+No test suite in Jr yet. Root app uses Vitest.
 
-#### API Routes
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16, React 19 |
+| Jr Framework | Next.js 14 |
+| Mobile | Expo SDK 54, React Native, Reanimated |
+| Styling | Tailwind CSS 3, Framer Motion 12 |
+| Backend | Convex (real-time, transactional, type-safe) |
+| Auth | Clerk (unified across ecosystem, production at `clerk.8gent.app`) |
+| AI | Claude via AI SDK v6 (`@ai-sdk/anthropic`) |
+| 3D | Three.js, React Three Fiber |
+| Video | Remotion |
+| Voice | LiveKit |
+| Testing | Vitest, Testing Library |
+| Validation | Zod v4 |
+| State | Zustand |
+
+---
+
+## Key Routes (src/app/)
+
+The OS GUI has 60+ app routes. Notable ones:
 
 | Route | Purpose |
 |-------|---------|
-| `/api/autocomplete` | AI-powered word/phrase prediction |
-| `/api/encourage` | Contextual encouragement messages |
-| `/api/sentence-improve` | Grammar and sentence structure suggestions |
-| `/api/tts` | Text-to-speech (ElevenLabs API + browser SpeechSynthesis fallback) |
-
-#### Therapist Tools
-
-- **Reports** with CSV export for progress tracking
-- **Session data** captured per interaction
-- **GLP stage tracking** across sessions
-
-#### GDPR Compliance
-
-- Consent gate mandatory before any child data processing
-- 90-day data retention with automated cron cleanup
-- Breach notification procedure documented
-- Full DPIA at `/docs/DPIA.md`
+| `/` | Home screen |
+| `/chat` | AI control plane |
+| `/agent` | Agent workspace |
+| `/terminal` | Terminal emulator |
+| `/memory` | Context/memory viewer |
+| `/canvas` | Creative workspace |
+| `/music` | Music studio |
+| `/games` | Game hub |
+| `/settings` | System config |
+| `/onboarding` | First-run setup |
+| `/sign-in`, `/sign-up` | Clerk auth |
+| `/inspirations` | Credits and inspirations |
 
 ### Domain Routing
 
 | URL | Destination |
 |-----|-------------|
-| `8gent.app` | Sign-in gateway (Clerk auth) |
+| `8gent.app` | Sign-in gateway |
 | `8gentjr.com` | Jr landing page |
-| `nick.8gentjr.com` | Nick's AAC board (subdomain per child) |
-| `8gentos.com` | OS product (in development) |
-| `8gent.world` | Ecosystem hub |
-| `8gent.games` | Gaming experiences |
+| `nick.8gentjr.com` | Child's AAC board (subdomain per child) |
 
 ---
 
-## The Vision
+## Brand Rules
 
-**8gent.app** is the consumer-facing manifestation of AIJAMESOS - a personal generative operating system that:
+Full reference in `BRAND.md`. Do not duplicate that file here. Key points:
 
-| Capability | What It Means |
-|------------|---------------|
-| **Learns your objectives** | Not prompt engineering - actual understanding of what you're trying to accomplish |
-| **Creates what you need** | Apps, workflows, documents, interfaces generated on demand |
-| **Self-improves** | The system compounds knowledge as you use it |
-| **Feels like your phone** | Familiar UX patterns, not technical dashboards |
+### Typography
+- **Fraunces** (serif, weight 800) -- brand wordmark
+- **Inter** (sans) -- UI text
+- **JetBrains Mono** -- code blocks
 
-**This is NOT:**
-- A chatbot wrapper
-- A template gallery
-- Another dark mode dashboard
-- A features-first product
+### Color
+- Primary accent: `#E8610A`
+- Dark mode is the default
+- No purple. Purple is banned from the palette.
 
-**This IS:**
-- A thinking system that happens to be software
-- An OS that demonstrates itself by being used
-- Agentic infrastructure disguised as familiar UX
+### Jr Brand (different from OS)
+- **Light/warm** palette (not dark mode)
+- 80px+ touch targets
+- No emojis (SVG icons only)
+- Sensory-safe, clinically accurate
 
----
-
-## Core Philosophy (from EXPERIENCE_PHILOSOPHY.md)
-
-### Apps as Modes of Thinking
-
-The home screen shows apps - not "sections", not "pages". **Ways of working:**
-
-| App | Role |
-|-----|------|
-| **Chat** | The control plane - speak things into existence |
-| **Tasks** | Where everything becomes concrete |
-| **Memory** | Your second brain - what the system knows about you |
-| **Canvas** | Creative workspace - generative design |
-| **Settings** | System configuration and preferences |
-
-Each app has a clear role. Nothing overlaps by accident.
-
-### Agentic Without Being Theatrical
-
-Users don't need to understand:
-- Prompt engineering
-- API calls
-- Tool definitions
-- Technical infrastructure
-
-They just **speak**, **tap**, or **gesture** - and the system:
-- Structures their intent
-- Executes actions
-- Files things correctly
-- Remembers context
-- Gets smarter over time
+### Writing Rules
+- No em dashes. Use commas, periods, or semicolons.
+- No inflation. State what was done, what works, what does not.
+- No fake stats. Every number must be verifiable.
+- Roadmap framing: NOW / NEXT / LATER.
 
 ---
 
-## Architecture
+## 8gent Jr (packages/jnr/)
 
-### Monorepo Structure
+Jr is a free, accessibility-first AI assistant for non-verbal and neurodivergent children. Built by a father for his non-verbal autistic son, with speech-language therapists from day one.
 
-```
-8gent/
-├── packages/jnr/    # 8gent Jr - Children's AAC/education OS (Next.js 14)
-├── mobile/          # Expo React Native (iOS/Android)
-├── web/             # Next.js web app (8gent OS frontend)
-├── convex/          # Shared backend (in web/)
-└── CLAUDE.md        # This file
-```
+**Domain:** 8gentjr.com (subdomain per child, e.g. `nick.8gentjr.com`)
+**Auth:** Clerk (production instance, `clerk.8gent.app`)
+**Backend:** Convex
+**Roles:** Owner (parent) + Child + Visitor per tenant
 
-### The Stack (Inherited from AIJAMESOS)
+### AAC Engine
+- 200+ core words on the communication board
+- 46K ARASAAC symbols for visual communication
+- GLP stages 1-6 (Marge Blanc Natural Language Acquisition model)
+- Gestalt protection
+- Interest-driven AAC cards tailored to each child
+- Fitzgerald Key color coding for word categories
+- Morphology engine for verb tenses, plurals, possessives
+- AI sentence engine: autocomplete, improvement, encouragement (Claude via AI SDK)
+- Custom card creation for parents/therapists
+- Motor lock to prevent accidental navigation
+- Parent PIN lock for settings access
 
-| Layer | Mobile | Web | Why |
-|-------|--------|-----|-----|
-| Framework | Expo SDK 54 | Next.js 16 | Best-in-class for each platform |
-| UI | React Native + Reanimated 4 | React 19 + Tailwind 4 | Native feel, not web-in-a-box |
-| Animation | LegendList + Reanimated | Framer Motion 12 | 60fps everywhere |
-| Backend | Convex | Convex | Real-time, transactional, type-safe |
-| Auth | Clerk | Clerk | Unified identity |
-| AI | Claude via AI SDK v6 | Claude via AI SDK v6 | The smartest model |
+### Educational Content
+- 40 games across speech (10), sensory (10), sensory 3D (5), math (5), language (5), patterns (5)
+- 7 standalone apps: AAC Board, Draw, Music, Timer, VSD, Speech Therapy, Intuition
+- SchoolTube: curated educational video feed with parental controls
 
-### Chat as Control Plane
+### Therapist Tools
+- SLT reports with CSV export
+- Session data capture per interaction
+- GLP stage tracking across sessions
+- Music therapy integration
 
-The AI uses **tool calling** to perform actions, not just answer questions:
+### Jr API Routes
 
-```typescript
-// User says: "Remind me to call mom tomorrow at 5pm"
-// AI executes:
-{
-  tool: "create_reminder",
-  arguments: {
-    title: "Call mom",
-    datetime: "2026-01-29T17:00:00",
-    notify: true
-  }
-}
-// User sees: "Got it. I'll remind you tomorrow at 5pm."
-```
+| Route | Purpose |
+|-------|---------|
+| `/api/autocomplete` | AI word/phrase prediction |
+| `/api/encourage` | Contextual encouragement |
+| `/api/sentence-improve` | Grammar and structure suggestions |
+| `/api/tts` | Text-to-speech (ElevenLabs + browser fallback) |
 
-This pattern scales to everything:
-- Creating tasks, projects, workflows
-- Storing memories and preferences
-- Generating documents, designs, interfaces
-- Navigating between apps
-- Triggering complex multi-step workflows
+### GDPR Compliance (Non-Negotiable)
 
-### Recursive Memory Layer (RLM)
+GDPR compliance is constitutional (Article III). This is not optional, not a feature flag, not negotiable.
 
-The system remembers everything relevant:
+- Ireland digital age of consent: 16
+- Consent gate mandatory before any child data processing
+- 90-day data retention with automated cron cleanup
+- Breach notification procedure documented
+- Full DPIA at `/docs/DPIA.md`
+- Privacy is architecture, not a feature toggle
 
-| Memory Type | What It Stores | Example |
-|-------------|----------------|---------|
-| **Episodic** | "What happened" | "User created 3 tasks about home renovation on Jan 28" |
-| **Semantic** | "What I know" | "User prefers morning reminders, works in tech, has dog named Max" |
-| **Working** | "Current context" | "Currently planning a trip to Japan in April" |
+### Accessibility Is Architecture
 
-Memory enables personalization without explicit configuration.
+Accessibility in Jr is not a feature. It is the architecture. Do not treat it as an add-on.
 
----
-
-## AI Tools (Current)
-
-### Core Actions
-
-| Tool | Description |
-|------|-------------|
-| `create_task` | Create task with title, description, priority, due date |
-| `update_task` | Modify status, priority, or details |
-| `list_tasks` | Query tasks by status, priority, or search |
-| `delete_task` | Remove a task |
-
-### Memory Operations
-
-| Tool | Description |
-|------|-------------|
-| `remember` | Store an episodic memory with importance |
-| `recall` | Search memories by semantic query |
-| `learn` | Store a semantic fact about the user |
-| `forget` | Remove a memory |
-
-### System Operations
-
-| Tool | Description |
-|------|-------------|
-| `navigate_to` | Switch to an app or screen |
-| `set_preference` | Update user settings |
-| `generate_ui` | Create dynamic interface components |
-
-### Future Tools (Roadmap)
-
-- `create_workflow` - Define multi-step automated processes
-- `generate_document` - Create formatted documents
-- `design_interface` - Generate UI from description
-- `schedule_action` - Time-based automation
-- `connect_service` - Integrate external APIs
+- 80px+ touch targets (not the standard 44px)
+- Sensory-safe color and motion design
+- Clinically accurate communication tools
+- Designed with SLTs from the start, not retrofitted
 
 ---
 
-## Convex Schema
-
-```typescript
-// Core tables for 8gent
-tasks: defineTable({
-  userId: v.string(),
-  title: v.string(),
-  description: v.optional(v.string()),
-  status: v.union(
-    v.literal("backlog"),
-    v.literal("todo"),
-    v.literal("in_progress"),
-    v.literal("review"),
-    v.literal("done")
-  ),
-  priority: v.union(
-    v.literal("low"),
-    v.literal("medium"),
-    v.literal("high"),
-    v.literal("urgent")
-  ),
-  dueDate: v.optional(v.number()),
-  tags: v.array(v.string()),
-  createdAt: v.number(),
-  updatedAt: v.number(),
-}).index("by_user", ["userId"])
-  .index("by_status", ["userId", "status"]),
-
-episodicMemories: defineTable({
-  userId: v.string(),
-  content: v.string(),
-  importance: v.number(), // 0-1
-  context: v.optional(v.string()),
-  tags: v.array(v.string()),
-  createdAt: v.number(),
-}).index("by_user", ["userId"])
-  .index("by_importance", ["userId", "importance"]),
-
-semanticMemories: defineTable({
-  userId: v.string(),
-  category: v.string(), // "preference", "fact", "relationship"
-  key: v.string(),
-  value: v.string(),
-  confidence: v.number(), // 0-1
-  source: v.optional(v.string()),
-  createdAt: v.number(),
-  updatedAt: v.number(),
-}).index("by_user", ["userId"])
-  .index("by_category", ["userId", "category"]),
-
-chatThreads: defineTable({
-  userId: v.string(),
-  title: v.optional(v.string()),
-  createdAt: v.number(),
-  updatedAt: v.number(),
-}).index("by_user", ["userId"]),
-
-chatMessages: defineTable({
-  userId: v.string(),
-  threadId: v.id("chatThreads"),
-  role: v.union(v.literal("user"), v.literal("assistant")),
-  content: v.string(),
-  toolCalls: v.optional(v.array(v.object({
-    id: v.string(),
-    name: v.string(),
-    arguments: v.string(),
-    result: v.optional(v.string()),
-  }))),
-  createdAt: v.number(),
-}).index("by_thread", ["threadId"]),
-```
-
----
-
-## Development
-
-### Commands
-
-```bash
-# 8gent Jr
-cd packages/jnr && pnpm dev    # Start Jr dev server (Next.js 14)
-cd packages/jnr && pnpm build  # Production build
-
-# Mobile
-cd mobile && pnpm dev          # Start Expo dev server
-cd mobile && pnpm ios          # Run on iOS simulator
-cd mobile && pnpm android      # Run on Android emulator
-
-# Web (OS)
-cd web && pnpm dev             # Start Next.js dev server
-cd web && pnpm build           # Production build
-
-# Convex (from web/)
-npx convex dev                 # Start Convex dev server
-npx convex deploy              # Deploy to production
-```
-
-### Environment Variables
+## Environment Variables
 
 ```env
 # Shared
@@ -390,62 +241,16 @@ EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=
 
 ## Coding Conventions
 
-### Universal
 - TypeScript strict mode
 - Zod for runtime validation
+- Server Components by default (web)
 - Composition over inheritance
-- Small, focused files (< 300 lines)
+- Small, focused files (under 300 lines)
 - Comments explain "why", not "what"
-
-### Mobile
-- Use Reanimated worklets for 60fps animations
-- LegendList for virtualized lists
-- `react-native-keyboard-controller` for keyboard handling
-- iOS HIG patterns (44pt touch targets, 8pt grid)
-- Test on both platforms
-
-### Web
-- Server Components by default
+- Tailwind CSS variables for theming, no hardcoded colors
+- Mobile: Reanimated worklets for 60fps, iOS HIG patterns
 - Streaming responses for AI
-- Tailwind CSS variables for theming
-- No hardcoded colors
 
----
+## Path Alias
 
-## References
-
-| Document | Location | Purpose |
-|----------|----------|---------|
-| MANIFESTO | `../Myresumeportfolio/MANIFESTO.md` | The vision |
-| EXPERIENCE_PHILOSOPHY | `../Myresumeportfolio/EXPERIENCE_PHILOSOPHY.md` | UX principles |
-| AIJAMESOS CLAUDE.md | `../Myresumeportfolio/CLAUDE.md` | Full architecture |
-| BMAD Framework | `../Myresumeportfolio/.bmad-core/` | Methodology |
-
----
-
-## The Bet
-
-> Everyone will have a personal AI operating system within 5 years. The question is: who builds the one people actually want to live in?
-
-We're not building another tool.
-
-We're building the place where tools live.
-
----
-
-## 8gent Code Integration (v0.7.0)
-
-The terminal-first coding agent (`8gent-code`) powers the developer experience:
-
-- **Smart Onboarding** — 3-question setup with auto-detection
-- **Cloud Sync** — Preferences sync across devices via Convex
-- **Session Resume** — `/continue`, `/history`, `/resume`, `/compact`
-- **Adaptive Prompts** — Agent knows your name, role, and communication style
-- **Personal LoRA** — Training pipeline learns from your coding patterns
-- **ESC Interrupt** — Abort generation mid-stream
-
-Source: `~/8gent-code/` | Docs: `docs/PERSONALIZATION.md`
-
----
-
-*8gent: Your OS. Your rules. Your AI.*
+`@/*` maps to `./src/*` (configured in `tsconfig.json`).
