@@ -22,7 +22,7 @@ const isMarketingRoute = createRouteMatcher([
 
 export default clerkMiddleware(async (auth, request) => {
   const url = request.nextUrl;
-  const hostname = request.headers.get('host') || '';
+  const hostname = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
 
   // Demo subdomain - bypass all auth, redirect root to /app
   const hostnameForDemoCheck = hostname.split(':')[0];
