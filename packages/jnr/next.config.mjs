@@ -1,5 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Redirect demo.8gentjr.com root to /app (bypass static CDN cache)
+  async redirects() {
+    return [
+      {
+        source: '/',
+        has: [{ type: 'host', value: 'demo.8gentjr.com' }],
+        destination: '/app',
+        permanent: false,
+      },
+    ];
+  },
+
   // Enable wildcard subdomains for multi-tenant routing
   // e.g., nick.8gent.app, emma.8gent.app
   // Mode (kid/adult) is a setting toggle, not a domain change
