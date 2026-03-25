@@ -24,9 +24,12 @@ export default clerkMiddleware(async (auth, request) => {
   const url = request.nextUrl;
   const hostname = request.headers.get('host') || '';
 
-  // Demo subdomain - bypass all auth entirely
+  // Demo subdomain - bypass all auth, redirect root to /app
   const hostnameForDemoCheck = hostname.split(':')[0];
   if (hostnameForDemoCheck === 'demo.8gentjr.com') {
+    if (url.pathname === '/') {
+      return NextResponse.redirect(new URL('/app', request.url));
+    }
     const response = NextResponse.next();
     response.headers.set('x-demo-mode', '1');
     response.headers.set('x-tenant-subdomain', 'demo');
