@@ -31,17 +31,27 @@ interface MissingVocabulary {
   reason: string;
 }
 
+function isDemoHost(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.hostname === 'demo.8gentjr.com';
+}
+
 export default function AACAppPage() {
   const router = useRouter();
   const { settings, isLoaded } = useApp();
   const [sentence, setSentence] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<AACCategory | null>(null);
   const [missingVocabulary, setMissingVocabulary] = useState<MissingVocabulary[]>([]);
+  const [isDemo, setIsDemo] = useState(false);
 
-  // Redirect to onboarding if not completed (skip if accessed via /jr/[tenant] path)
+  useEffect(() => {
+    setIsDemo(isDemoHost());
+  }, []);
+
+  // Redirect to onboarding if not completed (skip if accessed via /jr/[tenant] path or demo)
   useEffect(() => {
     const isJrRoute = window.location.pathname.startsWith('/jr/');
-    if (isLoaded && !settings.hasCompletedOnboarding && !isJrRoute) {
+    if (isLoaded && !settings.hasCompletedOnboarding && !isJrRoute && !isDemoHost()) {
       router.push('/onboarding');
     }
   }, [isLoaded, settings.hasCompletedOnboarding, router]);
@@ -165,6 +175,23 @@ export default function AACAppPage() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'var(--warm-bg-page, #F5F0EB)' }}>
+      {/* Demo mode banner */}
+      {isDemo && (
+        <div
+          className="flex items-center justify-center gap-2 px-4 py-2 text-white text-[13px] sm:text-[14px] font-medium"
+          style={{ backgroundColor: '#E8610A' }}
+        >
+          <span>Demo Mode - Try 8gent Jr</span>
+          <a
+            href="https://8gentjr.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 opacity-90 active:opacity-100"
+          >
+            Learn more
+          </a>
+        </div>
+      )}
       {/* Header - Sticky with blur */}
       <header
         className="sticky top-0 z-40 backdrop-blur-xl safe-top"

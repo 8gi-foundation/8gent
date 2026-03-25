@@ -24,6 +24,16 @@ export default clerkMiddleware(async (auth, request) => {
   const url = request.nextUrl;
   const hostname = request.headers.get('host') || '';
 
+  // Demo subdomain - bypass all auth entirely
+  const hostnameForDemoCheck = hostname.split(':')[0];
+  if (hostnameForDemoCheck === 'demo.8gentjr.com') {
+    const response = NextResponse.next();
+    response.headers.set('x-demo-mode', '1');
+    response.headers.set('x-tenant-subdomain', 'demo');
+    response.headers.set('x-tenant-mode', 'kid');
+    return response;
+  }
+
   // Parse subdomain
   // Handles: nick.8gent.app, nick.localhost:3001, etc.
   let subdomain: string | null = null;
