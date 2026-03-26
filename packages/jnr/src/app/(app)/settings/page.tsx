@@ -160,7 +160,7 @@ export default function SettingsPage() {
           </p>
           <div className="rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)' }}>
             {/* Grid Columns */}
-            <div className="px-4 py-3">
+            <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--warm-border-light, #F0EAE3)' }}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[17px]" style={{ color: 'var(--warm-text, #1A1614)' }}>Grid Size</span>
                 <span className="text-[15px]" style={{ color: 'var(--warm-text-secondary, #5C544A)' }}>{settings.gridColumns} columns</span>
@@ -179,6 +179,34 @@ export default function SettingsPage() {
                     {cols}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Paginated Mode */}
+            <div className="px-4 py-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-[17px]" style={{ color: 'var(--warm-text, #1A1614)' }}>Paginated Mode</span>
+                  <p className="text-[13px] mt-0.5" style={{ color: 'var(--warm-text-muted, #9A9088)' }}>
+                    Show one page of cards at a time
+                  </p>
+                </div>
+                <button
+                  role="switch"
+                  aria-checked={settings.paginatedMode}
+                  onClick={() => updateSettings({ paginatedMode: !settings.paginatedMode })}
+                  className="relative w-[51px] h-[31px] rounded-full transition-colors flex-shrink-0"
+                  style={{
+                    backgroundColor: settings.paginatedMode ? primaryColor : 'var(--warm-border, #E8E0D6)',
+                  }}
+                >
+                  <span
+                    className="absolute top-[2px] left-[2px] w-[27px] h-[27px] bg-white rounded-full shadow-md transition-transform"
+                    style={{
+                      transform: settings.paginatedMode ? 'translateX(20px)' : 'translateX(0)',
+                    }}
+                  />
+                </button>
               </div>
             </div>
           </div>
