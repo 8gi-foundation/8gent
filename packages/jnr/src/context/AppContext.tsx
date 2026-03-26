@@ -17,6 +17,7 @@ export interface AppSettings {
   ttsVolume: number;
   gridColumns: number;
   hasCompletedOnboarding: boolean;
+  paginatedMode: boolean;
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -27,6 +28,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   ttsVolume: 1.0,
   gridColumns: 3,
   hasCompletedOnboarding: false,
+  paginatedMode: false,
 };
 
 const STORAGE_KEY = '8gent-app-settings';

@@ -13,6 +13,7 @@ import {
 import { useApp } from '@/context/AppContext';
 import { Dock } from '@/components/dock/Dock';
 import { MagicButton } from '@/components/aac/MagicButton';
+import { AACPaginatedGrid } from '@/components/aac/AACPaginatedGrid';
 import { CardSuggestion } from '@/components/ai/CardSuggestion';
 import { speakWithKitten } from '@/lib/speech/tts';
 import { getSessionLogger } from '@/lib/session-logger';
@@ -313,80 +314,151 @@ export default function AACAppPage() {
       </div>
 
       {/* Card Grid - Responsive */}
-      <div className="flex-1 px-2 sm:px-4 py-3 sm:py-4 overflow-y-auto pb-24">
-        {activeCategory ? (
-          // Show phrases for selected category
-          <div
-            className="grid gap-2.5 sm:gap-3.5"
-            style={{
-              gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
-            }}
-          >
-            {phrases.map((phrase) => (
-              <button
-                key={phrase.id}
-                onClick={() => handleCardTap(phrase)}
-                className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
-                          aspect-square min-w-[48px] min-h-[48px]
-                          shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
-                          active:scale-[0.95] active:shadow-sm transition-all
-                          border focus:outline-none"
-                style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: 'var(--warm-border-light, #F0EAE3)' }}
-              >
-                <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
-                  <Image
-                    src={phrase.imageUrl}
-                    alt={phrase.text}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
-                </div>
-                <span className="text-[14px] sm:text-[15px] font-bold text-center leading-tight line-clamp-2" style={{ color: 'var(--warm-text, #1A1614)' }}>
-                  {phrase.text}
-                </span>
-              </button>
-            ))}
-          </div>
-        ) : (
-          // Show categories
-          <div
-            className="grid gap-2.5 sm:gap-3.5"
-            style={{
-              gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
-            }}
-          >
-            {AAC_CATEGORIES.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => handleCategoryTap(category)}
-                className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
-                          aspect-square min-w-[48px] min-h-[48px]
-                          shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
-                          active:scale-[0.95] active:shadow-sm transition-all
-                          border-2"
-                style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: category.color }}
-              >
-                <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
-                  <Image
-                    src={category.imageUrl}
-                    alt={category.name}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
-                </div>
-                <span
-                  className="text-[14px] sm:text-[16px] font-bold text-center leading-tight"
-                  style={{ color: category.color }}
+      {settings.paginatedMode ? (
+        // Paginated mode: one page of cards at a time, swipe to navigate
+        <div className="flex-1 overflow-hidden pb-24">
+          {activeCategory ? (
+            <AACPaginatedGrid
+              items={phrases}
+              keyExtractor={(phrase) => phrase.id}
+              columns={gridCols}
+              renderItem={(phrase) => (
+                <button
+                  onClick={() => handleCardTap(phrase)}
+                  className="w-full rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                            aspect-square min-w-[48px] min-h-[48px]
+                            shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
+                            active:scale-[0.95] active:shadow-sm transition-all
+                            border focus:outline-none"
+                  style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: 'var(--warm-border-light, #F0EAE3)' }}
                 >
-                  {category.name}
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+                  <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
+                    <Image
+                      src={phrase.imageUrl}
+                      alt={phrase.text}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <span className="text-[14px] sm:text-[15px] font-bold text-center leading-tight line-clamp-2" style={{ color: 'var(--warm-text, #1A1614)' }}>
+                    {phrase.text}
+                  </span>
+                </button>
+              )}
+            />
+          ) : (
+            <AACPaginatedGrid
+              items={AAC_CATEGORIES}
+              keyExtractor={(category) => category.id}
+              columns={gridCols}
+              renderItem={(category) => (
+                <button
+                  onClick={() => handleCategoryTap(category)}
+                  className="w-full rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                            aspect-square min-w-[48px] min-h-[48px]
+                            shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
+                            active:scale-[0.95] active:shadow-sm transition-all
+                            border-2"
+                  style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: category.color }}
+                >
+                  <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
+                    <Image
+                      src={category.imageUrl}
+                      alt={category.name}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <span
+                    className="text-[14px] sm:text-[16px] font-bold text-center leading-tight"
+                    style={{ color: category.color }}
+                  >
+                    {category.name}
+                  </span>
+                </button>
+              )}
+            />
+          )}
+        </div>
+      ) : (
+        // Default scrolling grid
+        <div className="flex-1 px-2 sm:px-4 py-3 sm:py-4 overflow-y-auto pb-24">
+          {activeCategory ? (
+            // Show phrases for selected category
+            <div
+              className="grid gap-2.5 sm:gap-3.5"
+              style={{
+                gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
+              }}
+            >
+              {phrases.map((phrase) => (
+                <button
+                  key={phrase.id}
+                  onClick={() => handleCardTap(phrase)}
+                  className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                            aspect-square min-w-[48px] min-h-[48px]
+                            shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
+                            active:scale-[0.95] active:shadow-sm transition-all
+                            border focus:outline-none"
+                  style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: 'var(--warm-border-light, #F0EAE3)' }}
+                >
+                  <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
+                    <Image
+                      src={phrase.imageUrl}
+                      alt={phrase.text}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <span className="text-[14px] sm:text-[15px] font-bold text-center leading-tight line-clamp-2" style={{ color: 'var(--warm-text, #1A1614)' }}>
+                    {phrase.text}
+                  </span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            // Show categories
+            <div
+              className="grid gap-2.5 sm:gap-3.5"
+              style={{
+                gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
+              }}
+            >
+              {AAC_CATEGORIES.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryTap(category)}
+                  className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-3 flex flex-col items-center justify-center
+                            aspect-square min-w-[48px] min-h-[48px]
+                            shadow-[0_2px_8px_rgba(26,22,20,0.06),0_1px_3px_rgba(26,22,20,0.04)]
+                            active:scale-[0.95] active:shadow-sm transition-all
+                            border-2"
+                  style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)', borderColor: category.color }}
+                >
+                  <div className="relative w-full h-[58%] mb-1 sm:mb-1.5">
+                    <Image
+                      src={category.imageUrl}
+                      alt={category.name}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <span
+                    className="text-[14px] sm:text-[16px] font-bold text-center leading-tight"
+                    style={{ color: category.color }}
+                  >
+                    {category.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Bottom Dock */}
       <Dock primaryColor={primaryColor} />
