@@ -160,3 +160,8 @@ export function getMoodGradient(mood: MoodKey): string {
   const p = EMOTIONAL_PLAYLISTS[mood];
   return `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})`;
 }
+
+// Re-export nursery rhyme sing-along playlist so callers can import
+// everything music-related from a single entry point.
+export { SING_ALONG_PLAYLIST, getSingAlongTrack, getSingAlongTotalDuration } from './nursery-rhymes';
+export type { NurseryRhymeTrack, SingAlongPlaylist } from './nursery-rhymes';
