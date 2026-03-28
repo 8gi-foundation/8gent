@@ -1,6 +1,6 @@
 # Ralph Loop Integration
 
-This directory contains the integration of the [ralph-loop-agent](https://github.com/PodJamz/ralph-loop-agent) SDK with 8gent.
+This directory contains the integration of the [ralph-loop-agent](https://github.com/8gi-foundation/ralph-loop-agent) SDK with 8gent.
 
 ## What is Ralph Mode?
 
