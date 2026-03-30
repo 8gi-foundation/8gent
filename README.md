@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://8gentjr.com"><img src="https://img.shields.io/badge/8gent_Jr-Live-E8610A?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0yMC44NCA0LjYxYTUuNSA1LjUgMCAwIDAtNy43OCAwTDEyIDUuNjdsLTEuMDYtMS4wNmE1LjUgNS41IDAgMCAwLTcuNzggNy43OGwxLjA2IDEuMDZMMTIgMjEuMjNsNy43OC03Ljc4IDEuMDYtMS4wNmE1LjUgNS41IDAgMCAwIDAtNy43OHoiLz48L3N2Zz4=&logoColor=white" alt="8gent Jr" /></a>
   <a href="https://8gentos.com"><img src="https://img.shields.io/badge/8gent_OS-In_Dev-1A1612?style=for-the-badge" alt="8gent OS" /></a>
-  <a href="https://github.com/PodJamz/8gent-code"><img src="https://img.shields.io/badge/8gent_Code-Open_Source-2D8A56?style=for-the-badge" alt="8gent Code" /></a>
+  <a href="https://github.com/8gi-foundation/8gent-code"><img src="https://img.shields.io/badge/8gent_Code-Open_Source-2D8A56?style=for-the-badge" alt="8gent Code" /></a>
   <a href="https://8gent.world"><img src="https://img.shields.io/badge/8gent_World-Live-C47F17?style=for-the-badge" alt="8gent World" /></a>
   <a href="https://8gent.games"><img src="https://img.shields.io/badge/8gent_Games-Live-F59E0B?style=for-the-badge" alt="8gent Games" /></a>
 </p>
@@ -45,7 +45,7 @@ Personal AI operating system for adults. The revenue engine.
 <td width="33%" valign="top">
 
 ### 8gent Code
-**[GitHub](https://github.com/PodJamz/8gent-code)**
+**[GitHub](https://github.com/8gi-foundation/8gent-code)**
 
 Terminal-first coding agent. Open source on-ramp to the ecosystem.
 
