@@ -1,8 +1,16 @@
 import { NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
 import { z } from 'zod';
 import { VESSEL_SCAFFOLD_SYSTEM_PROMPT } from '@/lib/prompts/vessel-scaffold';
 import type { VesselWorkflow } from '@/lib/vessel/types';
+
+// Uses the provider shim — reads PROVIDER_BASE_URL + PROVIDER_API_KEY env vars,
+// defaults to local Ollama at http://localhost:11434/v1
+function getProviderConfig() {
+  const baseUrl = process.env.PROVIDER_BASE_URL ?? 'http://localhost:11434/v1';
+  const apiKey = process.env.PROVIDER_API_KEY ?? 'local';
+  const model = process.env.PROVIDER_MODEL ?? 'llama3';
+  return { baseUrl, apiKey, model };
+}
 
 // ============================================================================
 // REQUEST SCHEMA
@@ -21,7 +29,7 @@ const WorkflowToolSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
-  inputSchema: z.record(z.unknown()),
+  inputSchema: z.record(z.string(), z.unknown()),
 });
 
 const VesselDefinitionSchema = z.object({
@@ -78,28 +86,37 @@ export async function POST(request: Request): Promise<NextResponse> {
     ? `Description: ${description}\n\nExisting workflow (modify or extend as needed):\n${JSON.stringify(existingWorkflow, null, 2)}`
     : `Description: ${description}`;
 
-  // Call Anthropic SDK
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: 'ANTHROPIC_API_KEY not configured' }, { status: 500 });
-  }
-
-  const client = new Anthropic({ apiKey });
+  // Call local model via OpenAI-compatible provider shim
+  const { baseUrl, apiKey, model } = getProviderConfig();
 
   let rawContent: string;
   try {
-    const message = await client.messages.create({
-      model: 'claude-opus-4-5',
-      max_tokens: 2048,
-      system: VESSEL_SCAFFOLD_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userMessage }],
+    const res = await fetch(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 2048,
+        messages: [
+          { role: 'system', content: VESSEL_SCAFFOLD_SYSTEM_PROMPT },
+          { role: 'user', content: userMessage },
+        ],
+      }),
     });
 
-    const firstBlock = message.content[0];
-    if (firstBlock.type !== 'text') {
-      return NextResponse.json({ error: 'Unexpected response format from LLM' }, { status: 500 });
+    if (!res.ok) {
+      const text = await res.text();
+      return NextResponse.json({ error: `Provider error: ${res.status} ${text.slice(0, 200)}` }, { status: 500 });
     }
-    rawContent = firstBlock.text;
+
+    const data = await res.json() as { choices?: Array<{ message?: { content?: string } }> };
+    rawContent = data.choices?.[0]?.message?.content ?? '';
+    if (!rawContent) {
+      return NextResponse.json({ error: 'Empty response from model' }, { status: 500 });
+    }
   } catch (err) {
     const message = err instanceof Error ? err.message : 'LLM call failed';
     return NextResponse.json({ error: message }, { status: 500 });
