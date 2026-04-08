@@ -11,6 +11,8 @@ import type { AuthVariables } from "../middleware/auth"
 import type { AuditVariables } from "../middleware/audit"
 import { logToolInvocation, logToolCompletion, logRateLimitEvent } from "../middleware/audit"
 import { logger } from "../lib/logger"
+import { validatePath } from "../utils/validate-path"
+import { assertMcpPermitted, loadMcpPermissions, MCP_APPROVAL_REQUIRED } from "../mcp/mcp-permissions"
 
 type Variables = AuthVariables & AuditVariables
 
@@ -232,11 +234,35 @@ interface ExecutionResult {
 }
 
 async function executeToolProxy(
-  tool: { name: string; endpoint?: string; handler?: string },
+  tool: { name: string; endpoint?: string; handler?: string; mcp_server?: string },
   input: Record<string, unknown>,
   timeoutMs: number
 ): Promise<ExecutionResult> {
   const startTime = Date.now()
+
+  // MCP permission gate: check before any MCP tool execution
+  if (tool.mcp_server) {
+    const mcpConfig = loadMcpPermissions()
+    try {
+      assertMcpPermitted(tool.mcp_server, tool.name, mcpConfig)
+    } catch (err: unknown) {
+      const code = (err as NodeJS.ErrnoException).code
+      if (code === MCP_APPROVAL_REQUIRED) {
+        return {
+          success: false,
+          data: null,
+          error_code: MCP_APPROVAL_REQUIRED,
+          error_message: String(err),
+        }
+      }
+      return {
+        success: false,
+        data: null,
+        error_code: "MCP_TOOL_BLOCKED",
+        error_message: String(err),
+      }
+    }
+  }
 
   // If tool has an endpoint, proxy to it
   if (tool.endpoint) {
@@ -389,9 +415,26 @@ function executeImageGenerator(input: Record<string, unknown>): ExecutionResult 
   }
 }
 
+const FILE_READER_BASE_DIR = process.env.FILE_READER_BASE_DIR || "/tmp/8gent-files"
+
 function executeFileReader(input: Record<string, unknown>): ExecutionResult {
   const url = String(input.url || "")
   const format = String(input.format || "text")
+
+  // Validate file paths to block path traversal attacks.
+  // Only apply to non-HTTP paths (local file references).
+  if (url && !url.startsWith("http://") && !url.startsWith("https://")) {
+    try {
+      validatePath(FILE_READER_BASE_DIR, url)
+    } catch (err) {
+      return {
+        success: false,
+        data: null,
+        error_code: "PATH_TRAVERSAL_BLOCKED",
+        error_message: String(err),
+      }
+    }
+  }
 
   // Placeholder - integrate with actual file reading
   return {

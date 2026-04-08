@@ -323,7 +323,7 @@ I thrive in environments where I can operate as a force multiplier, taking found
         },
         {
           type: "GitHub",
-          href: "https://github.com/PodJamz/codequality",
+          href: "https://github.com/8gi-foundation/codequality",
           icon: <Icons.github className="size-3" />,
         }
       ],

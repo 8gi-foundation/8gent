@@ -238,7 +238,7 @@ const inspirations: Inspiration[] = [
     description: 'Claude Code Project Manager provides the git-centric workflow with issues, branches, and worktrees for parallel execution. The backbone of the agentic kanban system.',
     links: {
       twitter: 'https://x.com/podjamz',
-      github: 'https://github.com/PodJamz/ccpm',
+      github: 'https://github.com/8gi-foundation/ccpm',
     },
     gradient: 'from-violet-500/20 via-purple-500/10 to-transparent',
     accentColor: 'text-violet-400',

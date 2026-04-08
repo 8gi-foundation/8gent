@@ -356,11 +356,50 @@ export const HOME_PHRASES: AACPhrase[] = [
 ];
 
 // =============================================================================
+// GLP Stage 1 - Sounds Category
+// For earliest communicators. Tap = immediate play. No sentence building.
+// =============================================================================
+
+export const GLP_STAGE1_SOUNDS_CATEGORY: AACCategory = {
+  id: 'sounds',
+  name: 'Sounds',
+  color: '#FF6B35',
+  imageUrl: ARASAAC(7046),
+};
+
+export const SOUNDS_PHRASES: AACPhrase[] = [
+  // Animal sounds
+  { id: 'snd-woof', text: 'woof', spokenText: 'woof woof', imageUrl: ARASAAC(5257), categoryId: 'sounds' },
+  { id: 'snd-meow', text: 'meow', spokenText: 'meow', imageUrl: ARASAAC(2466), categoryId: 'sounds' },
+  { id: 'snd-moo', text: 'moo', spokenText: 'mooo', imageUrl: ARASAAC(2353), categoryId: 'sounds' },
+  { id: 'snd-baa', text: 'baa', spokenText: 'baaaa', imageUrl: ARASAAC(2475), categoryId: 'sounds' },
+  { id: 'snd-quack', text: 'quack', spokenText: 'quack quack', imageUrl: ARASAAC(2359), categoryId: 'sounds' },
+  // Vehicle sounds
+  { id: 'snd-vroom', text: 'vroom', spokenText: 'vroom vroom', imageUrl: ARASAAC(2339), categoryId: 'sounds' },
+  { id: 'snd-beep', text: 'beep beep', spokenText: 'beep beep', imageUrl: ARASAAC(2339), categoryId: 'sounds' },
+  { id: 'snd-choo', text: 'choo choo', spokenText: 'choo choo', imageUrl: ARASAAC(3004), categoryId: 'sounds' },
+  // Silly sounds
+  { id: 'snd-boing', text: 'boing', spokenText: 'boing', imageUrl: ARASAAC(3241), categoryId: 'sounds' },
+  { id: 'snd-splash', text: 'splash', spokenText: 'splash', imageUrl: ARASAAC(3228), categoryId: 'sounds' },
+  { id: 'snd-pop', text: 'pop', spokenText: 'pop', imageUrl: ARASAAC(2881), categoryId: 'sounds' },
+  { id: 'snd-whoosh', text: 'whoosh', spokenText: 'whoooosh', imageUrl: ARASAAC(8142), categoryId: 'sounds' },
+];
+
+// Stage 1 category list - minimal set, sounds first
+export const GLP_STAGE1_CATEGORIES: AACCategory[] = [
+  GLP_STAGE1_SOUNDS_CATEGORY,
+  { id: 'general', name: 'Words', color: '#4CAF50', imageUrl: ARASAAC(6964) },
+  { id: 'feelings', name: 'Feelings', color: FITZGERALD_COLORS.feelings, imageUrl: ARASAAC(37190) },
+  { id: 'food', name: 'Food', color: FITZGERALD_COLORS.nouns, imageUrl: ARASAAC(4610) },
+];
+
+// =============================================================================
 // Get Phrases by Category
 // =============================================================================
 
 export function getPhrasesByCategory(categoryId: string): AACPhrase[] {
   switch (categoryId) {
+    case 'sounds': return SOUNDS_PHRASES;
     case 'general': return GENERAL_PHRASES;
     case 'feelings': return FEELINGS_PHRASES;
     case 'actions': return ACTIONS_PHRASES;
