@@ -2,9 +2,9 @@
 
 import { useState, useCallback } from "react";
 import {
-  PanelGroup,
+  Group as PanelGroup,
   Panel,
-  PanelResizeHandle,
+  Separator as PanelResizeHandle,
 } from "react-resizable-panels";
 import type { VesselWorkflow, WorkflowVessel } from "./types";
 import { VesselList } from "./VesselList";
@@ -44,7 +44,7 @@ export function BuilderLayout({ workflow, onWorkflowChange }: BuilderLayoutProps
 
   return (
     <div className="flex h-full w-full bg-background overflow-hidden">
-      <PanelGroup direction="horizontal" className="h-full w-full">
+      <PanelGroup orientation="horizontal" className="h-full w-full">
         {/* Left: vessel/tool list (20%) */}
         <Panel defaultSize={20} minSize={12} collapsible>
           <div className="h-full border-r border-white/10">
