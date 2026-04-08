@@ -276,3 +276,25 @@ console.log(`
 serve({ fetch: app.fetch, port })
 
 export { app }
+
+// Vessel workflow schema
+export {
+  VesselControlType,
+  WorkflowTool,
+  WorkflowVessel,
+  VesselWorkflow,
+  WorkflowState,
+  VesselWorkflowDocument,
+} from './schema/vessel-workflow.js'
+export type {
+  VesselControlType as VesselControlTypeValue,
+  WorkflowTool as WorkflowToolType,
+  WorkflowVessel as WorkflowVesselType,
+  VesselWorkflow as VesselWorkflowType,
+  WorkflowState as WorkflowStateValue,
+  VesselWorkflowDocument as VesselWorkflowDocumentType,
+} from './schema/vessel-workflow.js'
+
+// Provider shim
+export { loadModelConfig, type ModelConfig } from './providers/model-config.js'
+export { createProvider, type ProviderClient } from './providers/provider-factory.js'
