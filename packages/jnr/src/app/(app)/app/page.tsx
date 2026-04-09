@@ -13,6 +13,7 @@ import {
 import { useApp } from '@/context/AppContext';
 import { Dock } from '@/components/dock/Dock';
 import { MagicButton } from '@/components/aac/MagicButton';
+import { ParentVoiceButton } from '@/components/aac/ParentVoiceButton';
 import { CardSuggestion } from '@/components/ai/CardSuggestion';
 import { speakWithKitten } from '@/lib/speech/tts';
 import { getSessionLogger } from '@/lib/session-logger';
@@ -275,6 +276,11 @@ export default function AACAppPage() {
             ttsRate={settings.ttsRate}
             onMissingVocabulary={setMissingVocabulary}
             disabled={sentence.length === 0}
+          />
+          {/* Parent Voice Input - speak to find AAC cards */}
+          <ParentVoiceButton
+            onCardSelect={handleCardTap}
+            primaryColor={primaryColor}
           />
           <button
             onClick={handleBackspace}

@@ -68,11 +68,19 @@ function IconGrid({ color }: { color: string }) {
   );
 }
 
+function IconWaveform({ color }: { color: string }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v20M8 6v12M4 9v6M16 6v12M20 9v6" />
+    </svg>
+  );
+}
+
 const DOCK_ITEMS: DockItem[] = [
   { id: 'talk', label: 'Talk', icon: IconSpeechBubble, href: '/app' },
   { id: 'core', label: 'Core', icon: IconMicrophone, href: '/core' },
-  { id: 'schooltube', label: 'SchoolTube', icon: IconPlay, href: '/schooltube' },
-  { id: 'admin', label: 'Admin', icon: IconPerson, href: '/admin' },
+  { id: 'speech', label: 'Speech', icon: IconWaveform, href: '/speech' },
+  { id: 'schooltube', label: 'Videos', icon: IconPlay, href: '/schooltube' },
   { id: 'more', label: 'More', icon: IconGrid, href: '/toolshed' },
 ];
 
