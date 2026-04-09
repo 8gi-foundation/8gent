@@ -5,15 +5,16 @@ import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { DrumPads } from '@/components/instruments/DrumPads';
 import { XylophoneKeys } from '@/components/instruments/XylophoneKeys';
+import { MoodPlayer } from '@/components/music/MoodPlayer';
 
 /**
- * 8gent Jr Music - Instrument selector with Drums and Xylophone
+ * 8gent Jr Music - Instruments + Emotional Regulation Playlists
  *
- * Two tabs: Drums (4x4 pad grid) and Keys (xylophone bars).
- * All Web Audio API, no files needed. Large touch targets throughout.
+ * Three tabs: Drums (4x4 pad grid), Keys (xylophone bars), Feel (mood playlists).
+ * All Web Audio / HTML5 Audio. No API keys or external players.
  */
 
-type MusicTab = 'drums' | 'xylophone';
+type MusicTab = 'drums' | 'xylophone' | 'feel';
 
 const TABS: { id: MusicTab; label: string; svgPath: string }[] = [
   {
@@ -25,6 +26,11 @@ const TABS: { id: MusicTab; label: string; svgPath: string }[] = [
     id: 'xylophone',
     label: 'Keys',
     svgPath: 'M3 5h2v14H3V5zm4 2h2v10H7V7zm4-1h2v12h-2V6zm4 3h2v6h-2V9zm4-2h2v10h-2V7z',
+  },
+  {
+    id: 'feel',
+    label: 'Feel',
+    svgPath: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
   },
 ];
 
@@ -76,10 +82,11 @@ export default function MusicPage() {
         ))}
       </div>
 
-      {/* Instrument Area */}
-      <div className="flex-1 overflow-hidden">
+      {/* Content Area */}
+      <div className="flex-1 overflow-hidden flex flex-col">
         {activeTab === 'drums' && <DrumPads className="h-full" />}
         {activeTab === 'xylophone' && <XylophoneKeys className="h-full" />}
+        {activeTab === 'feel' && <MoodPlayer />}
       </div>
     </div>
   );
