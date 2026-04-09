@@ -4,7 +4,7 @@ A comprehensive collection of 139 ready-to-use scientific skills from [K-Dense](
 
 ## Source Repository
 
-Full skill definitions: https://github.com/PodJamz/claude-scientific-skills
+Full skill definitions: https://github.com/8gi-foundation/claude-scientific-skills
 
 ## Categories
 

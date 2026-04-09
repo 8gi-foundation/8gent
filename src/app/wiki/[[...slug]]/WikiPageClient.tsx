@@ -142,7 +142,7 @@ export default function WikiPageClient({ doc, tree, breadcrumbs }: WikiPageClien
                       Attributions
                     </Link>
                     <span>•</span>
-                    <Link href="https://github.com/PodJamz/resume" className="hover:text-foreground transition-colors">
+                    <Link href="https://github.com/8gi-foundation/resume" className="hover:text-foreground transition-colors">
                       GitHub
                     </Link>
                   </div>

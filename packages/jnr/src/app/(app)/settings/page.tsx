@@ -13,6 +13,15 @@ import { ELEVENLABS_VOICES } from '@/lib/voice/types';
 
 const GRID_OPTIONS = [2, 3, 4, 5];
 
+const GLP_STAGES = [
+  { stage: 1, label: 'Stage 1', desc: 'Sounds and single words. Tap to play immediately.' },
+  { stage: 2, label: 'Stage 2', desc: 'Simple single words.' },
+  { stage: 3, label: 'Stage 3', desc: 'Short phrases.' },
+  { stage: 4, label: 'Stage 4', desc: 'Sentences.' },
+  { stage: 5, label: 'Stage 5', desc: 'Stories.' },
+  { stage: 6, label: 'Stage 6', desc: 'Full grammar.' },
+];
+
 export default function SettingsPage() {
   const { signOut } = useClerk();
   const { settings, updateSettings, isLoaded } = useApp();
@@ -30,6 +39,8 @@ export default function SettingsPage() {
 
   const primaryColor = settings.primaryColor || '#4CAF50';
   const selectedVoice = ELEVENLABS_VOICES.find((v) => v.id === settings.selectedVoiceId);
+  const currentStage = settings.glpStage ?? 3;
+  const currentStageInfo = GLP_STAGES.find((s) => s.stage === currentStage);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'var(--warm-bg-page, #F5F0EB)' }}>
@@ -49,7 +60,7 @@ export default function SettingsPage() {
             </span>
           </Link>
           <h1 className="text-[18px] font-semibold text-white">Settings</h1>
-          <div className="w-[44px]" /> {/* Spacer for centering */}
+          <div className="w-[44px]" />
         </div>
       </header>
 
@@ -159,6 +170,34 @@ export default function SettingsPage() {
             Communication Board
           </p>
           <div className="rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--warm-bg-card, #FDFCFA)' }}>
+            {/* GLP Stage Selector */}
+            <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--warm-border-light, #F0EAE3)' }}>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[17px]" style={{ color: 'var(--warm-text, #1A1614)' }}>GLP Stage</span>
+                <span className="text-[15px]" style={{ color: 'var(--warm-text-secondary, #5C544A)' }}>
+                  {currentStageInfo?.label ?? 'Stage 3'}
+                </span>
+              </div>
+              <p className="text-[13px] mb-3" style={{ color: 'var(--warm-text-muted, #9A9088)' }}>
+                {currentStageInfo?.desc ?? ''}
+              </p>
+              <div className="flex gap-1.5">
+                {GLP_STAGES.map(({ stage, label }) => (
+                  <button
+                    key={stage}
+                    onClick={() => updateSettings({ glpStage: stage })}
+                    className="flex-1 py-2 rounded-xl font-medium text-[13px] transition-colors"
+                    style={{
+                      backgroundColor: currentStage === stage ? primaryColor : 'var(--warm-bg-page, #F5F0EB)',
+                      color: currentStage === stage ? 'white' : 'var(--warm-text-secondary, #5C544A)',
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Grid Columns */}
             <div className="px-4 py-3">
               <div className="flex items-center justify-between mb-3">
