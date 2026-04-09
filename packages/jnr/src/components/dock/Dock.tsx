@@ -68,11 +68,28 @@ function IconGrid({ color }: { color: string }) {
   );
 }
 
+function IconWaveform({ color }: { color: string }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v20M8 6v12M4 9v6M16 6v12M20 9v6" />
+    </svg>
+  );
+}
+
+function IconBook({ color }: { color: string }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+
 const DOCK_ITEMS: DockItem[] = [
   { id: 'talk', label: 'Talk', icon: IconSpeechBubble, href: '/app' },
   { id: 'core', label: 'Core', icon: IconMicrophone, href: '/core' },
-  { id: 'schooltube', label: 'SchoolTube', icon: IconPlay, href: '/schooltube' },
-  { id: 'admin', label: 'Admin', icon: IconPerson, href: '/admin' },
+  { id: 'stories', label: 'Stories', icon: IconBook, href: '/stories' },
+  { id: 'schooltube', label: 'Videos', icon: IconPlay, href: '/schooltube' },
   { id: 'more', label: 'More', icon: IconGrid, href: '/toolshed' },
 ];
 
