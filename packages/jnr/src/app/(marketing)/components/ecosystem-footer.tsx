@@ -53,7 +53,7 @@ export function EcosystemFooter() {
             style={{ backgroundColor: 'var(--warm-text-muted, #9A9088)' }}
           />
           <a
-            href="https://github.com/PodJamz/8gent-code"
+            href="https://github.com/8gi-foundation/8gent-code"
             className="hover:underline"
           >
             GitHub

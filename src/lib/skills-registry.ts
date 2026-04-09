@@ -576,7 +576,7 @@ export const SKILLS_REGISTRY: SkillDefinition[] = [
   // ==========================================================================
   // ANTHROPIC OFFICIAL SKILLS (from github.com/anthropics/skills)
   // Original Author: Anthropic | License: Apache 2.0 (except document skills: source-available)
-  // Forked for reference: github.com/PodJamz/skills
+  // Forked for reference: github.com/8gi-foundation/skills
   // ==========================================================================
   {
     id: 'algorithmic-art',
@@ -933,7 +933,7 @@ export const SKILLS_REGISTRY: SkillDefinition[] = [
 
   // ==========================================================================
   // OPENAI CODEX SKILLS (from github.com/openai/skills)
-  // Original Author: OpenAI | Forked for reference: github.com/PodJamz/OpenAI-skills
+  // Original Author: OpenAI | Forked for reference: github.com/8gi-foundation/OpenAI-skills
   // License: Individual per skill (see LICENSE.txt in each skill directory)
   // ==========================================================================
 
@@ -1165,7 +1165,7 @@ export const SKILLS_REGISTRY: SkillDefinition[] = [
   // OBRA/JESSE VINCENT - SKILLS AS SUPERPOWERS
   // Original Author: obra (Jesse Vincent) | Blog: https://blog.fsck.com/
   // Source: https://github.com/obra/skills-as-superpowers
-  // Forked for reference: github.com/PodJamz/Skills-as-superpowers
+  // Forked for reference: github.com/8gi-foundation/Skills-as-superpowers
   // License: MIT
   // ==========================================================================
 
@@ -1498,7 +1498,7 @@ export const SKILLS_REGISTRY: SkillDefinition[] = [
   // OBRA/JESSE VINCENT - YOUTUBE TO WEBPAGE
   // Original Author: obra (Jesse Vincent) | Blog: https://blog.fsck.com/
   // Source: https://github.com/obra/Youtube2Webpage
-  // Forked for reference: github.com/PodJamz/Youtube2Webpage
+  // Forked for reference: github.com/8gi-foundation/Youtube2Webpage
   // License: MIT
   // ==========================================================================
   {
@@ -1581,7 +1581,7 @@ export const SKILLS_REGISTRY: SkillDefinition[] = [
   // TRAIL OF BITS - SECURITY SKILLS
   // Original Author: Trail of Bits | Security Research Firm
   // Source: https://github.com/trailofbits/skills
-  // Forked for reference: github.com/PodJamz/Security-skills-
+  // Forked for reference: github.com/8gi-foundation/Security-skills-
   // License: CC-BY-SA-4.0
   // ==========================================================================
 
@@ -1959,7 +1959,7 @@ export const SKILLS_REGISTRY: SkillDefinition[] = [
   // ==========================================================================
   // HUGGING FACE SKILLS
   // Source: https://github.com/huggingface/skills (via community)
-  // Forked for reference: github.com/PodJamz/Huggingface-skills
+  // Forked for reference: github.com/8gi-foundation/Huggingface-skills
   // For 8gent to interact with HuggingFace models, tools, and APIs
   // ==========================================================================
   {
